@@ -458,7 +458,12 @@ function TargetAudienceSection({ audience }: { audience: typeof targetAudience }
   );
 }
 
-function BenefitsSection({ benefits }: { benefits: typeof benefits }) {
+interface Benefit {
+  icon: React.ComponentType<{ className?: string }>;
+  title: string;
+}
+
+function BenefitsSection({ benefits }: { benefits: Benefit[] }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
@@ -499,7 +504,12 @@ function BenefitsSection({ benefits }: { benefits: typeof benefits }) {
   );
 }
 
-function FAQSection({ faqs }: { faqs: typeof faqs }) {
+interface FAQ {
+  question: string;
+  answer: string;
+}
+
+function FAQSection({ faqs }: { faqs: FAQ[] }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
