@@ -1,8 +1,8 @@
 'use client';
 
-import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
-import { ArrowRight, CheckCircle2, Users, Clock, Target, Sparkles, Calendar, MapPin, Award, Rocket, BookOpen, Briefcase } from 'lucide-react';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { useRef, useState } from 'react';
+import { ArrowRight, CheckCircle2, Users, Clock, Target, Sparkles, Calendar, MapPin, Award, Rocket, BookOpen, Briefcase, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import Navbar from '@/components/ui/Navbar';
 import Footer from '@/components/sections/Footer';
@@ -131,27 +131,43 @@ const targetAudience = [
 const faqs = [
   {
     question: 'Do I need a startup idea to join?',
-    answer: 'No! We help you discover and validate problems worth solving in the first few weeks.'
+    answer: 'Nope. Most participants come with just curiosity or a problem they care about. We help you find, validate, and shape your idea in Week 1 and 2.'
   },
   {
     question: 'Can I join if I\'m working full-time?',
-    answer: 'Absolutely! Sessions are on Saturdays (6 hours/week), designed for working professionals.'
+    answer: 'Absolutely! Sessions are on Saturdays (6 hours/week), designed for working professionals. Build your startup without quitting your job.'
   },
   {
     question: 'Is this only for students?',
-    answer: 'Not at all. We welcome working professionals, retired executives, career-breakers, and students alike.'
+    answer: 'Not at all. We welcome working professionals, retired executives, career-breakers, and students alike. IGNITE is built for first-time founders from all walks of life.'
   },
   {
     question: 'What if I\'m not from a tech background?',
-    answer: 'Perfect! We teach you the tools and frameworks. No coding required unless you want to build yourself.'
+    answer: 'Perfect! We teach you the tools and frameworks you need. No coding required unless you want to build it yourself. Many successful founders aren\'t technical.'
   },
   {
     question: 'Will I get a certificate?',
-    answer: 'Yes, upon completion you\'ll receive a program completion certificate.'
+    answer: 'Yes! Upon completion, you\'ll receive a program completion certificate from StratSchool.'
   },
   {
     question: 'Can I register a real company during this program?',
-    answer: 'Yes! In Week 11, we guide you through company registration, GST, and legal documentation.'
+    answer: 'Absolutely! In Week 11, we guide you through company registration, GST certification, UDYAM registration, and setting up basic legal documents. You\'ll walk away with a legally registered startup.'
+  },
+  {
+    question: 'Will I get personal feedback on my idea or pitch?',
+    answer: 'Yes! You\'ll get regular feedback from mentors who\'ve built real companies. Plus, on Demo Day (Week 12), you\'ll pitch live and receive detailed feedback from experienced founders and investors.'
+  },
+  {
+    question: 'What happens after the 12 weeks?',
+    answer: 'You\'ll have lifetime access to the i-ACE Founder Community, access to the IGNITE Alumni Job & Intern Board, and continued support for government grants, incubator applications, and traction-building strategies.'
+  },
+  {
+    question: 'Can I work with a co-founder or a friend?',
+    answer: 'Definitely! Many participants team up during the program. You can also join with a friend or find a co-founder within the cohort.'
+  },
+  {
+    question: 'What kind of startups is this for?',
+    answer: 'IGNITE works for any startup idea—SaaS, D2C, social impact, hardware, or service-based. The frameworks we teach apply to all types of ventures. Whether you\'re building an app, a product, or a service, you\'ll find your path here.'
   },
 ];
 
@@ -512,6 +528,11 @@ interface FAQ {
 function FAQSection({ faqs }: { faqs: FAQ[] }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
+
+  const toggleFAQ = (index: number) => {
+    setOpenIndex(openIndex === index ? null : index);
+  };
 
   return (
     <section ref={ref} className="relative py-32 bg-gradient-to-b from-black via-red-950/5 to-black overflow-hidden">
@@ -527,17 +548,57 @@ function FAQSection({ faqs }: { faqs: FAQ[] }) {
           </h2>
         </motion.div>
 
-        <div className="space-y-6">
+        <div className="space-y-4">
           {faqs.map((faq, index) => (
             <motion.div
               key={index}
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="glass-effect p-8 rounded-3xl border border-white/10 hover:border-red-600/30 transition-all duration-300"
+              transition={{ duration: 0.5, delay: index * 0.05 }}
+              className="group"
             >
-              <h3 className="text-xl font-bold mb-3 text-white">{faq.question}</h3>
-              <p className="text-gray-400 leading-relaxed">{faq.answer}</p>
+              <div 
+                className={`glass-effect rounded-3xl border transition-all duration-300 cursor-pointer overflow-hidden ${
+                  openIndex === index 
+                    ? 'border-red-600/50 bg-white/10' 
+                    : 'border-white/10 hover:border-red-600/30'
+                }`}
+                onClick={() => toggleFAQ(index)}
+              >
+                <div className="p-6 sm:p-8 flex items-center justify-between">
+                  <h3 className="text-lg sm:text-xl font-bold text-white pr-4">
+                    {faq.question}
+                  </h3>
+                  <motion.div
+                    animate={{ rotate: openIndex === index ? 180 : 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="flex-shrink-0"
+                  >
+                    <ChevronDown className={`w-6 h-6 transition-colors duration-300 ${
+                      openIndex === index ? 'text-red-400' : 'text-gray-400'
+                    }`} />
+                  </motion.div>
+                </div>
+
+                <AnimatePresence>
+                  {openIndex === index && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: 'easeInOut' }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-6 sm:px-8 pb-6 sm:pb-8">
+                        <div className="w-full h-px bg-gradient-to-r from-transparent via-red-600/50 to-transparent mb-6" />
+                        <p className="text-gray-300 leading-relaxed text-base sm:text-lg">
+                          {faq.answer}
+                        </p>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </motion.div>
           ))}
         </div>
