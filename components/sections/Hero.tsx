@@ -2,11 +2,15 @@
 
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ChevronDown, Sparkles, Rocket, Target } from 'lucide-react';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 
 export default function Hero() {
   const ref = useRef(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [showVideo, setShowVideo] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ['start start', 'end start'],
@@ -15,14 +19,57 @@ export default function Hero() {
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '50%']);
   const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
 
+  useEffect(() => {
+    // Start transition to video after 2 seconds
+    const timer = setTimeout(() => {
+      setShowVideo(true);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    if (videoRef.current && videoLoaded) {
+      videoRef.current.play().catch(error => {
+        console.log('Video autoplay failed:', error);
+      });
+    }
+  }, [videoLoaded]);
+
   return (
     <section ref={ref} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-black via-red-950/20 to-black">
-      {/* Animated Background Elements */}
-      <div className="absolute inset-0 overflow-hidden">
+      {/* Animated Background Elements - Fade out when video appears */}
+      <motion.div 
+        className="absolute inset-0 overflow-hidden"
+        animate={{ opacity: showVideo ? 0 : 1 }}
+        transition={{ duration: 1.5, ease: 'easeInOut' }}
+      >
         <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-red-600/20 rounded-full blur-3xl animate-pulse" />
         <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-red-500/20 rounded-full blur-3xl animate-pulse delay-1000" />
         <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-red-700/20 rounded-full blur-3xl animate-pulse delay-2000" />
-      </div>
+      </motion.div>
+
+      {/* Video Background - Fade in smoothly */}
+      <motion.div
+        className="absolute inset-0 overflow-hidden"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: showVideo ? 1 : 0 }}
+        transition={{ duration: 1.5, ease: 'easeInOut' }}
+      >
+        <video
+          ref={videoRef}
+          className="w-full h-full object-cover"
+          loop
+          muted
+          playsInline
+          preload="auto"
+          onLoadedData={() => setVideoLoaded(true)}
+        >
+          <source src="/strat-hover/2.MOV" type="video/mp4" />
+        </video>
+        {/* Dark overlay for better text readability */}
+        <div className="absolute inset-0 bg-black/50" />
+      </motion.div>
 
       {/* Grid Pattern Overlay */}
       <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]" />
