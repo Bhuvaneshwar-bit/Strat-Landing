@@ -20,6 +20,11 @@ export default function Hero() {
   const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
 
   useEffect(() => {
+    // Preload video but don't start immediately to reduce initial load
+    if (videoRef.current) {
+      videoRef.current.load();
+    }
+    
     // Start transition to video after 2 seconds
     const timer = setTimeout(() => {
       setShowVideo(true);
@@ -29,12 +34,31 @@ export default function Hero() {
   }, []);
 
   useEffect(() => {
-    if (videoRef.current && videoLoaded) {
+    if (videoRef.current && videoLoaded && showVideo) {
       videoRef.current.play().catch(error => {
         console.log('Video autoplay failed:', error);
       });
     }
-  }, [videoLoaded]);
+  }, [videoLoaded, showVideo]);
+
+  const handleVideoEnd = () => {
+    // Smoothly transition back to animated background when video ends
+    setShowVideo(false);
+    // Pause video to save resources
+    if (videoRef.current) {
+      videoRef.current.pause();
+    }
+    // Start video cycle again after showing background
+    setTimeout(() => {
+      setShowVideo(true);
+      if (videoRef.current) {
+        videoRef.current.currentTime = 0;
+        videoRef.current.play().catch(error => {
+          console.log('Video replay failed:', error);
+        });
+      }
+    }, 2000);
+  };
 
   return (
     <section ref={ref} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-black via-red-950/20 to-black">
@@ -59,11 +83,16 @@ export default function Hero() {
         <video
           ref={videoRef}
           className="w-full h-full object-cover"
-          loop
           muted
           playsInline
-          preload="auto"
+          preload="metadata"
+          poster="/strat-hover/1.JPG"
           onLoadedData={() => setVideoLoaded(true)}
+          onEnded={handleVideoEnd}
+          style={{
+            transform: 'translateZ(0)',
+            willChange: showVideo ? 'opacity' : 'auto',
+          }}
         >
           <source src="/strat-hover/2.MOV" type="video/mp4" />
         </video>
