@@ -48,16 +48,7 @@ export default function Hero() {
     if (videoRef.current) {
       videoRef.current.pause();
     }
-    // Start video cycle again after showing background
-    setTimeout(() => {
-      setShowVideo(true);
-      if (videoRef.current) {
-        videoRef.current.currentTime = 0;
-        videoRef.current.play().catch(error => {
-          console.log('Video replay failed:', error);
-        });
-      }
-    }, 2000);
+    // Don't restart the video - just stay on the background
   };
 
   return (
