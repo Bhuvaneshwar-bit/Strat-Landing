@@ -150,9 +150,6 @@ export default function EDIITNPage() {
       {/* Past Events Gallery */}
       <PastEventsSection events={pastEvents} />
 
-      {/* CTA Section */}
-      <CTASection />
-
       <Footer />
     </main>
   );
@@ -376,49 +373,6 @@ function PastEventsSection({ events }: { events: Array<{ title: string; date: st
             </motion.div>
           ))}
         </div>
-      </div>
-    </section>
-  );
-}
-
-function CTASection() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
-
-  return (
-    <section ref={ref} className="relative py-32 overflow-hidden">
-      <div className="absolute inset-0 z-0">
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-red-600/20 rounded-full blur-3xl animate-pulse" />
-      </div>
-
-      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-        >
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold font-space-grotesk mb-6">
-            Ready to <span className="gradient-text">Transform</span> Your Campus?
-          </h2>
-          <p className="text-xl text-gray-400 mb-12 max-w-3xl mx-auto">
-            Partner with us to bring world-class entrepreneurship education to your institution
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="#contact"
-              className="group px-8 py-4 bg-gradient-to-r from-red-600 to-red-500 rounded-full text-white font-semibold text-lg hover:shadow-2xl hover:shadow-red-500/50 transition-all duration-300 hover:scale-105 flex items-center gap-2"
-            >
-              Get in Touch
-              <Rocket className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </Link>
-            <Link
-              href="/"
-              className="px-8 py-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full text-white font-semibold text-lg hover:bg-white/10 transition-all duration-300 hover:scale-105"
-            >
-              Back to Home
-            </Link>
-          </div>
-        </motion.div>
       </div>
     </section>
   );
