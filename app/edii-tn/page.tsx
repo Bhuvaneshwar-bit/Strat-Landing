@@ -10,27 +10,27 @@ import Footer from '@/components/sections/Footer';
 const upcomingEvents = [
   {
     event: 'Pitch & Network',
-    date: 'Nov 10, 2025',
+    type: 'NETWORKING EVENT',
+    date: 'November 10, 2025',
     venue: 'Chennai',
-    description: 'Connect with investors and fellow entrepreneurs'
+    description: 'Present your startup idea and connect with fellow entrepreneurs and mentors',
+    attendees: '50+ Students'
   },
   {
-    event: 'Startup Bootcamp',
-    date: 'Nov 25, 2025',
+    event: 'Design Thinking Workshop',
+    type: 'WORKSHOP',
+    date: 'November 25, 2025',
     venue: 'Coimbatore',
-    description: 'Intensive 2-day workshop on startup fundamentals'
+    description: 'Learn human-centered design principles to solve real-world problems',
+    attendees: '40+ Students'
   },
   {
-    event: 'Innovation Hackathon',
-    date: 'Dec 5, 2025',
+    event: 'Innovation Bootcamp',
+    type: 'BOOTCAMP',
+    date: 'December 8, 2025',
     venue: 'Madurai',
-    description: '48-hour challenge to build innovative solutions'
-  },
-  {
-    event: 'Founder Meetup',
-    date: 'Dec 15, 2025',
-    venue: 'Trichy',
-    description: 'Network with successful entrepreneurs and mentors'
+    description: '3-day intensive program on ideation, validation, and MVP development',
+    attendees: '60+ Students'
   },
 ];
 
@@ -204,7 +204,7 @@ function ImpactSection({ stats }: { stats: Array<{ label: string; value: string 
   );
 }
 
-function UpcomingEventsSection({ events }: { events: Array<{ event: string; date: string; venue: string; description: string }> }) {
+function UpcomingEventsSection({ events }: { events: Array<{ event: string; type: string; date: string; venue: string; description: string; attendees: string }> }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
@@ -225,37 +225,91 @@ function UpcomingEventsSection({ events }: { events: Array<{ event: string; date
           </p>
         </motion.div>
 
-        <div className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {events.map((event, index) => (
             <motion.div
               key={event.event}
-              initial={{ opacity: 0, x: -30 }}
-              animate={isInView ? { opacity: 1, x: 0 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group"
+              initial={{ opacity: 0, y: 50 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: index * 0.15 }}
+              className="group relative"
+              style={{
+                transformStyle: 'preserve-3d',
+                perspective: '1000px',
+              }}
             >
-              <div className="glass-effect p-6 sm:p-8 rounded-3xl border border-white/10 hover:border-red-600/30 transition-all duration-300">
-                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-                  <div className="flex-1 space-y-3">
-                    <h3 className="text-2xl sm:text-3xl font-bold text-white group-hover:text-red-400 transition-colors">
-                      {event.event}
-                    </h3>
-                    <p className="text-gray-400">{event.description}</p>
-                    <div className="flex flex-wrap gap-4 text-sm">
-                      <div className="flex items-center gap-2 text-gray-400">
-                        <Calendar className="w-4 h-4 text-red-400" />
-                        {event.date}
+              {/* 3D Glow Effect */}
+              <div className="absolute inset-0 bg-gradient-to-br from-red-600/30 via-red-500/20 to-red-400/30 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-all duration-700 transform group-hover:scale-110" />
+              
+              {/* Main Card with 3D Glassmorphism */}
+              <div 
+                className="relative h-full bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-xl rounded-3xl border border-white/10 overflow-hidden transition-all duration-500 group-hover:border-red-500/50 group-hover:shadow-2xl group-hover:shadow-red-500/20"
+                style={{
+                  transform: 'translateZ(0)',
+                  transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                }}
+                onMouseEnter={(e) => {
+                  const card = e.currentTarget;
+                  card.style.transform = 'translateZ(20px) rotateX(2deg) rotateY(-2deg)';
+                }}
+                onMouseLeave={(e) => {
+                  const card = e.currentTarget;
+                  card.style.transform = 'translateZ(0) rotateX(0) rotateY(0)';
+                }}
+              >
+                {/* Shimmer Effect */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                
+                {/* Content */}
+                <div className="relative p-8 flex flex-col h-full">
+                  {/* Event Type Badge */}
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-red-600/20 border border-red-600/30 rounded-full mb-6 w-fit">
+                    <span className="text-red-400 font-semibold text-xs uppercase tracking-wider">
+                      {event.type}
+                    </span>
+                  </div>
+
+                  {/* Event Title */}
+                  <h3 className="text-2xl sm:text-3xl font-bold text-white mb-4 group-hover:text-red-400 transition-colors duration-300">
+                    {event.event}
+                  </h3>
+
+                  {/* Description */}
+                  <p className="text-gray-400 mb-6 leading-relaxed flex-grow">
+                    {event.description}
+                  </p>
+
+                  {/* Event Details */}
+                  <div className="space-y-3 mb-6">
+                    <div className="flex items-center gap-3 text-sm">
+                      <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-red-600/10 border border-red-600/20">
+                        <Calendar className="w-5 h-5 text-red-400" />
                       </div>
-                      <div className="flex items-center gap-2 text-gray-400">
-                        <MapPin className="w-4 h-4 text-red-400" />
-                        {event.venue}
+                      <span className="text-gray-300">{event.date}</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-sm">
+                      <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-red-600/10 border border-red-600/20">
+                        <MapPin className="w-5 h-5 text-red-400" />
                       </div>
+                      <span className="text-gray-300">{event.venue}</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-sm">
+                      <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-red-600/10 border border-red-600/20">
+                        <Users className="w-5 h-5 text-red-400" />
+                      </div>
+                      <span className="text-gray-300">{event.attendees}</span>
                     </div>
                   </div>
-                  <button className="px-8 py-4 bg-gradient-to-r from-red-600 to-red-500 rounded-full text-white font-semibold hover:shadow-lg hover:shadow-red-500/50 transition-all duration-300 hover:scale-105 whitespace-nowrap">
+
+                  {/* Register Button */}
+                  <button className="w-full px-6 py-4 bg-gradient-to-r from-red-600 to-red-500 rounded-xl text-white font-semibold hover:shadow-lg hover:shadow-red-500/50 transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2 group/btn">
                     Register Now
+                    <ArrowRight className="w-5 h-5 group-hover/btn:translate-x-1 transition-transform" />
                   </button>
                 </div>
+
+                {/* Bottom Border Glow */}
+                <div className="absolute bottom-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
               </div>
             </motion.div>
           ))}
