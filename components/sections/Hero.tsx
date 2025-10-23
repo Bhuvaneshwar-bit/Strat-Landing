@@ -103,7 +103,7 @@ export default function Hero() {
           className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full mb-8"
         >
           <Sparkles className="w-4 h-4 text-red-400" />
-          <span className="text-sm text-gray-300">Empowering India's Startup Ecosystem</span>
+          <span className="text-sm text-gray-300">A Venture Studio building future India</span>
         </motion.div>
 
         {/* Main Heading */}
@@ -113,8 +113,9 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold font-space-grotesk mb-6 leading-tight"
         >
-          <span className="block">Ignite Your</span>
-          <span className="block gradient-text">Startup Journey</span>
+          <span className="block">We Don't Just Teach</span>
+          <span className="block">Entrepreneurship.</span>
+          <span className="block gradient-text">We Build Entrepreneurs.</span>
         </motion.h1>
 
         {/* Subheading */}
@@ -122,10 +123,9 @@ export default function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-lg sm:text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto mb-12 leading-relaxed"
+          className="text-lg sm:text-xl md:text-2xl text-gray-400 max-w-4xl mx-auto mb-12 leading-relaxed"
         >
-          Empowering India's brightest minds to build, launch, and scale innovative startups. 
-          Discover our programs and join a community of trailblazers.
+          StratSchool is a Venture Studio that incubates, invests in, and scales bold ideas into real businesses.
         </motion.p>
 
         {/* CTA Buttons */}
