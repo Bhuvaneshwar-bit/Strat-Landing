@@ -63,8 +63,8 @@ export default function Mission() {
           </h2>
 
           <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
-            StratSchool is dedicated to nurturing entrepreneurial talent across India. 
-            Our startup education programs provide everything you need to transform your vision into a successful venture.
+            At StratSchool, we combine education, incubation, and innovation to create real companies. 
+            We collaborate with exceptional founders, helping them validate ideas, develop products, and access capital.
           </p>
         </motion.div>
 
