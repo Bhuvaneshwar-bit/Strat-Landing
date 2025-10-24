@@ -98,22 +98,33 @@ export default function CorePillars() {
                 key={pillar.id}
                 initial={prefersReducedMotion ? { opacity: 0 } : { 
                   opacity: 0, 
-                  y: 50,
-                  rotateY: isLeft ? -20 : 20,
-                  scale: 0.95
+                  y: 100,
+                  rotateX: 75,
+                  rotateY: isLeft ? -35 : 35,
+                  rotateZ: isLeft ? -8 : 8,
+                  scale: 0.7
                 }}
                 whileInView={prefersReducedMotion ? { opacity: 1 } : { 
                   opacity: 1, 
                   y: 0,
+                  rotateX: 0,
                   rotateY: 0,
+                  rotateZ: 0,
                   scale: 1
                 }}
                 transition={{
-                  duration: 0.5,
-                  ease: [0.25, 0.1, 0.25, 1],
+                  duration: 1,
+                  ease: [0.16, 1, 0.3, 1],
+                  rotateX: { duration: 0.9 },
+                  rotateY: { duration: 1 },
+                  rotateZ: { duration: 0.95 }
                 }}
-                viewport={{ once: true, margin: '-100px', amount: 0.3 }}
+                viewport={{ once: true, margin: '-150px' }}
                 className={`flex ${isLeft ? 'justify-start' : 'justify-end'}`}
+                style={{
+                  transformStyle: 'preserve-3d',
+                  perspective: '1500px',
+                }}
               >
                 <motion.div
                   whileHover={{ 
