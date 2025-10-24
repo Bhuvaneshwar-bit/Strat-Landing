@@ -36,13 +36,13 @@ export default function CorePillars() {
   const containerRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ['start start', 'end end'],
+    offset: ['start 0.2', 'end 0.8'],
   });
 
   return (
-    <section id="about" className="relative py-32 bg-gradient-to-b from-black via-red-950/10 to-black overflow-hidden">
+    <section id="about" className="relative bg-gradient-to-b from-black via-red-950/10 to-black overflow-hidden">
       {/* Background Elements */}
-      <div className="absolute inset-0 opacity-30">
+      <div className="absolute inset-0 opacity-30 pointer-events-none">
         <div className="absolute top-1/4 right-0 w-96 h-96 bg-red-600/20 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-red-500/20 rounded-full blur-3xl" />
       </div>
@@ -54,7 +54,7 @@ export default function CorePillars() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="text-center mb-20"
+          className="text-center pt-32 pb-20"
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
@@ -78,118 +78,142 @@ export default function CorePillars() {
         </motion.div>
 
         {/* Scroll Stack Container */}
-        <div ref={containerRef} className="relative h-[400vh]">
-          <div className="sticky top-32 h-[80vh] flex items-center justify-center">
-            {pillars.map((pillar, index) => {
-              const Icon = pillar.icon;
-              const cardStart = index * 0.25;
-              const cardEnd = cardStart + 0.25;
+        <div ref={containerRef} className="relative" style={{ height: '300vh' }}>
+          <div className="sticky top-24 h-screen flex items-center justify-center py-20">
+            <div className="relative w-full max-w-4xl">
+              {pillars.map((pillar, index) => {
+                const Icon = pillar.icon;
+                
+                // Calculate scroll progress for each card
+                const cardProgress = useTransform(
+                  scrollYProgress,
+                  [index / pillars.length, (index + 1) / pillars.length],
+                  [0, 1]
+                );
 
-              const y = useTransform(
-                scrollYProgress,
-                [cardStart, cardEnd],
-                [index * 60, 0]
-              );
+                // Stack position - cards stack from bottom to top
+                const y = useTransform(
+                  cardProgress,
+                  [0, 1],
+                  [400 - (index * 40), index * 20]
+                );
 
-              const scale = useTransform(
-                scrollYProgress,
-                [cardStart, cardEnd],
-                [0.9, 1]
-              );
+                // Scale animation - cards scale up as they come into view
+                const scale = useTransform(
+                  cardProgress,
+                  [0, 0.5, 1],
+                  [0.85 - (index * 0.03), 0.95, 1]
+                );
 
-              const rotateX = useTransform(
-                scrollYProgress,
-                [cardStart, cardEnd],
-                [index === 0 ? 0 : 10, 0]
-              );
+                // Opacity - fade in smoothly
+                const opacity = useTransform(
+                  cardProgress,
+                  [0, 0.3, 0.7, 1],
+                  [0, 1, 1, 0.6]
+                );
 
-              const opacity = useTransform(
-                scrollYProgress,
-                [cardStart - 0.05, cardStart, cardEnd, cardEnd + 0.05],
-                [0, 1, 1, 0.3]
-              );
+                // Rotate X for 3D depth
+                const rotateX = useTransform(
+                  cardProgress,
+                  [0, 0.5, 1],
+                  [15, 5, 0]
+                );
 
-              const zIndex = pillars.length - index;
+                const zIndex = pillars.length - index;
 
-              return (
-                <motion.div
-                  key={pillar.id}
-                  style={{
-                    y,
-                    scale,
-                    rotateX,
-                    opacity,
-                    zIndex,
-                    transformStyle: 'preserve-3d',
-                    perspective: 1000,
-                  }}
-                  className="absolute inset-x-0 max-w-4xl mx-auto px-4"
-                >
-                  <div className="group relative">
-                    {/* 3D Shadow/Depth */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-red-600/30 to-red-500/30 rounded-2xl blur-2xl opacity-50 group-hover:opacity-70 transition-opacity duration-500" 
-                         style={{ transform: 'translateZ(-20px)' }} />
+                return (
+                  <motion.div
+                    key={pillar.id}
+                    style={{
+                      y,
+                      scale,
+                      opacity,
+                      rotateX,
+                      zIndex,
+                    }}
+                    className="absolute inset-0 w-full"
+                  >
+                    <div 
+                      className="group relative"
+                      style={{
+                        transformStyle: 'preserve-3d',
+                        perspective: '1000px',
+                      }}
+                    >
+                      {/* Glow Shadow */}
+                      <div className="absolute -inset-4 bg-gradient-to-br from-red-600/20 to-red-500/20 rounded-3xl blur-2xl opacity-0 group-hover:opacity-60 transition-opacity duration-700" />
 
-                    {/* Card */}
-                    <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl hover:bg-white/10 transition-all duration-500 overflow-hidden"
-                         style={{ transform: 'translateZ(0)' }}>
-                      
-                      <div className="p-8 sm:p-10">
-                        <div className="flex items-start gap-6 mb-6">
-                          {/* Icon */}
-                          <motion.div
-                            whileHover={{ 
-                              scale: 1.1,
-                              rotateY: 180,
-                            }}
-                            transition={{ duration: 0.6, ease: 'backOut' }}
-                            className="p-4 bg-gradient-to-br from-red-600/20 to-red-500/20 rounded-xl shrink-0"
-                            style={{ transformStyle: 'preserve-3d' }}
-                          >
-                            <Icon className="w-8 h-8 text-red-400" />
-                          </motion.div>
+                      {/* Card */}
+                      <div 
+                        className="relative bg-gradient-to-br from-zinc-900/90 to-zinc-950/90 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl"
+                        style={{
+                          transform: 'translateZ(0)',
+                          willChange: 'transform',
+                          backfaceVisibility: 'hidden',
+                        }}
+                      >
+                        {/* Subtle gradient overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-br from-red-600/5 via-transparent to-transparent opacity-50" />
+                        
+                        <div className="relative p-8 sm:p-12">
+                          <div className="flex items-start gap-6">
+                            {/* Icon */}
+                            <motion.div
+                              whileHover={{ 
+                                scale: 1.1,
+                                rotate: 5,
+                              }}
+                              transition={{ duration: 0.4, ease: 'backOut' }}
+                              className="p-4 bg-gradient-to-br from-red-600/30 to-red-500/20 rounded-2xl shrink-0 backdrop-blur-sm border border-red-500/20"
+                            >
+                              <Icon className="w-8 h-8 text-red-400" />
+                            </motion.div>
 
-                          {/* Content */}
-                          <div className="flex-1">
-                            <div className="flex items-center justify-between mb-4">
-                              <h3 className="text-2xl sm:text-3xl font-bold text-white font-space-grotesk">
-                                {pillar.title}
-                              </h3>
-                              {pillar.tbd && (
-                                <span className="px-3 py-1 bg-red-600/20 border border-red-600/30 rounded-full text-xs text-red-400 font-semibold">
-                                  TBD
-                                </span>
-                              )}
+                            {/* Content */}
+                            <div className="flex-1">
+                              <div className="flex items-center gap-4 mb-4">
+                                <h3 className="text-2xl sm:text-3xl font-bold text-white font-space-grotesk">
+                                  {pillar.title}
+                                </h3>
+                                {pillar.tbd && (
+                                  <span className="px-3 py-1 bg-red-600/20 border border-red-600/30 rounded-full text-xs text-red-400 font-semibold whitespace-nowrap">
+                                    TBD
+                                  </span>
+                                )}
+                              </div>
+
+                              <p className="text-gray-400 leading-relaxed text-base sm:text-lg">
+                                {pillar.description}
+                              </p>
                             </div>
+                          </div>
+                        </div>
 
-                            <p className="text-gray-400 leading-relaxed text-lg">
-                              {pillar.description}
-                            </p>
+                        {/* Animated Border Glow */}
+                        <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                          <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-red-600/50 via-red-500/50 to-red-600/50 p-[1px]">
+                            <div className="h-full w-full bg-zinc-900/95 rounded-2xl" />
                           </div>
                         </div>
                       </div>
-
-                      {/* Animated Border on Hover */}
-                      <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
-                        <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-red-600 via-red-500 to-red-600 p-[1px]">
-                          <div className="h-full w-full bg-black/80 rounded-2xl" />
-                        </div>
-                      </div>
                     </div>
-                  </div>
-                </motion.div>
-              );
-            })}
+                  </motion.div>
+                );
+              })}
+            </div>
           </div>
         </div>
+
+        {/* Bottom Spacer for smooth transition */}
+        <div className="h-32" />
 
         {/* Bottom CTA */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.6 }}
+          transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="text-center mt-16"
+          className="text-center pb-32"
         >
           <a
             href="/our-people"
