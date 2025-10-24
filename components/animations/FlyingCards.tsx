@@ -104,7 +104,7 @@ interface FlyingCardsProps {
 export default function FlyingCards({ items, className = '' }: FlyingCardsProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number | null>(null);
   const scrollRef = useRef({ current: 0, target: 0, ease: 0.08 });
 
   useEffect(() => {
@@ -142,7 +142,11 @@ export default function FlyingCards({ items, className = '' }: FlyingCardsProps)
     const distortion = 4;
 
     items.forEach((src, index) => {
-      const texture = new Texture(gl, { generateMipmaps: false });
+      const texture = new Texture(gl, { 
+        generateMipmaps: false,
+        width: 1,
+        height: 1,
+      });
 
       const program = new Program(gl, {
         depthTest: false,
