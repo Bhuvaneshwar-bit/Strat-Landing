@@ -2,6 +2,12 @@
 
 import { motion } from 'framer-motion';
 import { BookOpen, Rocket, Building2, Radio } from 'lucide-react';
+import dynamic from 'next/dynamic';
+
+const Plasma = dynamic(() => import('@/components/animations/Plasma'), {
+  ssr: false,
+  loading: () => null,
+});
 
 const pillars = [
   {
@@ -36,9 +42,21 @@ const pillars = [
 
 export default function CorePillars() {
   return (
-    <section id="about" className="relative bg-gradient-to-b from-black via-red-950/10 to-black overflow-hidden will-change-auto">
-      {/* Lightweight background - NO WEBGL */}
-      <div className="absolute inset-0 opacity-20 pointer-events-none">
+    <section id="about" className="relative bg-gradient-to-b from-black via-red-950/10 to-black overflow-hidden">
+      {/* Optimized Plasma Background - GPU Accelerated */}
+      <div className="absolute inset-0 opacity-15 pointer-events-none" style={{ willChange: 'opacity' }}>
+        <Plasma 
+          color="#dc2626"
+          speed={0.4}
+          direction="forward"
+          scale={1.5}
+          opacity={0.5}
+          mouseInteractive={false}
+        />
+      </div>
+
+      {/* Lightweight gradient overlays */}
+      <div className="absolute inset-0 opacity-15 pointer-events-none">
         <div className="absolute top-1/4 right-0 w-96 h-96 bg-red-600/20 rounded-full blur-3xl" />
         <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-red-500/20 rounded-full blur-3xl" />
       </div>
@@ -96,32 +114,46 @@ export default function CorePillars() {
                 key={pillar.id}
                 initial={{ 
                   opacity: 0, 
-                  y: 60,
-                  x: isLeft ? -40 : 40,
+                  y: 80,
+                  rotateY: isLeft ? -30 : 30,
+                  rotateX: 15,
+                  scale: 0.85
                 }}
                 whileInView={{ 
                   opacity: 1, 
                   y: 0,
-                  x: 0,
+                  rotateY: 0,
+                  rotateX: 0,
+                  scale: 1
                 }}
                 transition={{
-                  duration: 0.6,
-                  ease: [0.25, 0.1, 0.25, 1],
+                  duration: 0.8,
+                  ease: [0.22, 1, 0.36, 1],
                 }}
-                viewport={{ once: true, margin: '-100px' }}
+                viewport={{ once: true, margin: '-150px' }}
                 className={`flex ${isLeft ? 'justify-start' : 'justify-end'}`}
+                style={{
+                  transformStyle: 'preserve-3d',
+                  perspective: '1500px',
+                  willChange: 'transform',
+                }}
               >
                 <motion.div
                   whileHover={{ 
-                    y: -8,
-                    scale: 1.02,
+                    y: -10,
+                    scale: 1.03,
+                    rotateY: isLeft ? 3 : -3,
                   }}
                   transition={{
                     type: 'spring',
-                    stiffness: 400,
-                    damping: 25
+                    stiffness: 300,
+                    damping: 20
                   }}
                   className="group relative w-full max-w-md"
+                  style={{
+                    transformStyle: 'preserve-3d',
+                    willChange: 'transform',
+                  }}
                 >
                   {/* Elegant Glow */}
                   <motion.div
@@ -132,8 +164,15 @@ export default function CorePillars() {
                     className="absolute -inset-2 bg-gradient-to-br from-red-600/30 to-red-500/30 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-all duration-700"
                   />
 
-                  {/* Glassmorphism Card */}
-                  <div className="relative bg-gradient-to-br from-white/[0.07] via-white/[0.05] to-black/40 backdrop-blur-2xl border border-white/20 rounded-3xl overflow-hidden shadow-2xl">
+                  {/* Glassmorphism Card - GPU Accelerated */}
+                  <div 
+                    className="relative bg-gradient-to-br from-white/[0.07] via-white/[0.05] to-black/40 backdrop-blur-2xl border border-white/20 rounded-3xl overflow-hidden shadow-2xl"
+                    style={{
+                      transform: 'translateZ(0)',
+                      backfaceVisibility: 'hidden',
+                      willChange: 'transform',
+                    }}
+                  >
                     {/* Premium glass shine effect */}
                     <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent" />
                     <div className="absolute inset-0 bg-gradient-to-tl from-red-500/5 via-transparent to-transparent" />

@@ -113,7 +113,8 @@ export const Plasma: React.FC<PlasmaProps> = ({
       webgl: 2,
       alpha: true,
       antialias: false,
-      dpr: Math.min(window.devicePixelRatio || 1, 2)
+      dpr: 1, // Force low DPR for better performance
+      powerPreference: 'low-power'
     });
     const gl = renderer.gl;
     const canvas = gl.canvas as HTMLCanvasElement;
@@ -206,7 +207,11 @@ export const Plasma: React.FC<PlasmaProps> = ({
     <div 
       ref={containerRef} 
       className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none"
-      style={{ opacity: opacity }}
+      style={{ 
+        opacity: opacity,
+        willChange: 'opacity',
+        transform: 'translateZ(0)', // Force GPU acceleration
+      }}
     />
   );
 };
