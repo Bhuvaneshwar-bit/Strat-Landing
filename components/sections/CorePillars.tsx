@@ -30,7 +30,6 @@ const pillars = [
     title: 'Stratschool Media',
     icon: Radio,
     description: 'Pathways to funding and global market access to scale your venture',
-    tbd: true,
     position: 'right',
   },
 ];
@@ -38,10 +37,111 @@ const pillars = [
 export default function CorePillars() {
   return (
     <section id="about" className="relative bg-gradient-to-b from-black via-red-950/10 to-black overflow-hidden">
-      {/* Background Elements */}
+      {/* Animated Background Elements with Parallax */}
       <div className="absolute inset-0 opacity-30 pointer-events-none">
         <div className="absolute top-1/4 right-0 w-96 h-96 bg-red-600/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s' }} />
         <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-red-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '5s', animationDelay: '1s' }} />
+      </div>
+
+      {/* Smooth Scrolling Background Elements (Lenis-style) */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        {/* Floating Hands/Gesture Elements */}
+        <motion.div
+          initial={{ y: 0, x: 0, rotate: 0 }}
+          animate={{ 
+            y: [0, -100, 0],
+            x: [0, 50, 0],
+            rotate: [0, 10, 0]
+          }}
+          transition={{
+            duration: 20,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+          className="absolute top-1/4 left-[10%] w-32 h-32 opacity-5"
+        >
+          <div className="text-9xl">👆</div>
+        </motion.div>
+
+        <motion.div
+          initial={{ y: 0, x: 0, rotate: 0 }}
+          animate={{ 
+            y: [0, 100, 0],
+            x: [0, -50, 0],
+            rotate: [0, -10, 0]
+          }}
+          transition={{
+            duration: 25,
+            repeat: Infinity,
+            ease: "linear",
+            delay: 2
+          }}
+          className="absolute top-1/2 right-[15%] w-32 h-32 opacity-5"
+        >
+          <div className="text-9xl">👇</div>
+        </motion.div>
+
+        <motion.div
+          initial={{ y: 0, x: 0, scale: 1 }}
+          animate={{ 
+            y: [0, -80, 0],
+            x: [0, 80, 0],
+            scale: [1, 1.2, 1]
+          }}
+          transition={{
+            duration: 22,
+            repeat: Infinity,
+            ease: "linear",
+            delay: 4
+          }}
+          className="absolute bottom-1/4 left-[20%] w-32 h-32 opacity-5"
+        >
+          <div className="text-9xl">🤚</div>
+        </motion.div>
+
+        <motion.div
+          initial={{ y: 0, x: 0, rotate: 0 }}
+          animate={{ 
+            y: [0, 120, 0],
+            x: [0, -70, 0],
+            rotate: [0, 15, 0]
+          }}
+          transition={{
+            duration: 18,
+            repeat: Infinity,
+            ease: "linear",
+            delay: 6
+          }}
+          className="absolute top-[60%] right-[25%] w-32 h-32 opacity-5"
+        >
+          <div className="text-9xl">☝️</div>
+        </motion.div>
+
+        {/* Abstract Floating Lines */}
+        <motion.div
+          animate={{ 
+            y: [-500, 500],
+          }}
+          transition={{
+            duration: 30,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+          className="absolute top-0 left-[30%] w-px h-96 bg-gradient-to-b from-transparent via-red-500/10 to-transparent"
+        />
+
+        <motion.div
+          animate={{ 
+            y: [500, -500],
+          }}
+          transition={{
+            duration: 35,
+            repeat: Infinity,
+            ease: "linear",
+            delay: 3
+          }}
+          className="absolute top-0 right-[40%] w-px h-96 bg-gradient-to-b from-transparent via-red-500/10 to-transparent"
+        />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -170,13 +270,18 @@ export default function CorePillars() {
                     className="absolute -inset-2 bg-gradient-to-br from-red-600/30 to-red-500/30 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-all duration-700"
                   />
 
-                  {/* Card */}
-                  <div className="relative bg-gradient-to-br from-zinc-900/95 via-zinc-900/90 to-black/95 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl">
-                    {/* Refined gradient overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-red-600/10 via-transparent to-transparent" />
+                  {/* Glassmorphism Card */}
+                  <div className="relative bg-gradient-to-br from-white/[0.07] via-white/[0.05] to-black/40 backdrop-blur-2xl border border-white/20 rounded-3xl overflow-hidden shadow-2xl">
+                    {/* Premium glass shine effect */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-tl from-red-500/5 via-transparent to-transparent" />
                     
-                    {/* Subtle noise texture */}
-                    <div className="absolute inset-0 opacity-[0.02]" style={{
+                    {/* Glass reflection */}
+                    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+                    <div className="absolute top-0 left-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/20 to-transparent" />
+                    
+                    {/* Subtle noise texture for premium feel */}
+                    <div className="absolute inset-0 opacity-[0.03]" style={{
                       backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' /%3E%3C/svg%3E")`,
                     }} />
 
@@ -200,28 +305,15 @@ export default function CorePillars() {
 
                       {/* Content */}
                       <div>
-                        <div className="flex items-start justify-between gap-4 mb-4">
-                          <motion.h3
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: 0.5 }}
-                            viewport={{ once: true }}
-                            className="text-3xl sm:text-4xl font-bold text-white font-space-grotesk tracking-tight"
-                          >
-                            {pillar.title}
-                          </motion.h3>
-                          {pillar.tbd && (
-                            <motion.span
-                              initial={{ opacity: 0, scale: 0 }}
-                              whileInView={{ opacity: 1, scale: 1 }}
-                              transition={{ duration: 0.5, delay: 0.6 }}
-                              viewport={{ once: true }}
-                              className="px-3 py-1.5 bg-red-600/20 border border-red-600/30 rounded-full text-xs text-red-400 font-semibold whitespace-nowrap"
-                            >
-                              TBD
-                            </motion.span>
-                          )}
-                        </div>
+                        <motion.h3
+                          initial={{ opacity: 0, y: 20 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.6, delay: 0.5 }}
+                          viewport={{ once: true }}
+                          className="text-3xl sm:text-4xl font-bold text-white font-space-grotesk tracking-tight mb-4"
+                        >
+                          {pillar.title}
+                        </motion.h3>
 
                         <motion.p
                           initial={{ opacity: 0, y: 20 }}
@@ -235,20 +327,28 @@ export default function CorePillars() {
                       </div>
                     </div>
 
-                    {/* Elegant bottom border accent */}
-                    <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-red-500/30 to-transparent" />
+                    {/* Elegant bottom glass border accent */}
+                    <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-red-500/40 to-transparent" />
 
-                    {/* Hover border glow */}
+                    {/* Premium hover glow effect */}
                     <motion.div
                       initial={{ opacity: 0 }}
                       whileHover={{ opacity: 1 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.4 }}
                       className="absolute inset-0 rounded-3xl pointer-events-none"
                     >
-                      <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-red-600/20 via-red-500/20 to-red-600/20 p-[1px]">
-                        <div className="h-full w-full bg-zinc-900/98 rounded-3xl" />
+                      <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-red-500/30 via-red-400/20 to-red-500/30 p-[2px] blur-sm">
+                        <div className="h-full w-full bg-transparent rounded-3xl" />
                       </div>
                     </motion.div>
+
+                    {/* Inner glow on hover */}
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      whileHover={{ opacity: 1 }}
+                      transition={{ duration: 0.4 }}
+                      className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent rounded-3xl pointer-events-none"
+                    />
                   </div>
                 </motion.div>
               </motion.div>
