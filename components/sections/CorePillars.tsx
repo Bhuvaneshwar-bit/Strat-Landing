@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useReducedMotion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { BookOpen, Rocket, Building2, Radio } from 'lucide-react';
 
 const pillars = [
@@ -35,15 +35,15 @@ const pillars = [
 ];
 
 export default function CorePillars() {
-  const prefersReducedMotion = useReducedMotion();
-
   return (
     <section id="about" className="relative bg-gradient-to-b from-black via-red-950/10 to-black overflow-hidden">
-      {/* Clean Background - Ready for custom animation */}
-      <div className="absolute inset-0 opacity-20 pointer-events-none">
-        <div className="absolute top-1/4 right-0 w-96 h-96 bg-red-600/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-red-500/20 rounded-full blur-3xl" />
+      {/* Background Elements */}
+      <div className="absolute inset-0 opacity-30 pointer-events-none">
+        <div className="absolute top-1/4 right-0 w-96 h-96 bg-red-600/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s' }} />
+        <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-red-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '5s', animationDelay: '1s' }} />
       </div>
+
+      {/* Ready for custom background animation */}
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
@@ -96,59 +96,109 @@ export default function CorePillars() {
             return (
               <motion.div
                 key={pillar.id}
-                initial={prefersReducedMotion ? { opacity: 0 } : { 
+                initial={{ 
                   opacity: 0, 
-                  y: 60,
-                  rotateY: isLeft ? -25 : 25,
-                  scale: 0.9
+                  y: 100,
+                  rotateX: 90,
+                  rotateY: isLeft ? -45 : 45,
+                  rotateZ: isLeft ? -10 : 10,
+                  scale: 0.6
                 }}
-                whileInView={prefersReducedMotion ? { opacity: 1 } : { 
+                whileInView={{ 
                   opacity: 1, 
                   y: 0,
+                  rotateX: 0,
                   rotateY: 0,
+                  rotateZ: 0,
                   scale: 1
                 }}
                 transition={{
-                  duration: 0.7,
-                  ease: [0.25, 0.46, 0.45, 0.94],
+                  duration: 1.4,
+                  delay: 0.1,
+                  ease: [0.16, 1, 0.3, 1],
+                  rotateX: {
+                    duration: 1.2,
+                    ease: [0.16, 1, 0.3, 1]
+                  },
+                  rotateY: {
+                    duration: 1.3,
+                    ease: [0.16, 1, 0.3, 1]
+                  },
+                  rotateZ: {
+                    duration: 1.1,
+                    ease: [0.16, 1, 0.3, 1]
+                  }
                 }}
-                viewport={{ once: true, margin: '-100px' }}
+                viewport={{ once: true, margin: '-200px' }}
                 className={`flex ${isLeft ? 'justify-start' : 'justify-end'}`}
                 style={{
-                  willChange: 'transform, opacity',
+                  transformStyle: 'preserve-3d',
+                  perspective: '2000px',
                 }}
               >
                 <motion.div
-                  whileHover={{ 
-                    y: -5,
-                    scale: 1.02,
+                  initial={{
+                    rotateY: isLeft ? -25 : 25,
+                    z: -100
+                  }}
+                  whileInView={{
+                    rotateY: 0,
+                    z: 0
                   }}
                   transition={{
-                    duration: 0.2,
+                    duration: 1,
+                    delay: 0.3,
+                    ease: [0.16, 1, 0.3, 1]
+                  }}
+                  viewport={{ once: true }}
+                  whileHover={{ 
+                    y: -10,
+                    rotateY: isLeft ? 5 : -5,
+                    scale: 1.02,
+                    z: 50
                   }}
                   className="group relative w-full max-w-md"
+                  style={{
+                    transformStyle: 'preserve-3d',
+                  }}
                 >
-                  {/* Simplified Glow */}
-                  <div className="absolute -inset-1 bg-gradient-to-br from-red-600/20 to-red-500/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  {/* Elegant Glow */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    transition={{ duration: 1.5, delay: 0.3 }}
+                    viewport={{ once: true }}
+                    className="absolute -inset-2 bg-gradient-to-br from-red-600/30 to-red-500/30 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-all duration-700"
+                  />
 
-                  {/* Optimized Glassmorphism Card */}
-                  <div 
-                    className="relative bg-gradient-to-br from-white/[0.06] via-white/[0.04] to-black/40 backdrop-blur-xl border border-white/15 rounded-3xl overflow-hidden shadow-2xl"
-                  >
-                    {/* Minimal glass effect */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/8 via-transparent to-transparent" />
-                    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+                  {/* Glassmorphism Card */}
+                  <div className="relative bg-gradient-to-br from-white/[0.07] via-white/[0.05] to-black/40 backdrop-blur-2xl border border-white/20 rounded-3xl overflow-hidden shadow-2xl">
+                    {/* Premium glass shine effect */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-tl from-red-500/5 via-transparent to-transparent" />
+                    
+                    {/* Glass reflection */}
+                    <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+                    <div className="absolute top-0 left-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/20 to-transparent" />
+                    
+                    {/* Subtle noise texture for premium feel */}
+                    <div className="absolute inset-0 opacity-[0.03]" style={{
+                      backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' /%3E%3C/svg%3E")`,
+                    }} />
 
                     <div className="relative p-10 sm:p-12">
                       {/* Icon */}
                       <motion.div
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
+                        initial={{ scale: 0, rotate: -180 }}
+                        whileInView={{ scale: 1, rotate: 0 }}
                         transition={{ 
-                          duration: 0.4, 
-                          delay: 0.1,
+                          duration: 0.8, 
+                          delay: 0.4,
+                          type: 'spring',
+                          stiffness: 200
                         }}
                         viewport={{ once: true }}
+                        whileHover={{ scale: 1.1, rotate: 10 }}
                         className="mb-6 p-5 bg-gradient-to-br from-red-600/20 via-red-500/10 to-transparent rounded-2xl w-fit border border-red-500/20 shadow-lg"
                       >
                         <Icon className="w-10 h-10 text-red-400" strokeWidth={1.5} />
@@ -157,9 +207,9 @@ export default function CorePillars() {
                       {/* Content */}
                       <div>
                         <motion.h3
-                          initial={{ opacity: 0 }}
-                          whileInView={{ opacity: 1 }}
-                          transition={{ duration: 0.4, delay: 0.2 }}
+                          initial={{ opacity: 0, y: 20 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.6, delay: 0.5 }}
                           viewport={{ once: true }}
                           className="text-3xl sm:text-4xl font-bold text-white font-space-grotesk tracking-tight mb-4"
                         >
@@ -167,9 +217,9 @@ export default function CorePillars() {
                         </motion.h3>
 
                         <motion.p
-                          initial={{ opacity: 0 }}
-                          whileInView={{ opacity: 1 }}
-                          transition={{ duration: 0.4, delay: 0.3 }}
+                          initial={{ opacity: 0, y: 20 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.6, delay: 0.6 }}
                           viewport={{ once: true }}
                           className="text-gray-300 leading-relaxed text-lg"
                         >
@@ -178,8 +228,28 @@ export default function CorePillars() {
                       </div>
                     </div>
 
-                    {/* Bottom accent */}
-                    <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-red-500/30 to-transparent" />
+                    {/* Elegant bottom glass border accent */}
+                    <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-red-500/40 to-transparent" />
+
+                    {/* Premium hover glow effect */}
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      whileHover={{ opacity: 1 }}
+                      transition={{ duration: 0.4 }}
+                      className="absolute inset-0 rounded-3xl pointer-events-none"
+                    >
+                      <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-red-500/30 via-red-400/20 to-red-500/30 p-[2px] blur-sm">
+                        <div className="h-full w-full bg-transparent rounded-3xl" />
+                      </div>
+                    </motion.div>
+
+                    {/* Inner glow on hover */}
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      whileHover={{ opacity: 1 }}
+                      transition={{ duration: 0.4 }}
+                      className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent rounded-3xl pointer-events-none"
+                    />
                   </div>
                 </motion.div>
               </motion.div>
