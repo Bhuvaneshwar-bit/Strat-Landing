@@ -2,6 +2,11 @@
 
 import { motion } from 'framer-motion';
 import { BookOpen, Rocket, Building2, Radio } from 'lucide-react';
+import dynamic from 'next/dynamic';
+
+const Plasma = dynamic(() => import('@/components/animations/Plasma'), {
+  ssr: false,
+});
 
 const pillars = [
   {
@@ -37,13 +42,23 @@ const pillars = [
 export default function CorePillars() {
   return (
     <section id="about" className="relative bg-gradient-to-b from-black via-red-950/10 to-black overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 opacity-30 pointer-events-none">
+      {/* Plasma Background Animation */}
+      <div className="absolute inset-0 opacity-20 pointer-events-none">
+        <Plasma 
+          color="#dc2626"
+          speed={0.5}
+          direction="forward"
+          scale={1.2}
+          opacity={0.6}
+          mouseInteractive={false}
+        />
+      </div>
+
+      {/* Subtle gradient overlays */}
+      <div className="absolute inset-0 opacity-20 pointer-events-none">
         <div className="absolute top-1/4 right-0 w-96 h-96 bg-red-600/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s' }} />
         <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-red-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '5s', animationDelay: '1s' }} />
       </div>
-
-      {/* Ready for custom background animation */}
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
