@@ -232,20 +232,6 @@ export default function CorePillars() {
                         >
                           {pillar.description}
                         </motion.p>
-
-                        {/* Card Number Badge */}
-                        <motion.div
-                          initial={{ opacity: 0, x: -20 }}
-                          whileInView={{ opacity: 1, x: 0 }}
-                          transition={{ duration: 0.6, delay: 0.7 }}
-                          viewport={{ once: true }}
-                          className="mt-8 inline-flex items-center gap-2 px-4 py-2 bg-red-600/10 border border-red-600/20 rounded-full"
-                        >
-                          <span className="text-red-400 font-bold text-sm">
-                            {String(index + 1).padStart(2, '0')}
-                          </span>
-                          <span className="text-gray-500 text-sm">/ 04</span>
-                        </motion.div>
                       </div>
                     </div>
 
