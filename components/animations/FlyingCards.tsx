@@ -137,9 +137,9 @@ export default function FlyingCards({ items, className = '' }: FlyingCardsProps)
 
     // Create meshes for each card
     const meshes: any[] = [];
-    const planeWidth = 280;
-    const planeHeight = 380;
-    const distortion = 3;
+    const planeWidth = 320;
+    const planeHeight = 420;
+    const distortion = 2.5;
 
     items.forEach((src, index) => {
       const texture = new Texture(gl, { 
@@ -159,7 +159,7 @@ export default function FlyingCards({ items, className = '' }: FlyingCardsProps)
           uPlaneSize: { value: [0, 0] },
           uImageSize: { value: [0, 0] },
           rotationAxis: { value: [0, 1, 0] },
-          distortionAxis: { value: [1, 1, 0] },
+          distortionAxis: { value: [0, 1, 0] },
           uDistortion: { value: distortion },
         },
         cullFace: false,
@@ -196,15 +196,19 @@ export default function FlyingCards({ items, className = '' }: FlyingCardsProps)
         const { mesh, program } = item;
         mesh.scale.x = (viewport.width * planeWidth) / screen.width;
         mesh.scale.y = (viewport.height * planeHeight) / screen.height;
-        mesh.position.x = 0;
         program.uniforms.uPlaneSize.value = [mesh.scale.x, mesh.scale.y];
 
-        const padding = 1.5;
-        const meshHeight = mesh.scale.y + padding;
-        const heightTotal = meshHeight * items.length;
-        item.y = -heightTotal / 2 + (i + 0.5) * meshHeight;
-        item.heightTotal = heightTotal;
-        item.meshHeight = meshHeight;
+        const padding = 0.8;
+        const meshWidth = mesh.scale.x + padding;
+        const widthTotal = meshWidth * items.length;
+        
+        // Position cards horizontally
+        mesh.position.x = -widthTotal / 2 + (i + 0.5) * meshWidth;
+        mesh.position.y = 0;
+        
+        item.x = mesh.position.x;
+        item.widthTotal = widthTotal;
+        item.meshWidth = meshWidth;
       });
     };
 
@@ -214,7 +218,7 @@ export default function FlyingCards({ items, className = '' }: FlyingCardsProps)
     // Handle wheel
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
-      scrollRef.current.target += e.deltaY * 0.003;
+      scrollRef.current.target += e.deltaY * 0.002;
     };
 
     canvas.addEventListener('wheel', onWheel, { passive: false });
@@ -229,19 +233,19 @@ export default function FlyingCards({ items, className = '' }: FlyingCardsProps)
 
       meshes.forEach((item) => {
         const { mesh, program } = item;
-        mesh.position.y = item.y - scrollRef.current.current - item.extra;
+        mesh.position.x = item.x - scrollRef.current.current - item.extra;
 
-        const position = mesh.position.y;
-        const normalizedPos = (position + 15) / 30;
+        const position = mesh.position.x;
+        const normalizedPos = (position + 20) / 40;
         program.uniforms.uPosition.value = normalizedPos * 100;
 
-        const viewport = 15;
-        const meshHeight = item.meshHeight;
+        const viewport = 20;
+        const meshWidth = item.meshWidth;
 
-        if (mesh.position.y + meshHeight / 2 < -viewport) {
-          item.extra -= item.heightTotal;
-        } else if (mesh.position.y - meshHeight / 2 > viewport) {
-          item.extra += item.heightTotal;
+        if (mesh.position.x + meshWidth / 2 < -viewport) {
+          item.extra -= item.widthTotal;
+        } else if (mesh.position.x - meshWidth / 2 > viewport) {
+          item.extra += item.widthTotal;
         }
       });
 
