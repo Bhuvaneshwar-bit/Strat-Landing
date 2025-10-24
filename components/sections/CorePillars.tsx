@@ -78,45 +78,42 @@ export default function CorePillars() {
         </motion.div>
 
         {/* Scroll Stack Container */}
-        <div ref={containerRef} className="relative" style={{ height: '300vh' }}>
-          <div className="sticky top-24 h-screen flex items-center justify-center py-20">
-            <div className="relative w-full max-w-4xl">
+        <div ref={containerRef} className="relative" style={{ height: '400vh' }}>
+          <div className="sticky top-32 flex items-center justify-center py-20 min-h-screen">
+            <div className="relative w-full max-w-4xl h-[400px]">
               {pillars.map((pillar, index) => {
                 const Icon = pillar.icon;
                 
                 // Calculate scroll progress for each card
-                const cardProgress = useTransform(
-                  scrollYProgress,
-                  [index / pillars.length, (index + 1) / pillars.length],
-                  [0, 1]
-                );
+                const cardStart = index * 0.2;
+                const cardEnd = cardStart + 0.3;
 
                 // Stack position - cards stack from bottom to top
                 const y = useTransform(
-                  cardProgress,
-                  [0, 1],
-                  [400 - (index * 40), index * 20]
+                  scrollYProgress,
+                  [cardStart, cardEnd],
+                  [600, index * 30]
                 );
 
                 // Scale animation - cards scale up as they come into view
                 const scale = useTransform(
-                  cardProgress,
-                  [0, 0.5, 1],
-                  [0.85 - (index * 0.03), 0.95, 1]
+                  scrollYProgress,
+                  [cardStart, cardEnd],
+                  [0.9, 1 - (index * 0.05)]
                 );
 
                 // Opacity - fade in smoothly
                 const opacity = useTransform(
-                  cardProgress,
-                  [0, 0.3, 0.7, 1],
-                  [0, 1, 1, 0.6]
+                  scrollYProgress,
+                  [cardStart - 0.05, cardStart, 1],
+                  [0, 1, 1]
                 );
 
                 // Rotate X for 3D depth
                 const rotateX = useTransform(
-                  cardProgress,
-                  [0, 0.5, 1],
-                  [15, 5, 0]
+                  scrollYProgress,
+                  [cardStart, cardEnd],
+                  [20, 0]
                 );
 
                 const zIndex = pillars.length - index;
@@ -130,8 +127,12 @@ export default function CorePillars() {
                       opacity,
                       rotateX,
                       zIndex,
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      right: 0,
                     }}
-                    className="absolute inset-0 w-full"
+                    className="w-full"
                   >
                     <div 
                       className="group relative"
