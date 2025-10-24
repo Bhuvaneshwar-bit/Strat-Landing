@@ -2,14 +2,6 @@
 
 import { motion, useReducedMotion } from 'framer-motion';
 import { BookOpen, Rocket, Building2, Radio } from 'lucide-react';
-import dynamic from 'next/dynamic';
-import { useState, useEffect } from 'react';
-
-// Lazy load Plasma only when visible
-const Plasma = dynamic(() => import('@/components/animations/Plasma'), {
-  ssr: false,
-  loading: () => null,
-});
 
 const pillars = [
   {
@@ -44,34 +36,13 @@ const pillars = [
 
 export default function CorePillars() {
   const prefersReducedMotion = useReducedMotion();
-  const [loadPlasma, setLoadPlasma] = useState(false);
-
-  // Delay Plasma loading to prioritize initial render
-  useEffect(() => {
-    const timer = setTimeout(() => setLoadPlasma(true), 1000);
-    return () => clearTimeout(timer);
-  }, []);
 
   return (
     <section id="about" className="relative bg-gradient-to-b from-black via-red-950/10 to-black overflow-hidden">
-      {/* Ultra-Optimized Plasma Background */}
-      {loadPlasma && !prefersReducedMotion && (
-        <div className="absolute inset-0 opacity-12 pointer-events-none" style={{ contain: 'strict' }}>
-          <Plasma 
-            color="#dc2626"
-            speed={0.3}
-            direction="forward"
-            scale={2}
-            opacity={0.4}
-            mouseInteractive={false}
-          />
-        </div>
-      )}
-
-      {/* Fallback Static Background */}
-      <div className="absolute inset-0 opacity-15 pointer-events-none">
-        <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-red-600/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 left-0 w-[500px] h-[500px] bg-red-500/10 rounded-full blur-3xl" />
+      {/* Clean Background - Ready for custom animation */}
+      <div className="absolute inset-0 opacity-20 pointer-events-none">
+        <div className="absolute top-1/4 right-0 w-96 h-96 bg-red-600/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-red-500/20 rounded-full blur-3xl" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
