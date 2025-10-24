@@ -37,112 +37,13 @@ const pillars = [
 export default function CorePillars() {
   return (
     <section id="about" className="relative bg-gradient-to-b from-black via-red-950/10 to-black overflow-hidden">
-      {/* Animated Background Elements with Parallax */}
+      {/* Background Elements */}
       <div className="absolute inset-0 opacity-30 pointer-events-none">
         <div className="absolute top-1/4 right-0 w-96 h-96 bg-red-600/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s' }} />
         <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-red-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '5s', animationDelay: '1s' }} />
       </div>
 
-      {/* Smooth Scrolling Background Elements (Lenis-style) */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        {/* Floating Hands/Gesture Elements */}
-        <motion.div
-          initial={{ y: 0, x: 0, rotate: 0 }}
-          animate={{ 
-            y: [0, -100, 0],
-            x: [0, 50, 0],
-            rotate: [0, 10, 0]
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-          className="absolute top-1/4 left-[10%] w-32 h-32 opacity-5"
-        >
-          <div className="text-9xl">👆</div>
-        </motion.div>
-
-        <motion.div
-          initial={{ y: 0, x: 0, rotate: 0 }}
-          animate={{ 
-            y: [0, 100, 0],
-            x: [0, -50, 0],
-            rotate: [0, -10, 0]
-          }}
-          transition={{
-            duration: 25,
-            repeat: Infinity,
-            ease: "linear",
-            delay: 2
-          }}
-          className="absolute top-1/2 right-[15%] w-32 h-32 opacity-5"
-        >
-          <div className="text-9xl">👇</div>
-        </motion.div>
-
-        <motion.div
-          initial={{ y: 0, x: 0, scale: 1 }}
-          animate={{ 
-            y: [0, -80, 0],
-            x: [0, 80, 0],
-            scale: [1, 1.2, 1]
-          }}
-          transition={{
-            duration: 22,
-            repeat: Infinity,
-            ease: "linear",
-            delay: 4
-          }}
-          className="absolute bottom-1/4 left-[20%] w-32 h-32 opacity-5"
-        >
-          <div className="text-9xl">🤚</div>
-        </motion.div>
-
-        <motion.div
-          initial={{ y: 0, x: 0, rotate: 0 }}
-          animate={{ 
-            y: [0, 120, 0],
-            x: [0, -70, 0],
-            rotate: [0, 15, 0]
-          }}
-          transition={{
-            duration: 18,
-            repeat: Infinity,
-            ease: "linear",
-            delay: 6
-          }}
-          className="absolute top-[60%] right-[25%] w-32 h-32 opacity-5"
-        >
-          <div className="text-9xl">☝️</div>
-        </motion.div>
-
-        {/* Abstract Floating Lines */}
-        <motion.div
-          animate={{ 
-            y: [-500, 500],
-          }}
-          transition={{
-            duration: 30,
-            repeat: Infinity,
-            ease: "linear"
-          }}
-          className="absolute top-0 left-[30%] w-px h-96 bg-gradient-to-b from-transparent via-red-500/10 to-transparent"
-        />
-
-        <motion.div
-          animate={{ 
-            y: [500, -500],
-          }}
-          transition={{
-            duration: 35,
-            repeat: Infinity,
-            ease: "linear",
-            delay: 3
-          }}
-          className="absolute top-0 right-[40%] w-px h-96 bg-gradient-to-b from-transparent via-red-500/10 to-transparent"
-        />
-      </div>
+      {/* Ready for custom background animation */}
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
