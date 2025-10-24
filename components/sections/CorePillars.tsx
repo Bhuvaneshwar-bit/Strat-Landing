@@ -9,41 +9,25 @@ const pillars = [
     id: 1,
     title: 'Foundations',
     icon: BookOpen,
-    description: 'Master the fundamentals of entrepreneurship with cutting-edge curriculum designed by industry experts',
-    color: 'from-red-600 to-orange-500',
-    bgGlow: 'bg-red-600/20',
-    textColor: 'text-red-400',
-    borderColor: 'border-red-600/30',
+    description: 'Cutting-edge curriculum designed by industry experts to give you the most relevant and practical knowledge',
   },
   {
     id: 2,
     title: 'Ignite',
     icon: Rocket,
-    description: 'Join our intensive 12-week bootcamp to validate ideas, build MVPs, and launch your startup',
-    color: 'from-orange-500 to-yellow-500',
-    bgGlow: 'bg-orange-500/20',
-    textColor: 'text-orange-400',
-    borderColor: 'border-orange-500/30',
+    description: 'Hands-on guidance from seasoned entrepreneurs who have been there and done that',
   },
   {
     id: 3,
     title: 'Venture Studio',
     icon: Building2,
-    description: 'Partner with us to build real companies through hands-on collaboration, product development, and access to capital',
-    color: 'from-yellow-500 to-red-600',
-    bgGlow: 'bg-yellow-500/20',
-    textColor: 'text-yellow-400',
-    borderColor: 'border-yellow-500/30',
+    description: 'Access to a thriving network and endless collaboration opportunities',
   },
   {
     id: 4,
     title: 'Stratschool Media',
     icon: Radio,
-    description: 'Coming soon - Amplifying entrepreneurial stories and insights to inspire the next generation',
-    color: 'from-red-600 to-pink-500',
-    bgGlow: 'bg-pink-500/20',
-    textColor: 'text-pink-400',
-    borderColor: 'border-pink-500/30',
+    description: 'Pathways to funding and global market access to scale your venture',
     tbd: true,
   },
 ];
@@ -56,180 +40,172 @@ export default function CorePillars() {
   });
 
   return (
-    <section id="about" ref={containerRef} className="relative bg-black">
-      {/* Sticky Header */}
-      <div className="sticky top-0 z-10 pt-32 pb-16 bg-gradient-to-b from-black via-black to-transparent">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-            className="text-center"
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="inline-block px-4 py-2 bg-red-600/20 border border-red-600/30 rounded-full mb-6"
-            >
-              <span className="text-red-400 font-semibold text-sm">OUR JOURNEY</span>
-            </motion.div>
-
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold font-space-grotesk mb-6">
-              Core Pillars{' '}
-              <span className="gradient-text">Roadmap</span>
-            </h2>
-
-            <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
-              Your entrepreneurial journey, from foundations to market leadership
-            </p>
-          </motion.div>
-        </div>
+    <section id="about" className="relative py-32 bg-gradient-to-b from-black via-red-950/10 to-black overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 opacity-30">
+        <div className="absolute top-1/4 right-0 w-96 h-96 bg-red-600/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-red-500/20 rounded-full blur-3xl" />
       </div>
 
-      {/* Scroll Stack Cards */}
-      <div className="relative pb-32">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          {pillars.map((pillar, index) => {
-            const Icon = pillar.icon;
-            const targetScale = 1 - (pillars.length - index) * 0.05;
-            const start = index / pillars.length;
-            const end = (index + 1) / pillars.length;
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Section Header */}
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="text-center mb-20"
+        >
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="inline-block px-4 py-2 bg-red-600/20 border border-red-600/30 rounded-full mb-6"
+          >
+            <span className="text-red-400 font-semibold text-sm">OUR MISSION</span>
+          </motion.div>
 
-            const scale = useTransform(
-              scrollYProgress,
-              [start, end],
-              [1, targetScale]
-            );
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold font-space-grotesk mb-6">
+            Fueling India's{' '}
+            <span className="gradient-text">Startup Ecosystem</span>
+          </h2>
 
-            const opacity = useTransform(
-              scrollYProgress,
-              [start - 0.1, start, end - 0.1, end],
-              [0.5, 1, 1, 0.8]
-            );
+          <p className="text-xl text-gray-400 max-w-3xl mx-auto leading-relaxed">
+            At StratSchool, we combine education, incubation, and innovation to create real companies. 
+            We collaborate with exceptional founders, helping them validate ideas, develop products, and access capital.
+          </p>
+        </motion.div>
 
-            return (
-              <motion.div
-                key={pillar.id}
-                style={{
-                  scale,
-                  opacity,
-                  position: 'sticky',
-                  top: `${120 + index * 20}px`,
-                }}
-                className="mb-8"
-              >
-                <div className="relative group">
-                  {/* Glow Effect */}
-                  <div className={`absolute inset-0 bg-gradient-to-r ${pillar.color} rounded-3xl blur-2xl opacity-20 group-hover:opacity-40 transition-opacity duration-700`} />
+        {/* Scroll Stack Container */}
+        <div ref={containerRef} className="relative h-[400vh]">
+          <div className="sticky top-32 h-[80vh] flex items-center justify-center">
+            {pillars.map((pillar, index) => {
+              const Icon = pillar.icon;
+              const cardStart = index * 0.25;
+              const cardEnd = cardStart + 0.25;
 
-                  {/* Card */}
-                  <div className="relative bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-xl border border-white/20 rounded-3xl p-8 sm:p-12 overflow-hidden">
-                    {/* Background Pattern */}
-                    <div className="absolute inset-0 opacity-5">
-                      <div className="absolute inset-0" style={{
-                        backgroundImage: `radial-gradient(circle at 2px 2px, white 1px, transparent 0)`,
-                        backgroundSize: '40px 40px',
-                      }} />
-                    </div>
+              const y = useTransform(
+                scrollYProgress,
+                [cardStart, cardEnd],
+                [index * 60, 0]
+              );
 
-                    {/* Content */}
-                    <div className="relative z-10">
-                      <div className="flex items-start justify-between mb-6">
-                        <div className="flex items-center gap-4">
+              const scale = useTransform(
+                scrollYProgress,
+                [cardStart, cardEnd],
+                [0.9, 1]
+              );
+
+              const rotateX = useTransform(
+                scrollYProgress,
+                [cardStart, cardEnd],
+                [index === 0 ? 0 : 10, 0]
+              );
+
+              const opacity = useTransform(
+                scrollYProgress,
+                [cardStart - 0.05, cardStart, cardEnd, cardEnd + 0.05],
+                [0, 1, 1, 0.3]
+              );
+
+              const zIndex = pillars.length - index;
+
+              return (
+                <motion.div
+                  key={pillar.id}
+                  style={{
+                    y,
+                    scale,
+                    rotateX,
+                    opacity,
+                    zIndex,
+                    transformStyle: 'preserve-3d',
+                    perspective: 1000,
+                  }}
+                  className="absolute inset-x-0 max-w-4xl mx-auto px-4"
+                >
+                  <div className="group relative">
+                    {/* 3D Shadow/Depth */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-red-600/30 to-red-500/30 rounded-2xl blur-2xl opacity-50 group-hover:opacity-70 transition-opacity duration-500" 
+                         style={{ transform: 'translateZ(-20px)' }} />
+
+                    {/* Card */}
+                    <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl hover:bg-white/10 transition-all duration-500 overflow-hidden"
+                         style={{ transform: 'translateZ(0)' }}>
+                      
+                      <div className="p-8 sm:p-10">
+                        <div className="flex items-start gap-6 mb-6">
                           {/* Icon */}
                           <motion.div
-                            whileHover={{ rotate: 360, scale: 1.1 }}
-                            transition={{ duration: 0.8, ease: 'backOut' }}
-                            className={`p-4 bg-gradient-to-br ${pillar.color} rounded-2xl shadow-2xl`}
+                            whileHover={{ 
+                              scale: 1.1,
+                              rotateY: 180,
+                            }}
+                            transition={{ duration: 0.6, ease: 'backOut' }}
+                            className="p-4 bg-gradient-to-br from-red-600/20 to-red-500/20 rounded-xl shrink-0"
+                            style={{ transformStyle: 'preserve-3d' }}
                           >
-                            <Icon className="w-8 h-8 text-white" />
+                            <Icon className="w-8 h-8 text-red-400" />
                           </motion.div>
 
-                          {/* Title */}
-                          <div>
-                            <h3 className="text-3xl sm:text-4xl font-bold text-white font-space-grotesk">
-                              {pillar.title}
-                            </h3>
-                            {pillar.tbd && (
-                              <span className="inline-block mt-2 px-3 py-1 bg-white/10 border border-white/20 rounded-full text-xs text-gray-400">
-                                Coming Soon
-                              </span>
-                            )}
+                          {/* Content */}
+                          <div className="flex-1">
+                            <div className="flex items-center justify-between mb-4">
+                              <h3 className="text-2xl sm:text-3xl font-bold text-white font-space-grotesk">
+                                {pillar.title}
+                              </h3>
+                              {pillar.tbd && (
+                                <span className="px-3 py-1 bg-red-600/20 border border-red-600/30 rounded-full text-xs text-red-400 font-semibold">
+                                  TBD
+                                </span>
+                              )}
+                            </div>
+
+                            <p className="text-gray-400 leading-relaxed text-lg">
+                              {pillar.description}
+                            </p>
                           </div>
                         </div>
-
-                        {/* Step Number */}
-                        <div className={`hidden sm:block px-4 py-2 ${pillar.bgGlow} border ${pillar.borderColor} rounded-xl`}>
-                          <span className={`text-lg font-bold ${pillar.textColor}`}>
-                            {String(pillar.id).padStart(2, '0')}
-                          </span>
-                        </div>
                       </div>
 
-                      {/* Description */}
-                      <p className="text-lg sm:text-xl text-gray-300 leading-relaxed mb-8">
-                        {pillar.description}
-                      </p>
-
-                      {/* Progress Bar */}
-                      <div className="flex items-center gap-4">
-                        <div className="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
-                          <motion.div
-                            initial={{ width: 0 }}
-                            whileInView={{ width: '100%' }}
-                            transition={{ duration: 1.5, delay: index * 0.2, ease: 'easeOut' }}
-                            viewport={{ once: true }}
-                            className={`h-full bg-gradient-to-r ${pillar.color} rounded-full`}
-                          />
+                      {/* Animated Border on Hover */}
+                      <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+                        <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-red-600 via-red-500 to-red-600 p-[1px]">
+                          <div className="h-full w-full bg-black/80 rounded-2xl" />
                         </div>
-                        <span className={`text-sm font-semibold ${pillar.textColor}`}>
-                          Stage {pillar.id}/4
-                        </span>
-                      </div>
-
-                      {/* Interactive CTA */}
-                      {!pillar.tbd && (
-                        <motion.a
-                          href={pillar.id === 2 ? '/join-ignite' : '#'}
-                          whileHover={{ x: 5 }}
-                          transition={{ duration: 0.3 }}
-                          className={`inline-flex items-center gap-2 mt-8 ${pillar.textColor} hover:text-white transition-colors font-semibold group`}
-                        >
-                          Learn more about {pillar.title}
-                          <svg
-                            className="w-5 h-5 group-hover:translate-x-1 transition-transform"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                          >
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                          </svg>
-                        </motion.a>
-                      )}
-                    </div>
-
-                    {/* Animated Border Glow */}
-                    <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                      <div className={`absolute inset-0 rounded-3xl bg-gradient-to-r ${pillar.color} p-[1px]`}>
-                        <div className="h-full w-full bg-black/90 rounded-3xl" />
                       </div>
                     </div>
                   </div>
-                </div>
-              </motion.div>
-            );
-          })}
+                </motion.div>
+              );
+            })}
+          </div>
         </div>
-      </div>
 
-      {/* Background Ambient Effects */}
-      <div className="fixed inset-0 pointer-events-none opacity-30 -z-10">
-        <div className="absolute top-1/4 right-0 w-96 h-96 bg-red-600/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-orange-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-yellow-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
+        {/* Bottom CTA */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mt-16"
+        >
+          <a
+            href="/our-people"
+            className="inline-flex items-center gap-2 text-red-400 hover:text-red-300 transition-colors font-semibold group"
+          >
+            Learn more about us
+            <svg
+              className="w-5 h-5 group-hover:translate-x-1 transition-transform"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
+        </motion.div>
       </div>
     </section>
   );
