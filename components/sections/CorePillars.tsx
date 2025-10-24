@@ -78,7 +78,7 @@ export default function CorePillars() {
           transition={{ duration: 1, delay: 0.5 }}
           viewport={{ once: true }}
           className="relative w-full"
-          style={{ height: '75vh', minHeight: '650px' }}
+          style={{ height: '60vh', minHeight: '500px' }}
         >
           {cardImages.length > 0 && (
             <FlyingCards items={cardImages} className="rounded-2xl" />

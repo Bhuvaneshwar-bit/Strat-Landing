@@ -105,7 +105,7 @@ export default function FlyingCards({ items, className = '' }: FlyingCardsProps)
   const containerRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number | null>(null);
-  const scrollRef = useRef({ current: 0, target: 0, ease: 0.08 });
+  const scrollRef = useRef({ current: 0, target: 0, ease: 0.05 });
 
   useEffect(() => {
     if (!containerRef.current || !canvasRef.current || items.length === 0) return;
@@ -137,9 +137,9 @@ export default function FlyingCards({ items, className = '' }: FlyingCardsProps)
 
     // Create meshes for each card
     const meshes: any[] = [];
-    const planeWidth = 320;
-    const planeHeight = 420;
-    const distortion = 2.5;
+    const planeWidth = 420;
+    const planeHeight = 240;
+    const distortion = 5;
 
     items.forEach((src, index) => {
       const texture = new Texture(gl, { 
@@ -159,7 +159,7 @@ export default function FlyingCards({ items, className = '' }: FlyingCardsProps)
           uPlaneSize: { value: [0, 0] },
           uImageSize: { value: [0, 0] },
           rotationAxis: { value: [0, 1, 0] },
-          distortionAxis: { value: [0, 1, 0] },
+          distortionAxis: { value: [1, 0, 0] },
           uDistortion: { value: distortion },
         },
         cullFace: false,
@@ -198,7 +198,7 @@ export default function FlyingCards({ items, className = '' }: FlyingCardsProps)
         mesh.scale.y = (viewport.height * planeHeight) / screen.height;
         program.uniforms.uPlaneSize.value = [mesh.scale.x, mesh.scale.y];
 
-        const padding = 0.8;
+        const padding = 1.2;
         const meshWidth = mesh.scale.x + padding;
         const widthTotal = meshWidth * items.length;
         
@@ -218,7 +218,7 @@ export default function FlyingCards({ items, className = '' }: FlyingCardsProps)
     // Handle wheel
     const onWheel = (e: WheelEvent) => {
       e.preventDefault();
-      scrollRef.current.target += e.deltaY * 0.002;
+      scrollRef.current.target += e.deltaY * 0.004;
     };
 
     canvas.addEventListener('wheel', onWheel, { passive: false });
