@@ -21,7 +21,7 @@ void main() {
 `;
 
 const fragment = `#version 300 es
-precision highp float;
+precision mediump float;
 uniform vec2 iResolution;
 uniform float iTime;
 uniform vec3 uCustomColor;
@@ -38,13 +38,10 @@ void mainImage(out vec4 o, vec2 C) {
   vec2 center = iResolution.xy * 0.5;
   C = (C - center) / uScale + center;
   
-  vec2 mouseOffset = (uMouse - center) * 0.0002;
-  C += mouseOffset * length(C - center) * step(0.5, uMouseInteractive);
-  
   float i, d, z, T = iTime * uSpeed * uDirection;
   vec3 O, p, S;
 
-  for (vec2 r = iResolution.xy, Q; ++i < 60.; O += o.w/d*o.xyz) {
+  for (vec2 r = iResolution.xy, Q; ++i < 40.; O += o.w/d*o.xyz) {
     p = z*normalize(vec3(C-.5*r,r.y)); 
     p.z -= 4.; 
     S = p;
@@ -175,16 +172,27 @@ export const Plasma: React.FC<PlasmaProps> = ({
 
     let raf = 0;
     const t0 = performance.now();
+    let lastFrameTime = t0;
+    const targetFPS = 30; // Cap at 30fps for smoothness
+    const frameInterval = 1000 / targetFPS;
+    
     const loop = (t: number) => {
-      let timeValue = (t - t0) * 0.001;
+      const elapsed = t - lastFrameTime;
+      
+      if (elapsed > frameInterval) {
+        lastFrameTime = t - (elapsed % frameInterval);
+        
+        let timeValue = (t - t0) * 0.001;
 
-      if (direction === 'pingpong') {
-        const cycle = Math.sin(timeValue * 0.5) * directionMultiplier;
-        program.uniforms.uDirection.value = cycle;
+        if (direction === 'pingpong') {
+          const cycle = Math.sin(timeValue * 0.5) * directionMultiplier;
+          program.uniforms.uDirection.value = cycle;
+        }
+
+        program.uniforms.iTime.value = timeValue;
+        renderer.render({ scene: mesh });
       }
-
-      program.uniforms.iTime.value = timeValue;
-      renderer.render({ scene: mesh });
+      
       raf = requestAnimationFrame(loop);
     };
     raf = requestAnimationFrame(loop);

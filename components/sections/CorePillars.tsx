@@ -1,9 +1,11 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { BookOpen, Rocket, Building2, Radio } from 'lucide-react';
 import dynamic from 'next/dynamic';
+import { useState, useEffect } from 'react';
 
+// Lazy load Plasma only when visible
 const Plasma = dynamic(() => import('@/components/animations/Plasma'), {
   ssr: false,
   loading: () => null,
@@ -41,24 +43,35 @@ const pillars = [
 ];
 
 export default function CorePillars() {
+  const prefersReducedMotion = useReducedMotion();
+  const [loadPlasma, setLoadPlasma] = useState(false);
+
+  // Delay Plasma loading to prioritize initial render
+  useEffect(() => {
+    const timer = setTimeout(() => setLoadPlasma(true), 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <section id="about" className="relative bg-gradient-to-b from-black via-red-950/10 to-black overflow-hidden">
-      {/* Optimized Plasma Background - GPU Accelerated */}
-      <div className="absolute inset-0 opacity-15 pointer-events-none" style={{ willChange: 'opacity' }}>
-        <Plasma 
-          color="#dc2626"
-          speed={0.4}
-          direction="forward"
-          scale={1.5}
-          opacity={0.5}
-          mouseInteractive={false}
-        />
-      </div>
+      {/* Ultra-Optimized Plasma Background */}
+      {loadPlasma && !prefersReducedMotion && (
+        <div className="absolute inset-0 opacity-12 pointer-events-none" style={{ contain: 'strict' }}>
+          <Plasma 
+            color="#dc2626"
+            speed={0.3}
+            direction="forward"
+            scale={2}
+            opacity={0.4}
+            mouseInteractive={false}
+          />
+        </div>
+      )}
 
-      {/* Lightweight gradient overlays */}
+      {/* Fallback Static Background */}
       <div className="absolute inset-0 opacity-15 pointer-events-none">
-        <div className="absolute top-1/4 right-0 w-96 h-96 bg-red-600/20 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-red-500/20 rounded-full blur-3xl" />
+        <div className="absolute top-1/4 right-0 w-[500px] h-[500px] bg-red-600/10 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 left-0 w-[500px] h-[500px] bg-red-500/10 rounded-full blur-3xl" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -112,31 +125,24 @@ export default function CorePillars() {
             return (
               <motion.div
                 key={pillar.id}
-                initial={{ 
+                initial={prefersReducedMotion ? { opacity: 0 } : { 
                   opacity: 0, 
-                  y: 80,
-                  rotateY: isLeft ? -30 : 30,
-                  rotateX: 15,
-                  scale: 0.85
+                  y: 50,
+                  rotateY: isLeft ? -20 : 20,
+                  scale: 0.95
                 }}
-                whileInView={{ 
+                whileInView={prefersReducedMotion ? { opacity: 1 } : { 
                   opacity: 1, 
                   y: 0,
                   rotateY: 0,
-                  rotateX: 0,
                   scale: 1
                 }}
                 transition={{
-                  duration: 0.8,
-                  ease: [0.22, 1, 0.36, 1],
+                  duration: 0.5,
+                  ease: [0.25, 0.1, 0.25, 1],
                 }}
-                viewport={{ once: true, margin: '-150px' }}
+                viewport={{ once: true, margin: '-100px', amount: 0.3 }}
                 className={`flex ${isLeft ? 'justify-start' : 'justify-end'}`}
-                style={{
-                  transformStyle: 'preserve-3d',
-                  perspective: '1500px',
-                  willChange: 'transform',
-                }}
               >
                 <motion.div
                   whileHover={{ 
