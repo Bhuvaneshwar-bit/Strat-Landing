@@ -156,7 +156,6 @@ export default function CorePillars() {
                     scale: 1.02,
                     z: 50
                   }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
                   className="group relative w-full max-w-md"
                   style={{
                     transformStyle: 'preserve-3d',
