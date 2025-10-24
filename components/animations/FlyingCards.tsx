@@ -137,9 +137,9 @@ export default function FlyingCards({ items, className = '' }: FlyingCardsProps)
 
     // Create meshes for each card
     const meshes: any[] = [];
-    const planeWidth = 400;
-    const planeHeight = 500;
-    const distortion = 4;
+    const planeWidth = 280;
+    const planeHeight = 380;
+    const distortion = 3;
 
     items.forEach((src, index) => {
       const texture = new Texture(gl, { 
@@ -199,7 +199,7 @@ export default function FlyingCards({ items, className = '' }: FlyingCardsProps)
         mesh.position.x = 0;
         program.uniforms.uPlaneSize.value = [mesh.scale.x, mesh.scale.y];
 
-        const padding = 2;
+        const padding = 1.5;
         const meshHeight = mesh.scale.y + padding;
         const heightTotal = meshHeight * items.length;
         item.y = -heightTotal / 2 + (i + 0.5) * meshHeight;
@@ -232,10 +232,10 @@ export default function FlyingCards({ items, className = '' }: FlyingCardsProps)
         mesh.position.y = item.y - scrollRef.current.current - item.extra;
 
         const position = mesh.position.y;
-        const normalizedPos = (position + 10) / 20;
+        const normalizedPos = (position + 15) / 30;
         program.uniforms.uPosition.value = normalizedPos * 100;
 
-        const viewport = 10;
+        const viewport = 15;
         const meshHeight = item.meshHeight;
 
         if (mesh.position.y + meshHeight / 2 < -viewport) {
