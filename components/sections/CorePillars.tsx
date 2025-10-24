@@ -2,11 +2,6 @@
 
 import { motion } from 'framer-motion';
 import { BookOpen, Rocket, Building2, Radio } from 'lucide-react';
-import dynamic from 'next/dynamic';
-
-const Plasma = dynamic(() => import('@/components/animations/Plasma'), {
-  ssr: false,
-});
 
 const pillars = [
   {
@@ -41,23 +36,11 @@ const pillars = [
 
 export default function CorePillars() {
   return (
-    <section id="about" className="relative bg-gradient-to-b from-black via-red-950/10 to-black overflow-hidden">
-      {/* Plasma Background Animation */}
+    <section id="about" className="relative bg-gradient-to-b from-black via-red-950/10 to-black overflow-hidden will-change-auto">
+      {/* Lightweight background - NO WEBGL */}
       <div className="absolute inset-0 opacity-20 pointer-events-none">
-        <Plasma 
-          color="#dc2626"
-          speed={0.5}
-          direction="forward"
-          scale={1.2}
-          opacity={0.6}
-          mouseInteractive={false}
-        />
-      </div>
-
-      {/* Subtle gradient overlays */}
-      <div className="absolute inset-0 opacity-20 pointer-events-none">
-        <div className="absolute top-1/4 right-0 w-96 h-96 bg-red-600/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s' }} />
-        <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-red-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '5s', animationDelay: '1s' }} />
+        <div className="absolute top-1/4 right-0 w-96 h-96 bg-red-600/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-red-500/20 rounded-full blur-3xl" />
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -113,69 +96,32 @@ export default function CorePillars() {
                 key={pillar.id}
                 initial={{ 
                   opacity: 0, 
-                  y: 100,
-                  rotateX: 90,
-                  rotateY: isLeft ? -45 : 45,
-                  rotateZ: isLeft ? -10 : 10,
-                  scale: 0.6
+                  y: 60,
+                  x: isLeft ? -40 : 40,
                 }}
                 whileInView={{ 
                   opacity: 1, 
                   y: 0,
-                  rotateX: 0,
-                  rotateY: 0,
-                  rotateZ: 0,
-                  scale: 1
+                  x: 0,
                 }}
                 transition={{
-                  duration: 1.4,
-                  delay: 0.1,
-                  ease: [0.16, 1, 0.3, 1],
-                  rotateX: {
-                    duration: 1.2,
-                    ease: [0.16, 1, 0.3, 1]
-                  },
-                  rotateY: {
-                    duration: 1.3,
-                    ease: [0.16, 1, 0.3, 1]
-                  },
-                  rotateZ: {
-                    duration: 1.1,
-                    ease: [0.16, 1, 0.3, 1]
-                  }
+                  duration: 0.6,
+                  ease: [0.25, 0.1, 0.25, 1],
                 }}
-                viewport={{ once: true, margin: '-200px' }}
+                viewport={{ once: true, margin: '-100px' }}
                 className={`flex ${isLeft ? 'justify-start' : 'justify-end'}`}
-                style={{
-                  transformStyle: 'preserve-3d',
-                  perspective: '2000px',
-                }}
               >
                 <motion.div
-                  initial={{
-                    rotateY: isLeft ? -25 : 25,
-                    z: -100
-                  }}
-                  whileInView={{
-                    rotateY: 0,
-                    z: 0
+                  whileHover={{ 
+                    y: -8,
+                    scale: 1.02,
                   }}
                   transition={{
-                    duration: 1,
-                    delay: 0.3,
-                    ease: [0.16, 1, 0.3, 1]
-                  }}
-                  viewport={{ once: true }}
-                  whileHover={{ 
-                    y: -10,
-                    rotateY: isLeft ? 5 : -5,
-                    scale: 1.02,
-                    z: 50
+                    type: 'spring',
+                    stiffness: 400,
+                    damping: 25
                   }}
                   className="group relative w-full max-w-md"
-                  style={{
-                    transformStyle: 'preserve-3d',
-                  }}
                 >
                   {/* Elegant Glow */}
                   <motion.div
@@ -204,16 +150,13 @@ export default function CorePillars() {
                     <div className="relative p-10 sm:p-12">
                       {/* Icon */}
                       <motion.div
-                        initial={{ scale: 0, rotate: -180 }}
-                        whileInView={{ scale: 1, rotate: 0 }}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
                         transition={{ 
-                          duration: 0.8, 
-                          delay: 0.4,
-                          type: 'spring',
-                          stiffness: 200
+                          duration: 0.4, 
+                          delay: 0.1,
                         }}
                         viewport={{ once: true }}
-                        whileHover={{ scale: 1.1, rotate: 10 }}
                         className="mb-6 p-5 bg-gradient-to-br from-red-600/20 via-red-500/10 to-transparent rounded-2xl w-fit border border-red-500/20 shadow-lg"
                       >
                         <Icon className="w-10 h-10 text-red-400" strokeWidth={1.5} />
@@ -222,9 +165,9 @@ export default function CorePillars() {
                       {/* Content */}
                       <div>
                         <motion.h3
-                          initial={{ opacity: 0, y: 20 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.6, delay: 0.5 }}
+                          initial={{ opacity: 0 }}
+                          whileInView={{ opacity: 1 }}
+                          transition={{ duration: 0.4, delay: 0.2 }}
                           viewport={{ once: true }}
                           className="text-3xl sm:text-4xl font-bold text-white font-space-grotesk tracking-tight mb-4"
                         >
@@ -232,9 +175,9 @@ export default function CorePillars() {
                         </motion.h3>
 
                         <motion.p
-                          initial={{ opacity: 0, y: 20 }}
-                          whileInView={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.6, delay: 0.6 }}
+                          initial={{ opacity: 0 }}
+                          whileInView={{ opacity: 1 }}
+                          transition={{ duration: 0.4, delay: 0.3 }}
                           viewport={{ once: true }}
                           className="text-gray-300 leading-relaxed text-lg"
                         >
