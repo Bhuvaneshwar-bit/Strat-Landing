@@ -2,6 +2,11 @@
 
 import { motion } from 'framer-motion';
 import { BookOpen, Rocket, Building2, Radio } from 'lucide-react';
+import dynamic from 'next/dynamic';
+
+const Lightning = dynamic(() => import('@/components/animations/Lightning'), {
+  ssr: false,
+});
 
 const pillars = [
   {
@@ -36,14 +41,20 @@ const pillars = [
 
 export default function CorePillars() {
   return (
-    <section id="about" className="relative bg-gradient-to-b from-black via-red-950/10 to-black overflow-hidden">
-      {/* Background Elements */}
-      <div className="absolute inset-0 opacity-30 pointer-events-none">
-        <div className="absolute top-1/4 right-0 w-96 h-96 bg-red-600/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s' }} />
-        <div className="absolute bottom-1/4 left-0 w-96 h-96 bg-red-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '5s', animationDelay: '1s' }} />
+    <section id="about" className="relative bg-black overflow-hidden">
+      {/* Lightning Background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <Lightning 
+          hue={0}
+          xOffset={0}
+          speed={0.4}
+          intensity={0.5}
+          size={1.2}
+        />
       </div>
 
-      {/* Ready for custom background animation */}
+      {/* Subtle Gradient Overlay for Depth */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60 pointer-events-none" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
