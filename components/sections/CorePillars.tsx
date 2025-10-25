@@ -102,19 +102,22 @@ export default function CorePillars() {
         </motion.div>
 
         {/* Stacking Cards - Optimized */}
-        <div className="relative py-20">
-          {pillars.map((pillar, index) => {
-            const Icon = pillar.icon;
-            
-            return (
-              <Card
-                key={pillar.id}
-                pillar={pillar}
-                Icon={Icon}
-                index={index}
-              />
-            );
-          })}
+        <div className="relative pb-20">
+          <div className="sticky top-20 space-y-8">
+            {pillars.map((pillar, index) => {
+              const Icon = pillar.icon;
+              
+              return (
+                <Card
+                  key={pillar.id}
+                  pillar={pillar}
+                  Icon={Icon}
+                  index={index}
+                  totalCards={pillars.length}
+                />
+              );
+            })}
+          </div>
         </div>
 
         {/* Bottom CTA */}
@@ -149,33 +152,42 @@ interface CardProps {
   pillar: typeof pillars[0];
   Icon: any;
   index: number;
+  totalCards: number;
 }
 
-function Card({ pillar, Icon, index }: CardProps) {
+function Card({ pillar, Icon, index, totalCards }: CardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   
   const { scrollYProgress } = useScroll({
     target: cardRef,
-    offset: ["start end", "start start"]
+    offset: ["start end", "end start"]
   });
 
-  const scale = useTransform(scrollYProgress, [0, 1], [0.85, 1]);
-  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0, 1, 1]);
+  const scale = useTransform(
+    scrollYProgress, 
+    [0, 0.5, 1], 
+    [0.9, 1, 0.95 - (index * 0.05)]
+  );
 
   return (
     <motion.div
       ref={cardRef}
       style={{ 
-        scale, 
-        opacity,
-        top: `calc(6rem + ${index * 2}rem)`,
-        willChange: 'transform, opacity',
+        scale,
+        zIndex: totalCards - index,
+        transformOrigin: 'top center',
       }}
-      className="sticky flex items-center justify-center px-4 sm:px-6 lg:px-8 h-screen"
+      className="w-full"
     >
-      <div className="group relative w-full max-w-2xl">
-        {/* Elegant Glow */}
-        <div className="absolute -inset-2 bg-gradient-to-br from-red-600/30 to-red-500/30 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-all duration-700" />
+      <div 
+        className="sticky px-4 sm:px-6 lg:px-8"
+        style={{
+          top: `${80 + (index * 30)}px`,
+        }}
+      >
+        <div className="group relative w-full max-w-2xl mx-auto">
+          {/* Elegant Glow */}
+          <div className="absolute -inset-2 bg-gradient-to-br from-red-600/30 to-red-500/30 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-all duration-700" />
 
         {/* Glassmorphism Card */}
         <div className="relative bg-gradient-to-br from-white/[0.07] via-white/[0.05] to-black/40 backdrop-blur-2xl border border-white/20 rounded-3xl overflow-hidden shadow-2xl">
@@ -221,6 +233,7 @@ function Card({ pillar, Icon, index }: CardProps) {
           {/* Inner glow on hover - simplified */}
           <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent rounded-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
         </div>
+      </div>
       </div>
     </motion.div>
   );
