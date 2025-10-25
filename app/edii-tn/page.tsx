@@ -7,7 +7,7 @@ import Link from 'next/link';
 import Navbar from '@/components/ui/Navbar';
 import Footer from '@/components/sections/Footer';
 import BackgroundTransition from '@/components/animations/BackgroundTransition';
-import CircularGallery from '@/components/animations/CircularGallery';
+import EventsGallery from '@/components/ui/EventsGallery';
 
 const upcomingEvents = [
   {
@@ -351,22 +351,8 @@ function PastEventsSection({ events }: { events: Array<{ text: string; image: st
           </p>
         </motion.div>
 
-        {/* Circular Gallery */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          style={{ height: '600px', position: 'relative' }}
-        >
-          <CircularGallery 
-            items={events}
-            bend={3}
-            textColor="#ffffff"
-            borderRadius={0.05}
-            scrollEase={0.02}
-            scrollSpeed={2}
-          />
-        </motion.div>
+        {/* Gallery Grid */}
+        <EventsGallery events={events} />
       </div>
     </section>
   );
