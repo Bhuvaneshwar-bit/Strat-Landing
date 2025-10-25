@@ -2,7 +2,7 @@
 
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { ChevronDown, Sparkles, Rocket, Target } from 'lucide-react';
-import { useRef, useState, useEffect, useMemo } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 
 export default function Hero() {
@@ -48,13 +48,8 @@ export default function Hero() {
     if (videoRef.current) {
       videoRef.current.pause();
     }
+    // Don't restart the video - just stay on the background
   };
-
-  // Memoize animation variants to prevent recreation
-  const fadeInUpVariants = useMemo(() => ({
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-  }), []);
 
   return (
     <section ref={ref} className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-b from-black via-red-950/20 to-black">
@@ -64,9 +59,9 @@ export default function Hero() {
         animate={{ opacity: showVideo ? 0 : 1 }}
         transition={{ duration: 1.5, ease: 'easeInOut' }}
       >
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-red-600/20 rounded-full blur-3xl animate-pulse" style={{ willChange: 'opacity' }} />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-red-500/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s', willChange: 'opacity' }} />
-        <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-red-700/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s', willChange: 'opacity' }} />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-red-600/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-red-500/20 rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-red-700/20 rounded-full blur-3xl animate-pulse delay-2000" />
       </motion.div>
 
       {/* Video Background - Fade in smoothly */}
@@ -102,9 +97,8 @@ export default function Hero() {
       <motion.div style={{ y, opacity }} className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-32 pb-20 text-center">
         {/* Badge */}
         <motion.div
-          variants={fadeInUpVariants}
-          initial="initial"
-          animate="animate"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full mb-8"
         >
@@ -114,10 +108,9 @@ export default function Hero() {
 
         {/* Main Heading */}
         <motion.h1
-          variants={fadeInUpVariants}
-          initial="initial"
-          animate="animate"
-          transition={{ duration: 0.6, delay: 0.1 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
           className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold font-space-grotesk mb-6 leading-tight"
         >
           <span className="block">We Don't Just Teach</span>
@@ -127,10 +120,9 @@ export default function Hero() {
 
         {/* Subheading */}
         <motion.p
-          variants={fadeInUpVariants}
-          initial="initial"
-          animate="animate"
-          transition={{ duration: 0.6, delay: 0.2 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
           className="text-lg sm:text-xl md:text-2xl text-gray-400 max-w-4xl mx-auto mb-12 leading-relaxed"
         >
           StratSchool is a Venture Studio that incubates, invests in, and scales bold ideas into real businesses.
@@ -138,10 +130,9 @@ export default function Hero() {
 
         {/* CTA Buttons */}
         <motion.div
-          variants={fadeInUpVariants}
-          initial="initial"
-          animate="animate"
-          transition={{ duration: 0.6, delay: 0.3 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
           className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-20"
         >
           <Link
@@ -164,7 +155,7 @@ export default function Hero() {
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 1, delay: 0.8 }}
+          transition={{ duration: 1, delay: 1.5 }}
           className="absolute bottom-10 left-1/2 -translate-x-1/2"
         >
           <motion.div

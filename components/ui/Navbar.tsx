@@ -1,48 +1,29 @@
 'use client';
 
-import { useState, useEffect, useMemo, useCallback, memo } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 
-// Memoize nav links
-const navLinks = [
-  { name: 'Programs', href: '#programs' },
-  { name: 'About Us', href: '#about' },
-  { name: 'Partners', href: '#partners' },
-  { name: 'EDII-TN', href: '/edii-tn' },
-  { name: 'Contact', href: '#contact' },
-];
-
-function Navbar() {
+export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    let ticking = false;
-    
-    // Throttled scroll handler for better performance
     const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          setIsScrolled(window.scrollY > 50);
-          ticking = false;
-        });
-        ticking = true;
-      }
+      setIsScrolled(window.scrollY > 50);
     };
-    
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const toggleMobileMenu = useCallback(() => {
-    setIsMobileMenuOpen(prev => !prev);
-  }, []);
-
-  const closeMobileMenu = useCallback(() => {
-    setIsMobileMenuOpen(false);
-  }, []);
+  const navLinks = [
+    { name: 'Programs', href: '#programs' },
+    { name: 'About Us', href: '#about' },
+    { name: 'Partners', href: '#partners' },
+    { name: 'EDII-TN', href: '/edii-tn' },
+    { name: 'Contact', href: '#contact' },
+  ];
 
   return (
     <motion.nav
@@ -102,9 +83,8 @@ function Navbar() {
 
           {/* Mobile Menu Button */}
           <button
-            onClick={toggleMobileMenu}
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             className="md:hidden text-white p-2"
-            aria-label="Toggle mobile menu"
           >
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -124,7 +104,7 @@ function Navbar() {
               <Link
                 key={link.name}
                 href={link.href}
-                onClick={closeMobileMenu}
+                onClick={() => setIsMobileMenuOpen(false)}
                 className="block text-gray-300 hover:text-white transition-colors py-2"
               >
                 {link.name}
@@ -132,7 +112,7 @@ function Navbar() {
             ))}
             <Link
               href="#programs"
-              onClick={closeMobileMenu}
+              onClick={() => setIsMobileMenuOpen(false)}
               className="block px-6 py-3 bg-gradient-to-r from-red-600 to-red-500 rounded-full text-white font-medium text-center"
             >
               Get Started
@@ -143,5 +123,3 @@ function Navbar() {
     </motion.nav>
   );
 }
-
-export default memo(Navbar);

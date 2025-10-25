@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, useCallback } from 'react';
+import { useRef, useEffect } from 'react';
 
 interface LightningProps {
   hue?: number;
@@ -12,8 +12,6 @@ interface LightningProps {
 
 const Lightning = ({ hue = 230, xOffset = 0, speed = 0.5, intensity = 0.6, size = 1 }: LightningProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const rafRef = useRef<number | undefined>(undefined);
-  const resizeTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -24,23 +22,12 @@ const Lightning = ({ hue = 230, xOffset = 0, speed = 0.5, intensity = 0.6, size 
       canvas.height = canvas.clientHeight;
     };
     resizeCanvas();
-
-    // Debounced resize handler for better performance
-    const debouncedResize = () => {
-      if (resizeTimeoutRef.current) {
-        clearTimeout(resizeTimeoutRef.current);
-      }
-      resizeTimeoutRef.current = setTimeout(resizeCanvas, 150);
-    };
-
-    window.addEventListener('resize', debouncedResize, { passive: true });
+    window.addEventListener('resize', resizeCanvas);
 
     const gl = canvas.getContext('webgl', { 
       alpha: true, 
       antialias: false,
-      powerPreference: 'high-performance',
-      desynchronized: true, // Reduces latency
-      preserveDrawingBuffer: false,
+      powerPreference: 'high-performance' 
     });
     
     if (!gl) {
@@ -55,7 +42,6 @@ const Lightning = ({ hue = 230, xOffset = 0, speed = 0.5, intensity = 0.6, size 
       }
     `;
 
-    // Reduced OCTAVE_COUNT from 8 to 5 for better performance
     const fragmentShaderSource = `
       precision mediump float;
       uniform vec2 iResolution;
@@ -66,7 +52,7 @@ const Lightning = ({ hue = 230, xOffset = 0, speed = 0.5, intensity = 0.6, size 
       uniform float uIntensity;
       uniform float uSize;
       
-      #define OCTAVE_COUNT 5
+      #define OCTAVE_COUNT 8
 
       vec3 hsv2rgb(vec3 c) {
           vec3 rgb = clamp(abs(mod(c.x * 6.0 + vec3(0.0,4.0,2.0), 6.0) - 3.0) - 1.0, 0.0, 1.0);
@@ -182,6 +168,7 @@ const Lightning = ({ hue = 230, xOffset = 0, speed = 0.5, intensity = 0.6, size 
     const uSizeLocation = gl.getUniformLocation(program, 'uSize');
 
     const startTime = performance.now();
+    let animationFrameId: number;
 
     const render = () => {
       gl.viewport(0, 0, canvas.width, canvas.height);
@@ -194,23 +181,15 @@ const Lightning = ({ hue = 230, xOffset = 0, speed = 0.5, intensity = 0.6, size 
       gl.uniform1f(uIntensityLocation, intensity);
       gl.uniform1f(uSizeLocation, size);
       gl.drawArrays(gl.TRIANGLES, 0, 6);
-      rafRef.current = requestAnimationFrame(render);
+      animationFrameId = requestAnimationFrame(render);
     };
-    rafRef.current = requestAnimationFrame(render);
+    animationFrameId = requestAnimationFrame(render);
 
     return () => {
-      window.removeEventListener('resize', debouncedResize);
-      if (resizeTimeoutRef.current) {
-        clearTimeout(resizeTimeoutRef.current);
+      window.removeEventListener('resize', resizeCanvas);
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
       }
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current);
-      }
-      // Cleanup WebGL resources
-      gl.deleteProgram(program);
-      gl.deleteShader(vertexShader);
-      gl.deleteShader(fragmentShader);
-      gl.deleteBuffer(vertexBuffer);
     };
   }, [hue, xOffset, speed, intensity, size]);
 
@@ -218,10 +197,7 @@ const Lightning = ({ hue = 230, xOffset = 0, speed = 0.5, intensity = 0.6, size 
     <canvas 
       ref={canvasRef} 
       className="absolute inset-0 w-full h-full"
-      style={{ 
-        opacity: 0.3,
-        willChange: 'transform',
-      }}
+      style={{ opacity: 0.3 }}
     />
   );
 };
