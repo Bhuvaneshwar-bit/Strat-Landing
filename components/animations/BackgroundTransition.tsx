@@ -24,9 +24,10 @@ export default function BackgroundTransition({ images, interval = 6000 }: Backgr
       {images.map((image, index) => (
         <div
           key={index}
-          className="absolute inset-0 transition-opacity duration-1500 ease-in-out"
+          className="absolute inset-0"
           style={{
             opacity: currentIndex === index ? 1 : 0,
+            transition: 'opacity 2s ease-in-out',
             zIndex: currentIndex === index ? 1 : 0,
           }}
         >
