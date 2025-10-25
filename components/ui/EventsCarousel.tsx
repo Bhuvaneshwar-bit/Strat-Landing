@@ -183,10 +183,10 @@ export default function EventsCarousel({
   return (
     <motion.div
       ref={containerRef}
-      className="relative overflow-hidden rounded-3xl border border-white/10 p-6 bg-gradient-to-br from-white/[0.05] via-white/[0.02] to-black/40 backdrop-blur-xl"
+      className="relative rounded-3xl border border-white/10 p-6 bg-gradient-to-br from-white/[0.05] via-white/[0.02] to-black/40 backdrop-blur-xl"
       style={{ width: `${baseWidth}px` }}
       animate={{
-        height: currentDimensions.height + 100 // Add padding for indicators
+        height: currentDimensions.height + 80 // Add space for indicators (image height + margin + indicators)
       }}
       transition={{
         type: 'spring' as const,
@@ -204,7 +204,8 @@ export default function EventsCarousel({
           gap: `${GAP}px`,
           perspective: 1000,
           perspectiveOrigin: `${currentIndex * trackItemOffset + itemWidth / 2}px 50%`,
-          x
+          x,
+          overflow: 'visible'
         }}
         onDragEnd={handleDragEnd}
         animate={{ x: -(currentIndex * trackItemOffset) }}
@@ -266,7 +267,7 @@ export default function EventsCarousel({
       </motion.div>
 
       {/* Indicators */}
-      <div className="flex justify-center mt-6">
+      <div className="flex justify-center mt-6 relative z-10">
         <div className="flex gap-2">
           {events.map((_, index) => (
             <motion.div
