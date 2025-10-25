@@ -41,25 +41,31 @@ const pastEvents = [
     title: 'Campus Innovation Summit 2024',
     date: 'Sept 2024',
     attendees: '500+',
-    image: '/events/placeholder1.jpg'
+    image: '/images/edii-1.png'
   },
   {
     title: 'Startup Weekend Chennai',
     date: 'Aug 2024',
     attendees: '300+',
-    image: '/events/placeholder2.jpg'
+    image: '/images/edii-2 (2).JPG'
   },
   {
     title: 'Entrepreneurship Workshop',
     date: 'July 2024',
     attendees: '200+',
-    image: '/events/placeholder3.jpg'
+    image: '/images/edii-3 (2).JPG'
   },
   {
     title: 'Pitch Competition Finals',
     date: 'June 2024',
     attendees: '150+',
-    image: '/events/placeholder4.jpg'
+    image: '/images/edii-4.JPG'
+  },
+  {
+    title: 'Innovation Bootcamp',
+    date: 'May 2024',
+    attendees: '250+',
+    image: '/images/edii-5.png'
   },
 ];
 

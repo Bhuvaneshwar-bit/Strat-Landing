@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
-import { Calendar, Users, Award } from 'lucide-react';
+import { Calendar, Users } from 'lucide-react';
 
 const DRAG_BUFFER = 0;
 const VELOCITY_THRESHOLD = 500;
@@ -152,9 +152,20 @@ export default function EventsCarousel({
               }}
               transition={effectiveTransition}
             >
-              {/* Event Image Placeholder */}
-              <div className="relative h-48 bg-gradient-to-br from-red-600/30 to-red-900/30 flex items-center justify-center overflow-hidden">
-                <Award className="w-20 h-20 text-red-400/50" />
+              {/* Event Image */}
+              <div className="relative h-48 overflow-hidden">
+                <img
+                  src={event.image}
+                  alt={event.title}
+                  className="w-full h-full object-cover"
+                  loading="eager"
+                  style={{
+                    display: 'block',
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                  }}
+                />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
               </div>
               
