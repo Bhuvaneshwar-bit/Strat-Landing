@@ -15,28 +15,24 @@ const pillars = [
     title: 'Foundations',
     icon: BookOpen,
     description: 'Cutting-edge curriculum designed by industry experts to give you the most relevant and practical knowledge',
-    position: 'left',
   },
   {
     id: 2,
     title: 'Ignite',
     icon: Rocket,
     description: 'Hands-on guidance from seasoned entrepreneurs who have been there and done that',
-    position: 'right',
   },
   {
     id: 3,
     title: 'Venture Studio',
     icon: Building2,
     description: 'Access to a thriving network and endless collaboration opportunities',
-    position: 'left',
   },
   {
     id: 4,
     title: 'Stratschool Media',
     icon: Radio,
     description: 'Pathways to funding and global market access to scale your venture',
-    position: 'right',
   },
 ];
 
@@ -101,23 +97,20 @@ export default function CorePillars() {
           </motion.p>
         </motion.div>
 
-        {/* Stacking Cards - Optimized */}
-        <div className="relative pb-20">
-          <div className="sticky top-20 space-y-8">
-            {pillars.map((pillar, index) => {
-              const Icon = pillar.icon;
-              
-              return (
-                <Card
-                  key={pillar.id}
-                  pillar={pillar}
-                  Icon={Icon}
-                  index={index}
-                  totalCards={pillars.length}
-                />
-              );
-            })}
-          </div>
+        {/* Parallax Cards Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto pb-20">
+          {pillars.map((pillar, index) => {
+            const Icon = pillar.icon;
+            
+            return (
+              <ParallaxCard
+                key={pillar.id}
+                pillar={pillar}
+                Icon={Icon}
+                index={index}
+              />
+            );
+          })}
         </div>
 
         {/* Bottom CTA */}
@@ -148,14 +141,13 @@ export default function CorePillars() {
   );
 }
 
-interface CardProps {
+interface ParallaxCardProps {
   pillar: typeof pillars[0];
   Icon: any;
   index: number;
-  totalCards: number;
 }
 
-function Card({ pillar, Icon, index, totalCards }: CardProps) {
+function ParallaxCard({ pillar, Icon, index }: ParallaxCardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   
   const { scrollYProgress } = useScroll({
@@ -163,77 +155,70 @@ function Card({ pillar, Icon, index, totalCards }: CardProps) {
     offset: ["start end", "end start"]
   });
 
-  const scale = useTransform(
-    scrollYProgress, 
-    [0, 0.5, 1], 
-    [0.9, 1, 0.95 - (index * 0.05)]
-  );
+  // Parallax effects - each card moves at different speeds
+  const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
+  const opacity = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0, 1, 1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.3, 0.7, 1], [0.8, 1, 1, 0.8]);
+  
+  // Alternate parallax direction for visual interest
+  const yDirection = index % 2 === 0 ? y : useTransform(scrollYProgress, [0, 1], [50, -50]);
 
   return (
     <motion.div
       ref={cardRef}
       style={{ 
+        y: yDirection,
+        opacity,
         scale,
-        zIndex: totalCards - index,
-        transformOrigin: 'top center',
       }}
-      className="w-full"
+      className="group relative"
     >
-      <div 
-        className="sticky px-4 sm:px-6 lg:px-8"
-        style={{
-          top: `${80 + (index * 30)}px`,
-        }}
-      >
-        <div className="group relative w-full max-w-2xl mx-auto">
-          {/* Elegant Glow */}
-          <div className="absolute -inset-2 bg-gradient-to-br from-red-600/30 to-red-500/30 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-all duration-700" />
+      {/* Elegant Glow */}
+      <div className="absolute -inset-2 bg-gradient-to-br from-red-600/30 to-red-500/30 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-all duration-700" />
 
-        {/* Glassmorphism Card */}
-        <div className="relative bg-gradient-to-br from-white/[0.07] via-white/[0.05] to-black/40 backdrop-blur-2xl border border-white/20 rounded-3xl overflow-hidden shadow-2xl">
-          {/* Premium glass shine effect */}
-          <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-tl from-red-500/5 via-transparent to-transparent" />
-          
-          {/* Glass reflection */}
-          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
-          <div className="absolute top-0 left-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/20 to-transparent" />
-          
-          {/* Subtle noise texture for premium feel */}
-          <div className="absolute inset-0 opacity-[0.03]" style={{
-            backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' /%3E%3C/svg%3E")`,
-          }} />
+      {/* Glassmorphism Card */}
+      <div className="relative bg-gradient-to-br from-white/[0.07] via-white/[0.05] to-black/40 backdrop-blur-2xl border border-white/20 rounded-3xl overflow-hidden shadow-2xl transform-gpu">
+        {/* Premium glass shine effect */}
+        <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-tl from-red-500/5 via-transparent to-transparent" />
+        
+        {/* Glass reflection */}
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/30 to-transparent" />
+        <div className="absolute top-0 left-0 bottom-0 w-px bg-gradient-to-b from-transparent via-white/20 to-transparent" />
+        
+        {/* Subtle noise texture for premium feel */}
+        <div className="absolute inset-0 opacity-[0.03]" style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' /%3E%3C/svg%3E")`,
+        }} />
 
-          <div className="relative p-10 sm:p-12">
-            {/* Icon */}
-            <div className="mb-6 p-5 bg-gradient-to-br from-red-600/20 via-red-500/10 to-transparent rounded-2xl w-fit border border-red-500/20 shadow-lg transition-transform hover:scale-110">
-              <Icon className="w-10 h-10 text-red-400" strokeWidth={1.5} />
-            </div>
-
-            {/* Content */}
-            <div>
-              <h3 className="text-3xl sm:text-4xl font-bold text-white font-space-grotesk tracking-tight mb-4">
-                {pillar.title}
-              </h3>
-
-              <p className="text-gray-300 leading-relaxed text-lg">
-                {pillar.description}
-              </p>
-            </div>
+        <div className="relative p-10 sm:p-12">
+          {/* Icon */}
+          <div className="mb-6 p-5 bg-gradient-to-br from-red-600/20 via-red-500/10 to-transparent rounded-2xl w-fit border border-red-500/20 shadow-lg transition-transform hover:scale-110">
+            <Icon className="w-10 h-10 text-red-400" strokeWidth={1.5} />
           </div>
 
-          {/* Elegant bottom glass border accent */}
-          <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-red-500/40 to-transparent" />
+          {/* Content */}
+          <div>
+            <h3 className="text-3xl sm:text-4xl font-bold text-white font-space-grotesk tracking-tight mb-4">
+              {pillar.title}
+            </h3>
 
-          {/* Premium hover glow effect - simplified */}
-          <div className="absolute inset-0 rounded-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-400">
-            <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-red-500/20 via-red-400/10 to-red-500/20 blur-sm" />
+            <p className="text-gray-300 leading-relaxed text-lg">
+              {pillar.description}
+            </p>
           </div>
-
-          {/* Inner glow on hover - simplified */}
-          <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent rounded-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
         </div>
-      </div>
+
+        {/* Elegant bottom glass border accent */}
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-red-500/40 to-transparent" />
+
+        {/* Premium hover glow effect - simplified */}
+        <div className="absolute inset-0 rounded-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-400">
+          <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-red-500/20 via-red-400/10 to-red-500/20 blur-sm" />
+        </div>
+
+        {/* Inner glow on hover - simplified */}
+        <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent rounded-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
       </div>
     </motion.div>
   );
