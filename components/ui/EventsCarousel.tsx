@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
-import { Calendar, Users } from 'lucide-react';
 
 const DRAG_BUFFER = 0;
 const VELOCITY_THRESHOLD = 500;
@@ -144,57 +143,27 @@ export default function EventsCarousel({
           return (
             <motion.div
               key={index}
-              className="relative flex-shrink-0 overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-xl cursor-grab active:cursor-grabbing group"
+              className="relative flex-shrink-0 overflow-hidden rounded-2xl cursor-grab active:cursor-grabbing"
               style={{
                 width: itemWidth,
-                height: '400px',
+                height: '500px',
                 rotateY: rotateY,
               }}
               transition={effectiveTransition}
             >
-              {/* Event Image */}
-              <div className="relative h-48 overflow-hidden">
-                <img
-                  src={event.image}
-                  alt={event.title}
-                  className="w-full h-full object-cover"
-                  loading="eager"
-                  style={{
-                    display: 'block',
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                  }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-              </div>
-              
-              {/* Event Content */}
-              <div className="p-6 flex flex-col justify-between h-[calc(400px-12rem)]">
-                <div>
-                  <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-red-400 transition-colors line-clamp-2">
-                    {event.title}
-                  </h3>
-                  
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3 text-sm">
-                      <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-red-600/10 border border-red-600/20">
-                        <Calendar className="w-5 h-5 text-red-400" />
-                      </div>
-                      <span className="text-gray-300">{event.date}</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-sm">
-                      <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-red-600/10 border border-red-600/20">
-                        <Users className="w-5 h-5 text-red-400" />
-                      </div>
-                      <span className="text-gray-300">{event.attendees} Attendees</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Hover Glow */}
-              <div className="absolute inset-0 bg-gradient-to-r from-red-600/0 via-red-500/0 to-red-600/0 group-hover:from-red-600/10 group-hover:via-red-500/5 group-hover:to-red-600/10 transition-all duration-500 pointer-events-none rounded-2xl" />
+              {/* Event Image Only */}
+              <img
+                src={event.image}
+                alt={event.title}
+                className="w-full h-full object-cover rounded-2xl"
+                loading="eager"
+                style={{
+                  display: 'block',
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                }}
+              />
             </motion.div>
           );
         })}
