@@ -1,7 +1,7 @@
 import Navbar from '@/components/ui/Navbar';
 import Hero from '@/components/sections/Hero';
 import CorePillars from '@/components/sections/CorePillars';
-import Programs from '@/components/sections/Programs';
+import MuAISpotlight from '@/components/sections/MuAISpotlight';
 import Partners from '@/components/sections/Partners';
 import CampusExperience from '@/components/sections/CampusExperience';
 import IACETribe from '@/components/sections/IACETribe';
@@ -13,7 +13,7 @@ export default function Home() {
       <Navbar />
       <Hero />
       <CorePillars />
-      <Programs />
+      <MuAISpotlight />
       <Partners />
       <CampusExperience />
       <IACETribe />

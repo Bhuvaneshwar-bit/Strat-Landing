@@ -18,7 +18,7 @@ export default function Navbar() {
   }, []);
 
   const navLinks = [
-    { name: 'Programs', href: '#programs' },
+    { name: 'Programs', href: '/programs' },
     { name: 'About Us', href: '#about' },
     { name: 'EDII-TN', href: '/edii-tn' },
     { name: 'Contact', href: '#contact' },
@@ -72,7 +72,7 @@ export default function Navbar() {
               transition={{ delay: 0.6 }}
             >
               <Link
-                href="#programs"
+                href="/programs"
                 className="px-6 py-2.5 bg-gradient-to-r from-red-600 to-red-500 rounded-full text-white font-medium hover:shadow-lg hover:shadow-red-500/50 transition-all duration-300 hover:scale-105"
               >
                 Get Started
@@ -110,7 +110,7 @@ export default function Navbar() {
               </Link>
             ))}
             <Link
-              href="#programs"
+              href="/programs"
               onClick={() => setIsMobileMenuOpen(false)}
               className="block px-6 py-3 bg-gradient-to-r from-red-600 to-red-500 rounded-full text-white font-medium text-center"
             >
