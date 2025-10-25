@@ -7,44 +7,44 @@ import Link from 'next/link';
 
 const agents = [
   {
-    id: 'cfo',
-    icon: TrendingUp,
-    name: 'AI CFO',
-    title: 'Your Financial Strategist',
-    description: 'Automate forecasting, budgeting, and investor reporting with intelligent financial insights.',
-    features: ['Cash flow forecasting', 'Investor reporting', 'Financial modeling', 'Budget optimization'],
-    gradient: 'from-emerald-500 to-teal-500',
-    color: 'emerald'
-  },
-  {
-    id: 'cto',
-    icon: Code,
-    name: 'AI CTO',
-    title: 'Your Technology Partner',
-    description: 'Simplify technology management, deployment strategies, and technical decision-making.',
-    features: ['Tech stack guidance', 'Architecture planning', 'Development roadmaps', 'Code review assistance'],
-    gradient: 'from-blue-500 to-cyan-500',
-    color: 'blue'
-  },
-  {
-    id: 'cmo',
-    icon: Megaphone,
-    name: 'AI CMO',
-    title: 'Your Growth Engine',
-    description: 'Automate marketing strategies, growth analytics, and customer acquisition tactics.',
-    features: ['Marketing automation', 'Growth analytics', 'Campaign optimization', 'Content strategy'],
-    gradient: 'from-purple-500 to-pink-500',
-    color: 'purple'
-  },
-  {
-    id: 'cofounder',
+    id: 'ignis',
     icon: Brain,
-    name: 'AI Co-Founder',
-    title: 'Your Strategic Advisor',
-    description: 'Get strategic insights, decision support, and holistic business guidance at every step.',
-    features: ['Strategic planning', 'Decision support', 'Business model validation', 'Market analysis'],
-    gradient: 'from-orange-500 to-red-500',
-    color: 'orange'
+    name: 'IGNIS',
+    title: 'AI Co-Founder',
+    description: 'Your thinking partner that helps you validate problems, structure your business model, and plan your go-to-market roadmap.',
+    features: ['Strategic planning', 'Business model validation', 'Market analysis', 'Go-to-market roadmap'],
+    gradient: 'from-slate-700 to-slate-900',
+    color: 'slate'
+  },
+  {
+    id: 'ledger',
+    icon: TrendingUp,
+    name: 'MU LEDGER',
+    title: 'Finance Agent',
+    description: 'Tracks expenses, forecasts revenue, analyzes unit economics, and helps founders understand their financial runway and investor metrics.',
+    features: ['Expense tracking', 'Revenue forecasting', 'Unit economics analysis', 'Investor metrics'],
+    gradient: 'from-amber-700 to-amber-900',
+    color: 'amber'
+  },
+  {
+    id: 'reach',
+    icon: Megaphone,
+    name: 'MU REACH',
+    title: 'Marketing Agent',
+    description: 'Generates campaign strategies, social media posts, content ideas, and marketing funnels — tailored for your startup stage.',
+    features: ['Campaign strategies', 'Social media content', 'Marketing funnels', 'Growth tactics'],
+    gradient: 'from-rose-700 to-rose-900',
+    color: 'rose'
+  },
+  {
+    id: 'hire',
+    icon: Target,
+    name: 'MU HIRE',
+    title: 'HR Agent',
+    description: 'Streamlines recruiting, creates job descriptions, and helps build your founding team with the right talent for your startup.',
+    features: ['Job descriptions', 'Recruiting assistance', 'Team building', 'Talent matching'],
+    gradient: 'from-red-800 to-red-950',
+    color: 'red'
   },
 ];
 
@@ -54,28 +54,17 @@ export default function MuAISpotlight() {
   const [hoveredAgent, setHoveredAgent] = useState<string | null>(null);
 
   return (
-    <section ref={ref} className="relative py-32 overflow-hidden bg-gradient-to-b from-black via-slate-950 to-black">
-      {/* Animated Background Grid */}
-      <div className="absolute inset-0 opacity-30">
+    <section ref={ref} className="relative py-32 overflow-hidden bg-black">
+      {/* Subtle Grid Background */}
+      <div className="absolute inset-0 opacity-[0.15]">
         <div className="absolute inset-0" style={{
-          backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(59, 130, 246, 0.15) 1px, transparent 0)',
+          backgroundImage: 'linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)',
           backgroundSize: '50px 50px'
         }} />
       </div>
 
-      {/* Spotlight Effect */}
-      <motion.div
-        className="absolute inset-0 pointer-events-none"
-        animate={{
-          background: [
-            'radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 50%)',
-            'radial-gradient(circle at 80% 50%, rgba(168, 85, 247, 0.15) 0%, transparent 50%)',
-            'radial-gradient(circle at 50% 80%, rgba(239, 68, 68, 0.15) 0%, transparent 50%)',
-            'radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.15) 0%, transparent 50%)',
-          ]
-        }}
-        transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
-      />
+      {/* Subtle Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-black via-red-950/5 to-black" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
@@ -90,13 +79,13 @@ export default function MuAISpotlight() {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={isInView ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-blue-600/20 via-purple-600/20 to-red-600/20 border border-white/10 rounded-full mb-8 backdrop-blur-xl"
+            className="inline-flex items-center gap-3 px-6 py-3 bg-red-600/10 border border-red-600/20 rounded-full mb-8 backdrop-blur-xl"
           >
-            <Sparkles className="w-5 h-5 text-blue-400" />
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-red-400 font-semibold text-sm">
+            <Sparkles className="w-5 h-5 text-red-400" />
+            <span className="text-red-400 font-semibold text-sm">
               STARTUP SPOTLIGHT
             </span>
-            <Zap className="w-5 h-5 text-purple-400" />
+            <Zap className="w-5 h-5 text-red-400" />
           </motion.div>
 
           {/* Main Heading */}
@@ -106,7 +95,7 @@ export default function MuAISpotlight() {
             transition={{ duration: 0.8, delay: 0.3 }}
             className="text-5xl sm:text-6xl md:text-7xl font-bold font-space-grotesk mb-6 leading-tight"
           >
-            Meet <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-red-400">μ AI</span>
+            Meet <span className="gradient-text">μ AI</span>
             <br />
             <span className="text-3xl sm:text-4xl md:text-5xl text-gray-400">The AI Co-Founder Suite</span>
           </motion.h2>
@@ -120,16 +109,16 @@ export default function MuAISpotlight() {
           >
             <p className="text-xl sm:text-2xl text-gray-300 leading-relaxed">
               Building a startup is lonely. You wear every hat — CFO, CTO, CMO, and more. 
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-400 font-semibold"> What if you didn't have to?</span>
+              <span className="text-red-400 font-semibold"> What if you didn't have to?</span>
             </p>
             <p className="text-lg text-gray-400 leading-relaxed">
               <span className="text-white font-semibold">μ AI Suite</span> is your intelligent business companion — an AI-powered team designed for early-stage founders. 
               From forecasting financials to deploying technology, from crafting marketing strategies to making critical decisions, 
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-red-400"> μ AI manages it all like never before.</span>
+              <span className="text-red-400"> μ AI manages it all like never before.</span>
             </p>
             <p className="text-lg text-gray-400 leading-relaxed">
-              It's not just AI. It's AI with <span className="text-blue-400 font-semibold">direction</span>, 
-              <span className="text-purple-400 font-semibold"> context</span>, and 
+              It's not just AI. It's AI with <span className="text-white font-semibold">direction</span>, 
+              <span className="text-gray-300 font-semibold"> context</span>, and 
               <span className="text-red-400 font-semibold"> purpose</span> — built by founders, for founders.
             </p>
           </motion.div>
@@ -158,16 +147,16 @@ export default function MuAISpotlight() {
           className="text-center mb-16"
         >
           <div className="max-w-4xl mx-auto p-12 bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-xl rounded-3xl border border-white/10">
-            <Target className="w-12 h-12 text-blue-400 mx-auto mb-6" />
+            <Target className="w-12 h-12 text-red-400 mx-auto mb-6" />
             <h3 className="text-3xl font-bold mb-6">Why μ AI Suite Matters</h3>
             <p className="text-xl text-gray-300 leading-relaxed mb-4">
-              Early-stage founders often get stuck between <span className="text-blue-400 font-semibold">ideas</span> and 
-              <span className="text-purple-400 font-semibold"> execution</span>. 
+              Early-stage founders often get stuck between <span className="text-white font-semibold">ideas</span> and 
+              <span className="text-red-400 font-semibold"> execution</span>. 
             </p>
             <p className="text-lg text-gray-400 leading-relaxed">
               μ AI Suite closes that gap — combining StratSchool's startup expertise with intelligent automation 
               that supports founders across every domain. At every step of your startup journey, 
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-purple-400 to-red-400 font-semibold"> μ AI is here.</span>
+              <span className="text-red-400 font-semibold"> μ AI is here.</span>
             </p>
           </div>
         </motion.div>
@@ -183,17 +172,8 @@ export default function MuAISpotlight() {
             href="https://www.stratschool.org/mu-ai-suite"
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative px-12 py-5 bg-gradient-to-r from-blue-600 via-purple-600 to-red-600 rounded-2xl text-white font-bold text-lg hover:shadow-2xl hover:shadow-purple-500/50 transition-all duration-500 hover:scale-105 flex items-center gap-3 overflow-hidden"
+            className="group relative px-12 py-5 bg-gradient-to-r from-red-600 to-red-500 rounded-2xl text-white font-bold text-lg hover:shadow-2xl hover:shadow-red-500/50 transition-all duration-500 hover:scale-105 flex items-center gap-3"
           >
-            {/* Animated Background */}
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-red-600"
-              animate={{
-                backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-              }}
-              transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
-              style={{ backgroundSize: '200% 200%' }}
-            />
             <span className="relative flex items-center gap-3">
               <Rocket className="w-6 h-6" />
               Learn More About μ AI
@@ -262,9 +242,9 @@ function AgentCard({
     >
       {/* Neon Glow */}
       <motion.div
-        className={`absolute -inset-1 bg-gradient-to-r ${agent.gradient} rounded-3xl blur-xl opacity-0 group-hover:opacity-50 transition-opacity duration-700`}
+        className={`absolute -inset-1 bg-gradient-to-r ${agent.gradient} rounded-3xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-700`}
         animate={{
-          opacity: isHovered ? 0.5 : 0,
+          opacity: isHovered ? 0.3 : 0,
         }}
       />
 
