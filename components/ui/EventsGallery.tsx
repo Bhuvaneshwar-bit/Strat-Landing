@@ -148,26 +148,6 @@ function GalleryCard({
           />
         </div>
 
-        {/* Content */}
-        <div className="relative p-6 z-20">
-          <motion.h3
-            className="text-xl font-bold text-white mb-2 group-hover:text-red-400 transition-colors duration-300"
-            style={{
-              transform: isHovered ? 'translateZ(50px)' : 'translateZ(0)',
-            }}
-          >
-            {event.text}
-          </motion.h3>
-
-          {/* Decorative Line */}
-          <motion.div
-            className="h-1 bg-gradient-to-r from-red-500 to-orange-500 rounded-full"
-            initial={{ width: 0 }}
-            animate={{ width: isHovered ? '100%' : '40px' }}
-            transition={{ duration: 0.4 }}
-          />
-        </div>
-
         {/* Corner Accent */}
         <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-red-500/20 to-transparent rounded-bl-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
       </div>
