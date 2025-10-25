@@ -22,27 +22,31 @@ export default function BackgroundTransition({ images, interval = 6000 }: Backgr
 
   return (
     <div className="absolute inset-0 z-0">
-      <AnimatePresence mode="wait">
+      {/* Always render all images, but only show one at a time */}
+      {images.map((image, index) => (
         <motion.div
-          key={currentIndex}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
+          key={index}
+          initial={false}
+          animate={{ 
+            opacity: currentIndex === index ? 1 : 0,
+            zIndex: currentIndex === index ? 1 : 0
+          }}
           transition={{ duration: 1.5, ease: "easeInOut" }}
           className="absolute inset-0"
         >
           <Image
-            src={images[currentIndex]}
-            alt={`Background ${currentIndex + 1}`}
+            src={image}
+            alt={`Background ${index + 1}`}
             fill
-            priority={currentIndex === 0}
+            priority={index === 0}
             quality={90}
             className="object-cover"
+            loading={index === 0 ? "eager" : "lazy"}
           />
           {/* Dark overlay for text readability */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/80" />
         </motion.div>
-      </AnimatePresence>
+      ))}
     </div>
   );
 }
