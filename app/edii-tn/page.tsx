@@ -7,7 +7,7 @@ import Link from 'next/link';
 import Navbar from '@/components/ui/Navbar';
 import Footer from '@/components/sections/Footer';
 import BackgroundTransition from '@/components/animations/BackgroundTransition';
-import EventsCarousel from '@/components/ui/EventsCarousel';
+import CircularGallery from '@/components/animations/CircularGallery';
 
 const upcomingEvents = [
   {
@@ -38,33 +38,23 @@ const upcomingEvents = [
 
 const pastEvents = [
   {
-    title: 'Campus Innovation Summit 2024',
-    date: 'Sept 2024',
-    attendees: '500+',
+    text: 'Campus Innovation Summit 2024',
     image: '/images/edii-1.png'
   },
   {
-    title: 'Startup Weekend Chennai',
-    date: 'Aug 2024',
-    attendees: '300+',
+    text: 'Startup Weekend Chennai',
     image: '/images/edii-2 (2).JPG'
   },
   {
-    title: 'Entrepreneurship Workshop',
-    date: 'July 2024',
-    attendees: '200+',
+    text: 'Entrepreneurship Workshop',
     image: '/images/edii-3 (2).JPG'
   },
   {
-    title: 'Pitch Competition Finals',
-    date: 'June 2024',
-    attendees: '150+',
+    text: 'Pitch Competition Finals',
     image: '/images/edii-4.JPG'
   },
   {
-    title: 'Innovation Bootcamp',
-    date: 'May 2024',
-    attendees: '250+',
+    text: 'Innovation Bootcamp',
     image: '/images/edii-5.png'
   },
 ];
@@ -340,7 +330,7 @@ function UpcomingEventsSection({ events }: { events: Array<{ event: string; type
   );
 }
 
-function PastEventsSection({ events }: { events: Array<{ title: string; date: string; attendees: string; image: string }> }) {
+function PastEventsSection({ events }: { events: Array<{ text: string; image: string }> }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
@@ -361,20 +351,20 @@ function PastEventsSection({ events }: { events: Array<{ title: string; date: st
           </p>
         </motion.div>
 
-        {/* Carousel */}
+        {/* Circular Gallery */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="flex justify-center"
+          style={{ height: '600px', position: 'relative' }}
         >
-          <EventsCarousel 
-            events={events}
-            baseWidth={420}
-            autoplay={true}
-            autoplayDelay={4000}
-            pauseOnHover={true}
-            loop={true}
+          <CircularGallery 
+            items={events}
+            bend={3}
+            textColor="#ffffff"
+            borderRadius={0.05}
+            scrollEase={0.02}
+            scrollSpeed={2}
           />
         </motion.div>
       </div>
