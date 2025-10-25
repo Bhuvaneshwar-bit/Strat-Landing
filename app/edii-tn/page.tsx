@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import { Calendar, MapPin, Users, Sparkles, Award, Rocket, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import Navbar from '@/components/ui/Navbar';
@@ -72,6 +72,26 @@ const impactStats = [
 export default function EDIITNPage() {
   const heroRef = useRef(null);
   const isHeroInView = useInView(heroRef, { once: true });
+
+  // Preload background images immediately
+  useEffect(() => {
+    const link1 = document.createElement('link');
+    link1.rel = 'preload';
+    link1.as = 'image';
+    link1.href = '/images/one.JPG';
+    document.head.appendChild(link1);
+
+    const link2 = document.createElement('link');
+    link2.rel = 'preload';
+    link2.as = 'image';
+    link2.href = '/images/two.JPG';
+    document.head.appendChild(link2);
+
+    return () => {
+      document.head.removeChild(link1);
+      document.head.removeChild(link2);
+    };
+  }, []);
 
   return (
     <main className="min-h-screen bg-black text-white">
