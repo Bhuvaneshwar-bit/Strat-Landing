@@ -26,7 +26,7 @@ interface EventsCarouselProps {
 
 export default function EventsCarousel({
   events,
-  baseWidth = 380,
+  baseWidth = 600,
   autoplay = true,
   autoplayDelay = 4000,
   pauseOnHover = true,
@@ -146,7 +146,7 @@ export default function EventsCarousel({
               className="relative flex-shrink-0 overflow-hidden rounded-2xl cursor-grab active:cursor-grabbing"
               style={{
                 width: itemWidth,
-                height: '500px',
+                height: '600px',
                 rotateY: rotateY,
               }}
               transition={effectiveTransition}
@@ -155,13 +155,13 @@ export default function EventsCarousel({
               <img
                 src={event.image}
                 alt={event.title}
-                className="w-full h-full object-cover rounded-2xl"
+                className="w-full h-full object-contain rounded-2xl bg-black/20"
                 loading="eager"
                 style={{
                   display: 'block',
                   width: '100%',
                   height: '100%',
-                  objectFit: 'cover',
+                  objectFit: 'contain',
                 }}
               />
             </motion.div>
@@ -175,13 +175,13 @@ export default function EventsCarousel({
           {events.map((_, index) => (
             <motion.div
               key={index}
-              className={`h-2 rounded-full cursor-pointer transition-all duration-300 ${
+              className={`h-1.5 rounded-full cursor-pointer transition-all duration-300 ${
                 currentIndex % events.length === index 
-                  ? 'bg-red-500 w-8' 
-                  : 'bg-white/20 w-2 hover:bg-white/40'
+                  ? 'bg-red-500 w-6' 
+                  : 'bg-white/20 w-1.5 hover:bg-white/40'
               }`}
               animate={{
-                scale: currentIndex % events.length === index ? 1.2 : 1
+                scale: currentIndex % events.length === index ? 1 : 1
               }}
               onClick={() => setCurrentIndex(index)}
               transition={{ duration: 0.15 }}
