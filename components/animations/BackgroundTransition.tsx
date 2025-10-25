@@ -1,10 +1,20 @@
 'use client';
 
+import { useEffect } from 'react';
+
 interface BackgroundTransitionProps {
   images: string[];
 }
 
 export default function BackgroundTransition({ images }: BackgroundTransitionProps) {
+  // Preload images immediately
+  useEffect(() => {
+    images.forEach(src => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, [images]);
+
   return (
     <div className="absolute inset-0 z-0">
       {/* Display only the first image */}
@@ -14,6 +24,7 @@ export default function BackgroundTransition({ images }: BackgroundTransitionPro
           src={images[0]}
           alt="Background"
           className="w-full h-full object-cover"
+          loading="eager"
           style={{
             display: 'block',
             width: '100%',
