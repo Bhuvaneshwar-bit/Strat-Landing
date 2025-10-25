@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useMemo } from 'react';
 import { Lightbulb, Rocket, GraduationCap, ArrowRight, Check } from 'lucide-react';
 import Link from 'next/link';
 
@@ -58,6 +58,17 @@ export default function Programs() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
+  // Memoize animation variants
+  const cardVariants = useMemo(() => ({
+    initial: { opacity: 0, y: 50 },
+    animate: { opacity: 1, y: 0 },
+  }), []);
+
+  const headerVariants = useMemo(() => ({
+    initial: { opacity: 0, y: 50 },
+    animate: { opacity: 1, y: 0 },
+  }), []);
+
   return (
     <section id="programs" ref={ref} className="relative py-32 bg-black overflow-hidden">
       {/* Background Elements */}
@@ -68,15 +79,16 @@ export default function Programs() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <motion.div
-          initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
+          variants={headerVariants}
+          initial="initial"
+          animate={isInView ? "animate" : "initial"}
+          transition={{ duration: 0.6 }}
           className="text-center mb-20"
         >
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.6 }}
+            animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.5 }}
             className="inline-block px-4 py-2 bg-red-600/20 border border-red-600/30 rounded-full mb-6"
           >
             <span className="text-red-400 font-semibold text-sm">OUR FLAGSHIP PROGRAMS</span>
@@ -99,9 +111,10 @@ export default function Programs() {
             return (
               <motion.div
                 key={program.name}
-                initial={{ opacity: 0, y: 50 }}
-                animate={isInView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
+                variants={cardVariants}
+                initial="initial"
+                animate={isInView ? "animate" : "initial"}
+                transition={{ duration: 0.5, delay: index * 0.15 }}
                 className="group relative"
               >
                 {/* Glow Effect */}
@@ -152,8 +165,8 @@ export default function Programs() {
         {/* Bottom CTA */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.8 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
           className="text-center"
         >
           <p className="text-gray-400 mb-6">

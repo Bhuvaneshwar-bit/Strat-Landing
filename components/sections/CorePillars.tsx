@@ -109,69 +109,32 @@ export default function CorePillars() {
                 key={pillar.id}
                 initial={{ 
                   opacity: 0, 
-                  y: 100,
-                  rotateX: 90,
-                  rotateY: isLeft ? -45 : 45,
-                  rotateZ: isLeft ? -10 : 10,
-                  scale: 0.6
+                  y: 80,
+                  scale: 0.85
                 }}
                 whileInView={{ 
                   opacity: 1, 
                   y: 0,
-                  rotateX: 0,
-                  rotateY: 0,
-                  rotateZ: 0,
                   scale: 1
                 }}
                 transition={{
-                  duration: 1.4,
+                  duration: 0.8,
                   delay: 0.1,
                   ease: [0.16, 1, 0.3, 1],
-                  rotateX: {
-                    duration: 1.2,
-                    ease: [0.16, 1, 0.3, 1]
-                  },
-                  rotateY: {
-                    duration: 1.3,
-                    ease: [0.16, 1, 0.3, 1]
-                  },
-                  rotateZ: {
-                    duration: 1.1,
-                    ease: [0.16, 1, 0.3, 1]
-                  }
                 }}
-                viewport={{ once: true, margin: '-200px' }}
+                viewport={{ once: true, margin: '-100px' }}
                 className={`flex ${isLeft ? 'justify-start' : 'justify-end'}`}
-                style={{
-                  transformStyle: 'preserve-3d',
-                  perspective: '2000px',
-                }}
               >
                 <motion.div
-                  initial={{
-                    rotateY: isLeft ? -25 : 25,
-                    z: -100
-                  }}
-                  whileInView={{
-                    rotateY: 0,
-                    z: 0
-                  }}
-                  transition={{
-                    duration: 1,
-                    delay: 0.3,
-                    ease: [0.16, 1, 0.3, 1]
-                  }}
-                  viewport={{ once: true }}
                   whileHover={{ 
                     y: -10,
-                    rotateY: isLeft ? 5 : -5,
                     scale: 1.02,
-                    z: 50
+                  }}
+                  transition={{
+                    duration: 0.3,
+                    ease: 'easeOut',
                   }}
                   className="group relative w-full max-w-md"
-                  style={{
-                    transformStyle: 'preserve-3d',
-                  }}
                 >
                   {/* Elegant Glow */}
                   <motion.div

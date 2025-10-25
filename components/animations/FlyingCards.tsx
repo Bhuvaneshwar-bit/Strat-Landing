@@ -106,6 +106,7 @@ export default function FlyingCards({ items, className = '' }: FlyingCardsProps)
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number | null>(null);
   const scrollRef = useRef({ current: 0, target: 0, ease: 0.05 });
+  const resizeTimeoutRef = useRef<NodeJS.Timeout | undefined>(undefined);
 
   useEffect(() => {
     if (!containerRef.current || !canvasRef.current || items.length === 0) return;
@@ -113,12 +114,15 @@ export default function FlyingCards({ items, className = '' }: FlyingCardsProps)
     const container = containerRef.current;
     const canvas = canvasRef.current;
 
-    // Initialize WebGL
+    // Reduce DPR for better performance (max 1.5 instead of 2)
+    const dpr = Math.min(window.devicePixelRatio, 1.5);
+
+    // Initialize WebGL with performance optimizations
     const renderer = new Renderer({
       canvas,
       alpha: true,
-      antialias: true,
-      dpr: Math.min(window.devicePixelRatio, 2),
+      antialias: false, // Disable antialiasing for better performance
+      dpr,
     });
     const gl = renderer.gl;
     gl.clearColor(0, 0, 0, 0);
@@ -129,10 +133,10 @@ export default function FlyingCards({ items, className = '' }: FlyingCardsProps)
 
     const scene = new Transform();
 
-    // Create geometry
+    // Create geometry with reduced segments
     const geometry = new Plane(gl, {
       heightSegments: 1,
-      widthSegments: 100,
+      widthSegments: 50, // Reduced from 100
     });
 
     // Create meshes for each card
@@ -170,16 +174,25 @@ export default function FlyingCards({ items, className = '' }: FlyingCardsProps)
 
       const img = new Image();
       img.crossOrigin = 'anonymous';
+      // Optimize image loading with decode
       img.src = src;
       img.onload = () => {
-        texture.image = img;
-        program.uniforms.uImageSize.value = [img.naturalWidth, img.naturalHeight];
+        const loadImage = () => {
+          texture.image = img;
+          program.uniforms.uImageSize.value = [img.naturalWidth, img.naturalHeight];
+        };
+
+        if ('decode' in img && typeof img.decode === 'function') {
+          img.decode().then(loadImage).catch(loadImage);
+        } else {
+          loadImage();
+        }
       };
 
       meshes.push({ mesh, program, index, extra: 0 });
     });
 
-    // Handle resize
+    // Handle resize with debouncing
     const onResize = () => {
       const rect = container.getBoundingClientRect();
       const screen = { width: rect.width, height: rect.height };
@@ -212,8 +225,15 @@ export default function FlyingCards({ items, className = '' }: FlyingCardsProps)
       });
     };
 
+    const debouncedResize = () => {
+      if (resizeTimeoutRef.current) {
+        clearTimeout(resizeTimeoutRef.current);
+      }
+      resizeTimeoutRef.current = setTimeout(onResize, 150);
+    };
+
     onResize();
-    window.addEventListener('resize', onResize);
+    window.addEventListener('resize', debouncedResize, { passive: true });
 
     // Handle wheel
     const onWheel = (e: WheelEvent) => {
@@ -223,51 +243,71 @@ export default function FlyingCards({ items, className = '' }: FlyingCardsProps)
 
     canvas.addEventListener('wheel', onWheel, { passive: false });
 
-    // Animation loop
-    const animate = () => {
-      scrollRef.current.current = lerp(
-        scrollRef.current.current,
-        scrollRef.current.target,
-        scrollRef.current.ease
-      );
+    // Animation loop - throttled for better performance
+    let lastTime = 0;
+    const targetFPS = 60;
+    const frameTime = 1000 / targetFPS;
 
-      meshes.forEach((item) => {
-        const { mesh, program } = item;
-        mesh.position.x = item.x - scrollRef.current.current - item.extra;
+    const animate = (currentTime: number) => {
+      const deltaTime = currentTime - lastTime;
 
-        const position = mesh.position.x;
-        const normalizedPos = (position + 20) / 40;
-        program.uniforms.uPosition.value = normalizedPos * 100;
+      // Throttle to target FPS
+      if (deltaTime >= frameTime) {
+        lastTime = currentTime - (deltaTime % frameTime);
 
-        const viewport = 20;
-        const meshWidth = item.meshWidth;
+        scrollRef.current.current = lerp(
+          scrollRef.current.current,
+          scrollRef.current.target,
+          scrollRef.current.ease
+        );
 
-        if (mesh.position.x + meshWidth / 2 < -viewport) {
-          item.extra -= item.widthTotal;
-        } else if (mesh.position.x - meshWidth / 2 > viewport) {
-          item.extra += item.widthTotal;
-        }
-      });
+        meshes.forEach((item) => {
+          const { mesh, program } = item;
+          mesh.position.x = item.x - scrollRef.current.current - item.extra;
 
-      renderer.render({ scene, camera });
+          const position = mesh.position.x;
+          const normalizedPos = (position + 20) / 40;
+          program.uniforms.uPosition.value = normalizedPos * 100;
+
+          const viewport = 20;
+          const meshWidth = item.meshWidth;
+
+          if (mesh.position.x + meshWidth / 2 < -viewport) {
+            item.extra -= item.widthTotal;
+          } else if (mesh.position.x - meshWidth / 2 > viewport) {
+            item.extra += item.widthTotal;
+          }
+        });
+
+        renderer.render({ scene, camera });
+      }
+
       animationRef.current = requestAnimationFrame(animate);
     };
 
-    animate();
+    animationRef.current = requestAnimationFrame(animate);
 
     // Cleanup
     return () => {
-      window.removeEventListener('resize', onResize);
+      window.removeEventListener('resize', debouncedResize);
       canvas.removeEventListener('wheel', onWheel);
+      if (resizeTimeoutRef.current) {
+        clearTimeout(resizeTimeoutRef.current);
+      }
       if (animationRef.current) {
         cancelAnimationFrame(animationRef.current);
       }
+      // Cleanup WebGL resources
+      meshes.forEach(({ mesh }) => {
+        mesh.geometry?.remove();
+        mesh.program?.remove();
+      });
     };
   }, [items]);
 
   return (
     <div ref={containerRef} className={`relative w-full h-full ${className}`}>
-      <canvas ref={canvasRef} className="w-full h-full" />
+      <canvas ref={canvasRef} className="w-full h-full" style={{ willChange: 'transform' }} />
     </div>
   );
 }
