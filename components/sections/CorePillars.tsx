@@ -42,10 +42,6 @@ const pillars = [
 
 export default function CorePillars() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end end']
-  });
 
   return (
     <section id="about" ref={containerRef} className="relative bg-black overflow-hidden">
@@ -105,25 +101,17 @@ export default function CorePillars() {
           </motion.p>
         </motion.div>
 
-        {/* Stacking Cards */}
-        <div className="relative h-[400vh]">
+        {/* Stacking Cards - Optimized */}
+        <div className="relative py-20">
           {pillars.map((pillar, index) => {
             const Icon = pillar.icon;
-            const targetScale = 1 - ((pillars.length - index) * 0.05);
-            const cardRange: [number, number] = [
-              index / pillars.length,
-              (index + 1) / pillars.length
-            ];
-
+            
             return (
               <Card
                 key={pillar.id}
                 pillar={pillar}
                 Icon={Icon}
                 index={index}
-                range={cardRange}
-                targetScale={targetScale}
-                progress={scrollYProgress}
               />
             );
           })}
@@ -161,32 +149,31 @@ interface CardProps {
   pillar: typeof pillars[0];
   Icon: any;
   index: number;
-  range: [number, number];
-  targetScale: number;
-  progress: any;
 }
 
-function Card({ pillar, Icon, index, range, targetScale, progress }: CardProps) {
+function Card({ pillar, Icon, index }: CardProps) {
   const cardRef = useRef<HTMLDivElement>(null);
   
-  const scale = useTransform(progress, range, [1, targetScale]);
-  const opacity = useTransform(
-    progress,
-    [range[0] - 0.1, range[0], range[1], range[1] + 0.1],
-    [0, 1, 1, 0.7]
-  );
+  const { scrollYProgress } = useScroll({
+    target: cardRef,
+    offset: ["start end", "start start"]
+  });
+
+  const scale = useTransform(scrollYProgress, [0, 1], [0.85, 1]);
+  const opacity = useTransform(scrollYProgress, [0, 0.5, 1], [0, 1, 1]);
 
   return (
-    <div className="sticky top-20 flex items-center justify-center px-4 sm:px-6 lg:px-8 pb-20">
-      <motion.div
-        ref={cardRef}
-        style={{
-          scale,
-          opacity,
-          top: `calc(5rem + ${index * 25}px)`,
-        }}
-        className="group relative w-full max-w-2xl origin-top"
-      >
+    <motion.div
+      ref={cardRef}
+      style={{ 
+        scale, 
+        opacity,
+        top: `calc(6rem + ${index * 2}rem)`,
+        willChange: 'transform, opacity',
+      }}
+      className="sticky flex items-center justify-center px-4 sm:px-6 lg:px-8 h-screen"
+    >
+      <div className="group relative w-full max-w-2xl">
         {/* Elegant Glow */}
         <div className="absolute -inset-2 bg-gradient-to-br from-red-600/30 to-red-500/30 rounded-3xl blur-2xl opacity-0 group-hover:opacity-100 transition-all duration-700" />
 
@@ -207,20 +194,9 @@ function Card({ pillar, Icon, index, range, targetScale, progress }: CardProps) 
 
           <div className="relative p-10 sm:p-12">
             {/* Icon */}
-            <motion.div
-              initial={{ scale: 0, rotate: -180 }}
-              animate={{ scale: 1, rotate: 0 }}
-              transition={{ 
-                duration: 0.8, 
-                delay: index * 0.1,
-                type: 'spring',
-                stiffness: 200
-              }}
-              whileHover={{ scale: 1.1, rotate: 10 }}
-              className="mb-6 p-5 bg-gradient-to-br from-red-600/20 via-red-500/10 to-transparent rounded-2xl w-fit border border-red-500/20 shadow-lg"
-            >
+            <div className="mb-6 p-5 bg-gradient-to-br from-red-600/20 via-red-500/10 to-transparent rounded-2xl w-fit border border-red-500/20 shadow-lg transition-transform hover:scale-110">
               <Icon className="w-10 h-10 text-red-400" strokeWidth={1.5} />
-            </motion.div>
+            </div>
 
             {/* Content */}
             <div>
@@ -237,27 +213,15 @@ function Card({ pillar, Icon, index, range, targetScale, progress }: CardProps) 
           {/* Elegant bottom glass border accent */}
           <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-red-500/40 to-transparent" />
 
-          {/* Premium hover glow effect */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileHover={{ opacity: 1 }}
-            transition={{ duration: 0.4 }}
-            className="absolute inset-0 rounded-3xl pointer-events-none"
-          >
-            <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-red-500/30 via-red-400/20 to-red-500/30 p-[2px] blur-sm">
-              <div className="h-full w-full bg-transparent rounded-3xl" />
-            </div>
-          </motion.div>
+          {/* Premium hover glow effect - simplified */}
+          <div className="absolute inset-0 rounded-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-400">
+            <div className="absolute inset-0 rounded-3xl bg-gradient-to-r from-red-500/20 via-red-400/10 to-red-500/20 blur-sm" />
+          </div>
 
-          {/* Inner glow on hover */}
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileHover={{ opacity: 1 }}
-            transition={{ duration: 0.4 }}
-            className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent rounded-3xl pointer-events-none"
-          />
+          {/* Inner glow on hover - simplified */}
+          <div className="absolute inset-0 bg-gradient-to-br from-red-500/5 to-transparent rounded-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
         </div>
-      </motion.div>
-    </div>
+      </div>
+    </motion.div>
   );
 }
