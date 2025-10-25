@@ -67,6 +67,19 @@ const programs = [
   },
 ];
 
+interface Program {
+  id: string;
+  icon: React.ComponentType<{ className?: string }>;
+  name: string;
+  duration: string;
+  tagline: string;
+  gradient: string;
+  description: string;
+  features: string[];
+  cta: string;
+  link: string;
+}
+
 export default function ProgramsPage() {
   const heroRef = useRef(null);
   const isHeroInView = useInView(heroRef, { once: true });
@@ -136,7 +149,7 @@ export default function ProgramsPage() {
   );
 }
 
-function ProgramsSection({ programs }: { programs: typeof programs }) {
+function ProgramsSection({ programs }: { programs: Program[] }) {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
@@ -144,7 +157,7 @@ function ProgramsSection({ programs }: { programs: typeof programs }) {
     <section ref={ref} className="relative py-32 overflow-hidden">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {programs.map((program, index) => {
+          {programs.map((program: Program, index: number) => {
             const Icon = program.icon;
             return (
               <motion.div
@@ -179,7 +192,7 @@ function ProgramsSection({ programs }: { programs: typeof programs }) {
 
                     {/* Features */}
                     <ul className="space-y-3 mb-8">
-                      {program.features.map((feature, i) => (
+                      {program.features.map((feature: string, i: number) => (
                         <li key={i} className="flex items-start gap-3 text-sm text-gray-300">
                           <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${program.gradient} mt-2 flex-shrink-0`} />
                           <span>{feature}</span>
