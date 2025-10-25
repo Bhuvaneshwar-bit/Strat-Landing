@@ -6,6 +6,7 @@ import { Calendar, MapPin, Users, Sparkles, Award, Rocket, ArrowRight } from 'lu
 import Link from 'next/link';
 import Navbar from '@/components/ui/Navbar';
 import Footer from '@/components/sections/Footer';
+import BackgroundTransition from '@/components/animations/BackgroundTransition';
 
 const upcomingEvents = [
   {
@@ -78,12 +79,11 @@ export default function EDIITNPage() {
       
       {/* Hero Section */}
       <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-        {/* Animated Background */}
-        <div className="absolute inset-0 z-0">
-          <div className="absolute top-20 left-10 w-96 h-96 bg-red-600/20 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-red-500/20 rounded-full blur-3xl animate-pulse delay-1000" />
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-red-700/10 rounded-full blur-3xl" />
-        </div>
+        {/* Smooth Background Image Transition */}
+        <BackgroundTransition 
+          images={['/images/one.JPG', '/images/two.JPG']} 
+          interval={6000}
+        />
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
           <motion.div
