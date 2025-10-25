@@ -7,6 +7,7 @@ import Link from 'next/link';
 import Navbar from '@/components/ui/Navbar';
 import Footer from '@/components/sections/Footer';
 import BackgroundTransition from '@/components/animations/BackgroundTransition';
+import EventsCarousel from '@/components/ui/EventsCarousel';
 
 const upcomingEvents = [
   {
@@ -349,47 +350,27 @@ function PastEventsSection({ events }: { events: Array<{ title: string; date: st
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold font-space-grotesk mb-6">
             <span className="gradient-text">Past Events</span> Gallery
           </h2>
-          <p className="text-xl text-gray-400">
+          <p className="text-xl text-gray-400 mb-12">
             Highlights from our journey of innovation
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {events.map((event, index) => (
-            <motion.div
-              key={event.title}
-              initial={{ opacity: 0, y: 30 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group relative"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-red-600/20 to-red-500/20 rounded-3xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              
-              <div className="relative glass-effect rounded-3xl border border-white/10 hover:border-red-600/30 transition-all duration-300 overflow-hidden">
-                {/* Placeholder for image */}
-                <div className="aspect-video bg-gradient-to-br from-red-600/20 to-red-900/20 flex items-center justify-center">
-                  <Award className="w-16 h-16 text-red-400/50" />
-                </div>
-                
-                <div className="p-6">
-                  <h3 className="text-xl sm:text-2xl font-bold text-white mb-3 group-hover:text-red-400 transition-colors">
-                    {event.title}
-                  </h3>
-                  <div className="flex items-center justify-between text-sm text-gray-400">
-                    <div className="flex items-center gap-2">
-                      <Calendar className="w-4 h-4 text-red-400" />
-                      {event.date}
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Users className="w-4 h-4 text-red-400" />
-                      {event.attendees} Attendees
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          ))}
-        </div>
+        {/* Carousel */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : {}}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="flex justify-center"
+        >
+          <EventsCarousel 
+            events={events}
+            baseWidth={420}
+            autoplay={true}
+            autoplayDelay={4000}
+            pauseOnHover={true}
+            loop={true}
+          />
+        </motion.div>
       </div>
     </section>
   );
