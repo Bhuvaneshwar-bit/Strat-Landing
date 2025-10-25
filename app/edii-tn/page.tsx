@@ -161,9 +161,6 @@ export default function EDIITNPage() {
         </div>
       </section>
 
-      {/* Impact Stats */}
-      <ImpactSection stats={impactStats} />
-
       {/* Upcoming Events */}
       <UpcomingEventsSection events={upcomingEvents} />
 
