@@ -13,8 +13,8 @@ const agents = [
     title: 'AI Co-Founder',
     description: 'Your thinking partner that helps you validate problems, structure your business model, and plan your go-to-market roadmap.',
     features: ['Strategic planning', 'Business model validation', 'Market analysis', 'Go-to-market roadmap'],
-    gradient: 'from-slate-700 to-slate-900',
-    color: 'slate'
+    iconBg: 'bg-slate-800',
+    iconColor: 'text-slate-200'
   },
   {
     id: 'ledger',
@@ -23,8 +23,8 @@ const agents = [
     title: 'Finance Agent',
     description: 'Tracks expenses, forecasts revenue, analyzes unit economics, and helps founders understand their financial runway and investor metrics.',
     features: ['Expense tracking', 'Revenue forecasting', 'Unit economics analysis', 'Investor metrics'],
-    gradient: 'from-amber-700 to-amber-900',
-    color: 'amber'
+    iconBg: 'bg-orange-600',
+    iconColor: 'text-white'
   },
   {
     id: 'reach',
@@ -33,8 +33,8 @@ const agents = [
     title: 'Marketing Agent',
     description: 'Generates campaign strategies, social media posts, content ideas, and marketing funnels — tailored for your startup stage.',
     features: ['Campaign strategies', 'Social media content', 'Marketing funnels', 'Growth tactics'],
-    gradient: 'from-rose-700 to-rose-900',
-    color: 'rose'
+    iconBg: 'bg-rose-700',
+    iconColor: 'text-white'
   },
   {
     id: 'hire',
@@ -43,8 +43,8 @@ const agents = [
     title: 'HR Agent',
     description: 'Streamlines recruiting, creates job descriptions, and helps build your founding team with the right talent for your startup.',
     features: ['Job descriptions', 'Recruiting assistance', 'Team building', 'Talent matching'],
-    gradient: 'from-red-800 to-red-950',
-    color: 'red'
+    iconBg: 'bg-red-800',
+    iconColor: 'text-white'
   },
 ];
 
@@ -202,108 +202,73 @@ function AgentCard({
   onLeave: () => void;
 }) {
   const Icon = agent.icon;
-  const cardRef = useRef<HTMLDivElement>(null);
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  const rotateX = useTransform(mouseY, [-0.5, 0.5], [5, -5]);
-  const rotateY = useTransform(mouseX, [-0.5, 0.5], [-5, 5]);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    mouseX.set((e.clientX - centerX) / rect.width);
-    mouseY.set((e.clientY - centerY) / rect.height);
-  };
-
-  const handleMouseLeave = () => {
-    mouseX.set(0);
-    mouseY.set(0);
-    onLeave();
-  };
 
   return (
     <motion.div
-      ref={cardRef}
       initial={{ opacity: 0, y: 50 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay: 0.5 + index * 0.1 }}
-      onMouseMove={handleMouseMove}
       onMouseEnter={onHover}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        rotateX: isHovered ? rotateX : 0,
-        rotateY: isHovered ? rotateY : 0,
-        transformStyle: 'preserve-3d',
+      onMouseLeave={onLeave}
+      whileHover={{ 
+        y: -8,
+        transition: { duration: 0.3, ease: 'easeOut' }
       }}
       className="group relative cursor-pointer"
     >
-      {/* Neon Glow */}
-      <motion.div
-        className={`absolute -inset-1 bg-gradient-to-r ${agent.gradient} rounded-3xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-700`}
+      {/* Card with Fey-inspired hover effect */}
+      <motion.div 
+        className="relative h-full p-8 bg-zinc-900/50 backdrop-blur-sm rounded-3xl border border-zinc-800/50 overflow-hidden transition-all duration-300"
         animate={{
-          opacity: isHovered ? 0.3 : 0,
+          boxShadow: isHovered 
+            ? '0 20px 40px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1)' 
+            : '0 4px 12px -4px rgba(0, 0, 0, 0.3)',
         }}
-      />
-
-      {/* Card */}
-      <div className="relative h-full p-8 bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-xl rounded-3xl border border-white/10 overflow-hidden transition-all duration-500 group-hover:border-white/30">
-        {/* Shimmer Effect */}
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent"
-          animate={{
-            x: isHovered ? ['0%', '200%'] : '0%',
-          }}
-          transition={{
-            duration: 1.5,
-            ease: 'easeInOut',
-          }}
-          style={{
-            transform: 'translateX(-100%) skewX(-20deg)',
-          }}
-        />
-
+        transition={{ duration: 0.3 }}
+      >
         {/* Content */}
         <div className="relative">
-          {/* Icon */}
+          {/* Icon - Fey style */}
           <motion.div
-            className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-r ${agent.gradient} mb-6`}
+            className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl ${agent.iconBg} mb-6 shadow-lg`}
             animate={{
-              scale: isHovered ? 1.1 : 1,
-              rotate: isHovered ? 5 : 0,
+              scale: isHovered ? 1.05 : 1,
             }}
             transition={{ duration: 0.3 }}
           >
-            <Icon className="w-8 h-8 text-white" />
+            <Icon className={`w-8 h-8 ${agent.iconColor}`} strokeWidth={2} />
           </motion.div>
 
-          <h3 className="text-2xl font-bold mb-2">{agent.name}</h3>
-          <p className={`text-lg font-semibold bg-gradient-to-r ${agent.gradient} bg-clip-text text-transparent mb-4`}>
+          <h3 className="text-2xl font-bold mb-2 text-white">{agent.name}</h3>
+          <p className="text-base font-medium text-gray-400 mb-4">
             {agent.title}
           </p>
-          <p className="text-gray-400 mb-6 leading-relaxed">
+          <p className="text-gray-500 mb-6 leading-relaxed text-[15px]">
             {agent.description}
           </p>
 
           {/* Features */}
-          <ul className="space-y-2">
+          <ul className="space-y-2.5">
             {agent.features.map((feature, i) => (
               <motion.li
                 key={i}
                 initial={{ opacity: 0, x: -10 }}
                 animate={isInView ? { opacity: 1, x: 0 } : {}}
                 transition={{ duration: 0.4, delay: 0.7 + index * 0.1 + i * 0.05 }}
-                className="flex items-center gap-3 text-sm text-gray-300"
+                className="flex items-center gap-3 text-sm text-gray-400"
               >
-                <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${agent.gradient}`} />
+                <div className="w-1 h-1 rounded-full bg-gray-600" />
                 <span>{feature}</span>
               </motion.li>
             ))}
           </ul>
         </div>
-      </div>
+
+        {/* Subtle hover gradient overlay */}
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+        />
+      </motion.div>
     </motion.div>
   );
 }
