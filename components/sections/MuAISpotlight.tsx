@@ -202,29 +202,41 @@ function AgentCard({
   onLeave: () => void;
 }) {
   const Icon = agent.icon;
+  const cardRef = useRef(null);
+  const isCardInView = useInView(cardRef, { 
+    once: true, 
+    amount: 0.3,
+    margin: "0px 0px -100px 0px"
+  });
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50 }}
-      animate={isInView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.6, delay: 0.5 + index * 0.1 }}
+      ref={cardRef}
+      initial={{ opacity: 0, y: 60 }}
+      animate={isCardInView ? { 
+        opacity: 1, 
+        y: 0,
+      } : {}}
+      transition={{ 
+        duration: 0.6,
+        delay: index * 0.15,
+        ease: [0.21, 0.47, 0.32, 0.98]
+      }}
       onMouseEnter={onHover}
       onMouseLeave={onLeave}
-      whileHover={{ 
-        y: -8,
-        transition: { duration: 0.3, ease: 'easeOut' }
-      }}
-      className="group relative cursor-pointer"
+      className="group relative"
     >
       {/* Card with Fey-inspired hover effect */}
       <motion.div 
-        className="relative h-full p-8 bg-zinc-900/50 backdrop-blur-sm rounded-3xl border border-zinc-800/50 overflow-hidden transition-all duration-300"
-        animate={{
-          boxShadow: isHovered 
-            ? '0 20px 40px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1)' 
-            : '0 4px 12px -4px rgba(0, 0, 0, 0.3)',
+        className="relative h-full p-8 bg-zinc-900/50 backdrop-blur-sm rounded-3xl border border-zinc-800/50 overflow-hidden cursor-pointer"
+        whileHover={{ 
+          y: -8,
+          boxShadow: '0 20px 40px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.1)',
+          transition: { duration: 0.3, ease: 'easeOut' }
         }}
-        transition={{ duration: 0.3 }}
+        style={{
+          boxShadow: '0 4px 12px -4px rgba(0, 0, 0, 0.3)',
+        }}
       >
         {/* Content */}
         <div className="relative">
