@@ -1,8 +1,8 @@
 'use client';
 
-import { motion, useInView } from 'framer-motion';
-import { useRef, useState } from 'react';
-import { Brain, TrendingUp, Users, Megaphone, Sparkles, ArrowRight, Play, CheckCircle2, Rocket } from 'lucide-react';
+import { motion, useInView, useMotionValue, useTransform, useSpring } from 'framer-motion';
+import { useRef, useState, useEffect } from 'react';
+import { Brain, TrendingUp, Users, Megaphone, Sparkles, ArrowRight, CheckCircle2, Rocket, Zap } from 'lucide-react';
 import Link from 'next/link';
 import Navbar from '@/components/ui/Navbar';
 import Footer from '@/components/sections/Footer';
@@ -100,20 +100,49 @@ export default function MuAIPage() {
 }
 
 function HeroSection({ isInView, heroRef }: { isInView: boolean; heroRef: React.RefObject<HTMLElement | null> }) {
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   return (
     <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
-      {/* Animated Background */}
+      {/* Animated Background - Red/Black Theme */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-b from-black via-blue-950/20 to-black" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black via-red-950/20 to-black" />
+        
+        {/* Floating Orbs */}
+        <motion.div
+          className="absolute top-1/4 left-1/4 w-96 h-96 bg-red-600/20 rounded-full blur-3xl"
+          animate={{
+            x: [0, 100, 0],
+            y: [0, -50, 0],
+            scale: [1, 1.2, 1],
+          }}
+          transition={{ duration: 15, repeat: Infinity, ease: 'easeInOut' }}
+        />
+        <motion.div
+          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-red-500/10 rounded-full blur-3xl"
+          animate={{
+            x: [0, -100, 0],
+            y: [0, 50, 0],
+            scale: [1, 1.3, 1],
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: 'easeInOut' }}
+        />
+
+        {/* Parallax effect with mouse */}
         <motion.div
           className="absolute inset-0 opacity-30"
-          animate={{
-            backgroundPosition: ['0% 0%', '100% 100%'],
-          }}
-          transition={{ duration: 20, repeat: Infinity, repeatType: 'reverse' }}
           style={{
-            backgroundImage: 'radial-gradient(circle at center, rgba(59, 130, 246, 0.1) 0%, transparent 50%)',
-            backgroundSize: '100% 100%',
+            backgroundImage: 'radial-gradient(circle at center, rgba(239, 68, 68, 0.15) 0%, transparent 70%)',
+            x: mousePosition.x * 0.02,
+            y: mousePosition.y * 0.02,
           }}
         />
       </div>
@@ -125,25 +154,30 @@ function HeroSection({ isInView, heroRef }: { isInView: boolean; heroRef: React.
           transition={{ duration: 0.8 }}
           className="text-center"
         >
-          {/* Badge */}
+          {/* Badge with 3D effect */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={isInView ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="inline-flex items-center gap-3 px-6 py-3 bg-blue-600/10 border border-blue-600/20 rounded-full mb-8 backdrop-blur-xl"
+            whileHover={{ scale: 1.05, rotateX: 5 }}
+            className="inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-br from-red-600/10 to-red-900/10 border border-red-600/20 rounded-full mb-8 backdrop-blur-xl shadow-lg shadow-red-500/10"
+            style={{ transformStyle: 'preserve-3d' }}
           >
-            <Sparkles className="w-5 h-5 text-blue-400" />
-            <span className="text-blue-400 font-semibold text-sm">
+            <Sparkles className="w-5 h-5 text-red-400" />
+            <span className="text-red-400 font-semibold text-sm">
               THE FIRST VENTURE FROM STRATSCHOOL
             </span>
           </motion.div>
 
-          {/* Main Heading */}
+          {/* Main Heading with 3D depth */}
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 0.8, delay: 0.3 }}
             className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-bold font-space-grotesk mb-6 leading-tight"
+            style={{
+              textShadow: '0 0 80px rgba(239, 68, 68, 0.5), 0 0 40px rgba(239, 68, 68, 0.3)',
+            }}
           >
             <span className="gradient-text">μ AI</span>
           </motion.h1>
@@ -166,57 +200,32 @@ function HeroSection({ isInView, heroRef }: { isInView: boolean; heroRef: React.
             An AI Business Suite that empowers founders with automated intelligence across finance, marketing, and operations.
           </motion.p>
 
-          {/* Video Placeholder / Visual Cue */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="relative max-w-5xl mx-auto mb-12"
-          >
-            <div className="relative aspect-video rounded-3xl overflow-hidden border border-white/10 bg-gradient-to-br from-blue-950/50 to-purple-950/50 backdrop-blur-xl">
-              {/* Placeholder for Video/Dashboard */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <motion.div
-                  animate={{
-                    scale: [1, 1.1, 1],
-                    opacity: [0.5, 0.8, 0.5],
-                  }}
-                  transition={{ duration: 3, repeat: Infinity }}
-                  className="text-blue-400"
-                >
-                  <Play className="w-24 h-24" />
-                </motion.div>
-              </div>
-              {/* Animated Grid Overlay */}
-              <div className="absolute inset-0 opacity-20">
-                <div className="absolute inset-0" style={{
-                  backgroundImage: 'linear-gradient(rgba(59, 130, 246, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(59, 130, 246, 0.3) 1px, transparent 1px)',
-                  backgroundSize: '50px 50px'
-                }} />
-              </div>
-            </div>
-          </motion.div>
-
-          {/* CTA Buttons */}
+          {/* CTA Buttons with 3D effects */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.7 }}
+            transition={{ duration: 0.8, delay: 0.6 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4"
           >
-            <a
+            <motion.a
               href="#beta"
-              className="group px-12 py-5 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl text-white font-bold text-lg hover:shadow-2xl hover:shadow-blue-500/50 transition-all duration-500 hover:scale-105 flex items-center gap-3"
+              whileHover={{ scale: 1.05, rotateX: 5 }}
+              whileTap={{ scale: 0.95 }}
+              className="group px-12 py-5 bg-gradient-to-r from-red-600 to-red-500 rounded-2xl text-white font-bold text-lg shadow-2xl shadow-red-500/50 transition-all duration-500 flex items-center gap-3"
+              style={{ transformStyle: 'preserve-3d' }}
             >
               Join Beta Access
               <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
-            </a>
-            <a
+            </motion.a>
+            <motion.a
               href="#modules"
+              whileHover={{ scale: 1.05, rotateX: 5 }}
+              whileTap={{ scale: 0.95 }}
               className="px-12 py-5 bg-white/5 border border-white/10 rounded-2xl text-white font-bold text-lg hover:bg-white/10 transition-all duration-300 backdrop-blur-xl"
+              style={{ transformStyle: 'preserve-3d' }}
             >
               Explore Modules
-            </a>
+            </motion.a>
           </motion.div>
         </motion.div>
       </div>
@@ -277,30 +286,56 @@ function ModuleCard({
   onToggle: () => void;
 }) {
   const Icon = module.icon;
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = (e.clientY - rect.top) / rect.height;
+    setMousePosition({ x, y });
+  };
+
+  const rotateX = useSpring((mousePosition.y - 0.5) * 10, { stiffness: 300, damping: 30 });
+  const rotateY = useSpring((mousePosition.x - 0.5) * -10, { stiffness: 300, damping: 30 });
 
   return (
     <motion.div
+      ref={cardRef}
       initial={{ opacity: 0, y: 50 }}
       animate={isInView ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.6, delay: index * 0.1 }}
       className="group relative cursor-pointer"
       onClick={onToggle}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={() => setMousePosition({ x: 0.5, y: 0.5 })}
+      style={{ perspective: '1000px' }}
     >
       {/* Glow Effect */}
-      <div className={`absolute -inset-1 bg-gradient-to-r ${module.gradient} rounded-3xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-700`} />
+      <div className={`absolute -inset-1 bg-gradient-to-r ${module.gradient} rounded-3xl blur-xl opacity-0 group-hover:opacity-40 transition-opacity duration-700`} />
 
-      {/* Card */}
+      {/* Card with 3D transform */}
       <motion.div
-        className="relative bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-xl rounded-3xl border border-white/10 overflow-hidden transition-all duration-500 group-hover:border-white/30"
+        className="relative bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-xl rounded-3xl border border-white/10 overflow-hidden transition-all duration-500 group-hover:border-white/30 group-hover:shadow-2xl group-hover:shadow-red-500/20"
         animate={{
           height: isExpanded ? 'auto' : '280px'
         }}
+        style={{
+          rotateX,
+          rotateY,
+          transformStyle: 'preserve-3d',
+        }}
       >
-        <div className="p-8">
-          {/* Icon */}
-          <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-r ${module.gradient} mb-6`}>
+        <div className="p-8" style={{ transform: 'translateZ(20px)' }}>
+          {/* Icon with 3D depth */}
+          <motion.div 
+            className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-r ${module.gradient} mb-6 shadow-lg`}
+            whileHover={{ scale: 1.1, rotateZ: 5 }}
+            style={{ transform: 'translateZ(40px)' }}
+          >
             <Icon className="w-8 h-8 text-white" />
-          </div>
+          </motion.div>
 
           {/* Header */}
           <h3 className="text-3xl font-bold mb-2">{module.name}</h3>
@@ -325,21 +360,31 @@ function ModuleCard({
               <h4 className="text-sm font-semibold text-gray-300 mb-4">Key Features:</h4>
               <ul className="space-y-3">
                 {module.features.map((feature, i) => (
-                  <li key={i} className="flex items-start gap-3 text-sm text-gray-300">
-                    <CheckCircle2 className={`w-5 h-5 flex-shrink-0 text-transparent bg-gradient-to-r ${module.gradient} bg-clip-text`} style={{ WebkitTextFillColor: 'transparent', WebkitBackgroundClip: 'text' }} />
+                  <motion.li 
+                    key={i} 
+                    className="flex items-start gap-3 text-sm text-gray-300"
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.1 }}
+                  >
+                    <CheckCircle2 className={`w-5 h-5 flex-shrink-0 bg-gradient-to-r ${module.gradient} bg-clip-text`} style={{ color: 'transparent' }} />
                     <span>{feature}</span>
-                  </li>
+                  </motion.li>
                 ))}
               </ul>
             </div>
           </motion.div>
 
-          {/* Expand Indicator */}
+          {/* Expand Indicator with animation */}
           <motion.div
             className="mt-4 text-center text-sm text-gray-500"
             animate={{ rotate: isExpanded ? 180 : 0 }}
           >
-            <ArrowRight className="w-5 h-5 mx-auto rotate-90" />
+            <motion.div
+              whileHover={{ scale: 1.2 }}
+            >
+              <ArrowRight className="w-5 h-5 mx-auto rotate-90" />
+            </motion.div>
           </motion.div>
         </div>
       </motion.div>
@@ -353,7 +398,30 @@ function BetaAccessSection() {
 
   return (
     <section id="beta" ref={ref} className="relative py-32 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-black via-blue-950/10 to-black" />
+      <div className="absolute inset-0 bg-gradient-to-b from-black via-red-950/10 to-black" />
+      
+      {/* Floating particles effect */}
+      <div className="absolute inset-0 overflow-hidden">
+        {[...Array(20)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1 h-1 bg-red-500/30 rounded-full"
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+            }}
+            animate={{
+              y: [0, -100, 0],
+              opacity: [0.3, 0.8, 0.3],
+            }}
+            transition={{
+              duration: 5 + Math.random() * 5,
+              repeat: Infinity,
+              delay: Math.random() * 5,
+            }}
+          />
+        ))}
+      </div>
 
       <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
@@ -362,24 +430,51 @@ function BetaAccessSection() {
           transition={{ duration: 0.8 }}
           className="text-center"
         >
-          <div className="p-16 bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-xl rounded-3xl border border-white/10">
-            <Rocket className="w-16 h-16 text-blue-400 mx-auto mb-6" />
-            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold font-space-grotesk mb-6">
+          <motion.div 
+            className="p-16 bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-xl rounded-3xl border border-white/10 relative overflow-hidden"
+            whileHover={{ scale: 1.02 }}
+            style={{ transformStyle: 'preserve-3d' }}
+          >
+            {/* Animated gradient overlay */}
+            <motion.div
+              className="absolute inset-0 opacity-20"
+              animate={{
+                background: [
+                  'radial-gradient(circle at 20% 50%, rgba(239, 68, 68, 0.3) 0%, transparent 50%)',
+                  'radial-gradient(circle at 80% 50%, rgba(239, 68, 68, 0.3) 0%, transparent 50%)',
+                  'radial-gradient(circle at 20% 50%, rgba(239, 68, 68, 0.3) 0%, transparent 50%)',
+                ],
+              }}
+              transition={{ duration: 5, repeat: Infinity }}
+            />
+            
+            <motion.div
+              animate={{ rotate: 360 }}
+              transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+            >
+              <Rocket className="w-16 h-16 text-red-400 mx-auto mb-6" />
+            </motion.div>
+            
+            <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold font-space-grotesk mb-6 relative">
               Join the <span className="gradient-text">Beta</span>
             </h2>
-            <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto leading-relaxed relative">
               μ AI is currently in private beta. Join the waitlist to be among the first to experience the future of AI-powered entrepreneurship.
             </p>
-            <a
+            <motion.a
               href="https://www.stratschool.org/mu-ai-suite"
               target="_blank"
               rel="noopener noreferrer"
-              className="group inline-flex items-center gap-3 px-12 py-5 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl text-white font-bold text-lg hover:shadow-2xl hover:shadow-blue-500/50 transition-all duration-500 hover:scale-105"
+              className="group inline-flex items-center gap-3 px-12 py-5 bg-gradient-to-r from-red-600 to-red-500 rounded-2xl text-white font-bold text-lg shadow-2xl shadow-red-500/50 transition-all duration-500 relative"
+              whileHover={{ scale: 1.05, rotateX: 5 }}
+              whileTap={{ scale: 0.95 }}
+              style={{ transformStyle: 'preserve-3d' }}
             >
+              <Zap className="w-6 h-6" />
               Join Beta Access
               <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform" />
-            </a>
-          </div>
+            </motion.a>
+          </motion.div>
         </motion.div>
       </div>
     </section>
@@ -391,7 +486,22 @@ function OriginSection() {
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   return (
-    <section ref={ref} className="relative py-32 bg-gradient-to-b from-black via-red-950/5 to-black overflow-hidden">
+    <section ref={ref} className="relative py-32 bg-gradient-to-b from-black via-red-950/10 to-black overflow-hidden">
+      {/* Animated background grid */}
+      <div className="absolute inset-0 opacity-10">
+        <motion.div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: 'linear-gradient(rgba(239, 68, 68, 0.3) 1px, transparent 1px), linear-gradient(90deg, rgba(239, 68, 68, 0.3) 1px, transparent 1px)',
+            backgroundSize: '100px 100px',
+          }}
+          animate={{
+            backgroundPosition: ['0px 0px', '100px 100px'],
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+        />
+      </div>
+
       <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -399,31 +509,73 @@ function OriginSection() {
           transition={{ duration: 0.8 }}
           className="text-center"
         >
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-bold font-space-grotesk mb-8">
+          <motion.h2 
+            className="text-4xl sm:text-5xl md:text-6xl font-bold font-space-grotesk mb-8"
+            style={{
+              textShadow: '0 0 60px rgba(239, 68, 68, 0.3)',
+            }}
+          >
             Built at <span className="gradient-text">StratSchool Venture Studio</span>
-          </h2>
+          </motion.h2>
+          
           <div className="max-w-4xl mx-auto space-y-6">
-            <p className="text-xl sm:text-2xl text-gray-300 leading-relaxed">
+            <motion.p 
+              className="text-xl sm:text-2xl text-gray-300 leading-relaxed"
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.8, delay: 0.2 }}
+            >
               μ AI was born inside StratSchool's venture studio as part of our mission to build intelligent tools for founders.
-            </p>
-            <p className="text-lg text-gray-400 leading-relaxed">
-              It reflects our philosophy of combining <span className="text-white font-semibold">innovation</span>, 
-              <span className="text-red-400 font-semibold"> technology</span>, and 
-              <span className="text-blue-400 font-semibold"> real founder insight</span> to create tools that actually solve problems.
-            </p>
+            </motion.p>
+            
+            <motion.div
+              className="p-8 bg-gradient-to-br from-white/[0.05] to-white/[0.02] backdrop-blur-xl rounded-2xl border border-white/10"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={isInView ? { opacity: 1, scale: 1 } : {}}
+              transition={{ duration: 0.8, delay: 0.4 }}
+              whileHover={{ scale: 1.02, borderColor: 'rgba(255, 255, 255, 0.2)' }}
+            >
+              <p className="text-lg text-gray-400 leading-relaxed">
+                It reflects our philosophy of combining{' '}
+                <motion.span 
+                  className="text-white font-semibold"
+                  whileHover={{ scale: 1.1, display: 'inline-block' }}
+                >
+                  innovation
+                </motion.span>
+                ,{' '}
+                <motion.span 
+                  className="text-red-400 font-semibold"
+                  whileHover={{ scale: 1.1, display: 'inline-block' }}
+                >
+                  technology
+                </motion.span>
+                , and{' '}
+                <motion.span 
+                  className="text-red-500 font-semibold"
+                  whileHover={{ scale: 1.1, display: 'inline-block' }}
+                >
+                  real founder insight
+                </motion.span>{' '}
+                to create tools that actually solve problems.
+              </p>
+            </motion.div>
+            
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.8, delay: 0.3 }}
+              transition={{ duration: 0.8, delay: 0.6 }}
               className="pt-8"
             >
-              <Link
-                href="/"
-                className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors group"
-              >
-                <span>Learn more about StratSchool</span>
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </Link>
+              <motion.div whileHover={{ scale: 1.05 }}>
+                <Link
+                  href="/"
+                  className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-red-600/20 to-red-500/20 border border-red-600/30 rounded-xl text-white hover:border-red-500/50 transition-all group backdrop-blur-xl"
+                >
+                  <span>Learn more about StratSchool</span>
+                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </motion.div>
             </motion.div>
           </div>
         </motion.div>
