@@ -164,9 +164,7 @@ export default function MuAISpotlight() {
           className="flex justify-center"
         >
           <Link
-            href="https://www.stratschool.org/mu-ai-suite"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/mu-ai"
             className="group relative px-12 py-5 bg-gradient-to-r from-red-600 to-red-500 rounded-2xl text-white font-bold text-lg hover:shadow-2xl hover:shadow-red-500/50 transition-all duration-500 hover:scale-105 flex items-center gap-3"
           >
             <span className="relative flex items-center gap-3">
