@@ -97,7 +97,7 @@ export default function MuAISpotlight() {
           >
             Meet <span className="gradient-text">μ AI</span>
             <br />
-            <span className="text-3xl sm:text-4xl md:text-5xl text-gray-400">The AI Co-Founder Suite</span>
+            <span className="text-3xl sm:text-4xl md:text-5xl text-gray-400">The AI Business Suite</span>
           </motion.h2>
 
           {/* Storytelling Description */}
