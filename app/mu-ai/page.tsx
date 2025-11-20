@@ -99,7 +99,7 @@ export default function MuAIPage() {
   );
 }
 
-function HeroSection({ isInView, heroRef }: { isInView: boolean; heroRef: React.RefObject<HTMLElement> }) {
+function HeroSection({ isInView, heroRef }: { isInView: boolean; heroRef: React.RefObject<HTMLElement | null> }) {
   return (
     <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
       {/* Animated Background */}
