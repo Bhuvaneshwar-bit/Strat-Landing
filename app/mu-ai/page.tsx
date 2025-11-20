@@ -254,26 +254,17 @@ function BetaSection() {
             μ AI is currently in private beta. Join the waitlist to be among the first to experience the future of AI-powered entrepreneurship.
           </p>
 
-          {/* CTA Button - Minimal with smooth fill animation */}
+          {/* CTA Button - Rounded Red Style */}
           <motion.a
             href="https://www.stratschool.org/mu-ai-suite"
             target="_blank"
             rel="noopener noreferrer"
-            className="group relative inline-flex items-center gap-4 px-16 py-6 border border-white/20 hover:border-white transition-all duration-700 overflow-hidden"
+            className="group inline-flex items-center gap-3 px-12 py-5 bg-gradient-to-r from-red-600 to-red-500 rounded-full text-white font-semibold text-lg hover:shadow-2xl hover:shadow-red-500/50 transition-all duration-500"
             whileHover={{ scale: 1.05 }}
             transition={{ duration: 0.3 }}
           >
-            <span className="relative z-10 text-xl font-light">Join Beta Access</span>
-            <ArrowRight className="relative z-10 w-6 h-6 group-hover:translate-x-2 transition-transform duration-500" strokeWidth={1.5} />
-            
-            {/* Smooth hover fill effect - like Cieffe Milano */}
-            <motion.div
-              className="absolute inset-0 bg-white"
-              initial={{ scaleX: 0, originX: 0 }}
-              whileHover={{ scaleX: 1 }}
-              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            />
-            <span className="absolute inset-0 mix-blend-difference" />
+            <span>Join Beta Access</span>
+            <ArrowRight className="w-6 h-6 group-hover:translate-x-2 transition-transform duration-500" strokeWidth={2} />
           </motion.a>
         </motion.div>
       </div>
@@ -310,10 +301,10 @@ function OriginSection() {
           <motion.div whileHover={{ scale: 1.05 }} transition={{ duration: 0.3 }}>
             <Link
               href="/"
-              className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors duration-500 text-lg"
+              className="inline-flex items-center gap-3 px-10 py-4 bg-gradient-to-r from-red-600 to-red-500 rounded-full text-white font-semibold hover:shadow-2xl hover:shadow-red-500/50 transition-all duration-500"
             >
               <span>Learn more about StratSchool</span>
-              <ArrowRight className="w-5 h-5" strokeWidth={1.5} />
+              <ArrowRight className="w-5 h-5" strokeWidth={2} />
             </Link>
           </motion.div>
         </motion.div>
