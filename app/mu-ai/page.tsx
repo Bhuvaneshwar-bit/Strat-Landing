@@ -1,8 +1,8 @@
 'use client';
 
-import { motion, useInView, useMotionValue, useTransform, useSpring } from 'framer-motion';
+import { motion, useInView, useSpring } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
-import { Brain, TrendingUp, Users, Megaphone, Sparkles, ArrowRight, CheckCircle2, Rocket, Zap } from 'lucide-react';
+import { Brain, TrendingUp, Users, Megaphone, ArrowRight, CheckCircle2, Sparkles, Rocket, Zap } from 'lucide-react';
 import Link from 'next/link';
 import Navbar from '@/components/ui/Navbar';
 import Footer from '@/components/sections/Footer';
