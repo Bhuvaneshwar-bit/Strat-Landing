@@ -107,6 +107,15 @@ export default function MuAISpotlight() {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="max-w-4xl mx-auto space-y-6"
           >
+            <p className="text-xl sm:text-2xl text-gray-300 leading-relaxed">
+              Building a startup is lonely. You wear every hat — CFO, CTO, CMO, and more. 
+              <span className="text-red-400 font-semibold"> What if you didn't have to?</span>
+            </p>
+            <p className="text-lg text-gray-400 leading-relaxed">
+              It's not just AI. It's AI with <span className="text-white font-semibold">direction</span>, 
+              <span className="text-gray-300 font-semibold"> context</span>, and 
+              <span className="text-red-400 font-semibold"> purpose</span> — built by founders, for founders.
+            </p>
           </motion.div>
         </motion.div>
 
