@@ -75,7 +75,7 @@ const modules = [
 ];
 
 export default function MuAIPage() {
-  const heroRef = useRef(null);
+  const heroRef = useRef<HTMLElement>(null);
   const isHeroInView = useInView(heroRef, { once: true });
 
   return (
