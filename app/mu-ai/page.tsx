@@ -128,7 +128,7 @@ function IntroSection() {
           className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-light leading-[1.2] text-center"
         >
           <TextReveal delay={0}>
-            An AI Business Suite that empowers founders with automated intelligence across finance marketing and operations
+            An AI Business Suite that empowers founders with automated intelligence across finance, marketing and operations
           </TextReveal>
         </motion.h2>
       </div>
