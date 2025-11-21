@@ -174,11 +174,11 @@ function StackingCard({
   const cardStart = index / totalCards;
   const cardEnd = (index + 1) / totalCards;
   
-  // Y position: cards slide up from bottom (except first card which stays static)
+  // Y position: ALL cards slide up from way below viewport
   const y = useTransform(
     scrollProgress,
-    [cardStart, cardEnd],
-    [400, 0]
+    [Math.max(cardStart - 0.05, 0), cardEnd],
+    [600, 0]
   );
 
   // Scale: cards underneath shrink slightly
@@ -188,19 +188,19 @@ function StackingCard({
     [1, 0.95]
   );
 
-  // Opacity: fade in as card approaches
+  // Opacity: completely hidden until it's time to animate
   const opacity = useTransform(
     scrollProgress,
-    [Math.max(cardStart - 0.05, 0), cardStart],
-    [0, 1]
+    [Math.max(cardStart - 0.05, 0), cardStart, cardEnd],
+    [0, 1, 1]
   );
 
   return (
     <motion.div
       style={{
-        y: index === 0 ? 0 : y,
+        y,
         scale,
-        opacity: index === 0 ? 1 : opacity,
+        opacity,
         top: `${index * 15}px`,
         zIndex: index,
       }}
