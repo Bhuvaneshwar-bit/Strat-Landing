@@ -171,217 +171,339 @@ const faqs = [
   },
 ];
 
-// Rocket Animation Component
+// 3D Rocket Animation Component with Real Construction
 function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLElement | null> }) {
   const { scrollYProgress } = useScroll({
     target: containerRef as React.RefObject<HTMLElement>,
     offset: ['start end', 'end start']
   });
 
-  // Map scroll progress to rocket assembly stages (0 to 1)
-  const baseOpacity = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
-  const bodyOpacity = useTransform(scrollYProgress, [0.3, 0.5], [0, 1]);
-  const noseOpacity = useTransform(scrollYProgress, [0.6, 0.8], [0, 1]);
-  const windowOpacity = useTransform(scrollYProgress, [0.7, 0.9], [0, 1]);
+  // Map scroll progress to rocket assembly stages
+  const baseProgress = useTransform(scrollYProgress, [0, 0.25], [0, 1]);
+  const bodyProgress = useTransform(scrollYProgress, [0.25, 0.5], [0, 1]);
+  const upperProgress = useTransform(scrollYProgress, [0.5, 0.75], [0, 1]);
+  const detailsProgress = useTransform(scrollYProgress, [0.75, 0.9], [0, 1]);
   
-  // Rocket position - stays fixed until launch
-  const rocketY = useTransform(scrollYProgress, [0, 0.9, 1], [0, 0, -1000]);
-  const rocketScale = useTransform(scrollYProgress, [0.9, 1], [1, 1.5]);
+  // Launch sequence
+  const launchProgress = useTransform(scrollYProgress, [0.9, 1], [0, 1]);
+  const rocketY = useTransform(launchProgress, [0, 1], [0, -2000]);
+  const rocketRotate = useTransform(launchProgress, [0, 0.3, 1], [0, -5, 0]);
   
-  // Flame effects for launch
-  const flameOpacity = useTransform(scrollYProgress, [0.9, 0.95], [0, 1]);
-  const flameScale = useTransform(scrollYProgress, [0.9, 1], [0.5, 2]);
+  // 3D transformations
+  const baseY = useTransform(baseProgress, [0, 1], [400, 0]);
+  const baseRotateX = useTransform(baseProgress, [0, 0.5, 1], [90, 45, 0]);
+  
+  const bodyY = useTransform(bodyProgress, [0, 1], [300, 0]);
+  const bodyScale = useTransform(bodyProgress, [0, 0.5, 1], [0.5, 1.2, 1]);
+  
+  const upperY = useTransform(upperProgress, [0, 1], [200, 0]);
+  const upperRotateZ = useTransform(upperProgress, [0, 0.5, 1], [-180, -90, 0]);
 
   return (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+    <div className="fixed top-1/2 right-[5%] -translate-y-1/2 z-0 pointer-events-none perspective-[2000px]">
       <motion.div
-        style={{ y: rocketY, scale: rocketScale }}
-        className="fixed top-1/2 right-10 md:right-20 lg:right-32 -translate-y-1/2 z-0"
+        style={{ 
+          y: rocketY,
+          rotateZ: rocketRotate
+        }}
+        className="relative"
       >
-        <svg
-          width="200"
-          height="300"
-          viewBox="0 0 200 300"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="drop-shadow-2xl"
-        >
-          {/* Rocket Base/Engines (Week 1-3) */}
-          <motion.g style={{ opacity: baseOpacity }}>
-            {/* Left Engine */}
-            <path
-              d="M60 280 L70 250 L80 280 Z"
-              fill="url(#engineGradient)"
-              stroke="#DC2626"
-              strokeWidth="2"
-            />
-            {/* Right Engine */}
-            <path
-              d="M120 280 L130 250 L140 280 Z"
-              fill="url(#engineGradient)"
-              stroke="#DC2626"
-              strokeWidth="2"
-            />
-            {/* Center Engine */}
-            <path
-              d="M90 290 L100 250 L110 290 Z"
-              fill="url(#engineGradient)"
-              stroke="#DC2626"
-              strokeWidth="2"
-            />
-            {/* Base Platform */}
-            <rect
-              x="65"
-              y="240"
-              width="70"
-              height="15"
-              fill="#B91C1C"
-              stroke="#DC2626"
-              strokeWidth="2"
-              rx="3"
-            />
-          </motion.g>
-
-          {/* Rocket Body (Week 4-8) */}
-          <motion.g style={{ opacity: bodyOpacity }}>
-            {/* Main Body */}
-            <rect
-              x="75"
-              y="120"
-              width="50"
-              height="130"
-              fill="url(#bodyGradient)"
-              stroke="#DC2626"
-              strokeWidth="2"
-              rx="5"
-            />
-            {/* Body Details */}
-            <line x1="75" y1="160" x2="125" y2="160" stroke="#DC2626" strokeWidth="1" opacity="0.5" />
-            <line x1="75" y1="200" x2="125" y2="200" stroke="#DC2626" strokeWidth="1" opacity="0.5" />
-            
-            {/* Left Fin */}
-            <path
-              d="M75 220 L50 240 L75 240 Z"
-              fill="#B91C1C"
-              stroke="#DC2626"
-              strokeWidth="2"
-            />
-            {/* Right Fin */}
-            <path
-              d="M125 220 L150 240 L125 240 Z"
-              fill="#B91C1C"
-              stroke="#DC2626"
-              strokeWidth="2"
-            />
-          </motion.g>
-
-          {/* Nose Cone (Week 9-11) */}
-          <motion.g style={{ opacity: noseOpacity }}>
-            <path
-              d="M75 120 L100 60 L125 120 Z"
-              fill="url(#noseGradient)"
-              stroke="#DC2626"
-              strokeWidth="2"
-            />
-            <circle cx="100" cy="100" r="3" fill="#EF4444" />
-          </motion.g>
-
-          {/* Window (Week 11-12) */}
-          <motion.g style={{ opacity: windowOpacity }}>
-            <circle
-              cx="100"
-              cy="150"
-              r="15"
-              fill="#1F2937"
-              stroke="#DC2626"
-              strokeWidth="2"
-            />
-            <circle cx="100" cy="150" r="12" fill="#374151" opacity="0.6" />
-            <circle cx="105" cy="145" r="3" fill="#60A5FA" opacity="0.8" />
-          </motion.g>
-
-          {/* Launch Flames (Week 12) */}
-          <motion.g style={{ opacity: flameOpacity, scale: flameScale, originX: 0.5, originY: 1 }}>
-            {/* Center Flame */}
-            <path
-              d="M95 290 Q100 310 105 290 Q100 305 95 290"
-              fill="url(#flameGradient)"
-              opacity="0.9"
-            >
-              <animate
-                attributeName="d"
-                values="M95 290 Q100 310 105 290 Q100 305 95 290;M95 290 Q100 320 105 290 Q100 315 95 290;M95 290 Q100 310 105 290 Q100 305 95 290"
-                dur="0.3s"
-                repeatCount="indefinite"
-              />
-            </path>
-            {/* Left Flame */}
-            <path
-              d="M65 280 Q70 295 75 280 Q70 290 65 280"
-              fill="url(#flameGradient)"
-              opacity="0.8"
-            >
-              <animate
-                attributeName="d"
-                values="M65 280 Q70 295 75 280 Q70 290 65 280;M65 280 Q70 305 75 280 Q70 300 65 280;M65 280 Q70 295 75 280 Q70 290 65 280"
-                dur="0.25s"
-                repeatCount="indefinite"
-              />
-            </path>
-            {/* Right Flame */}
-            <path
-              d="M125 280 Q130 295 135 280 Q130 290 125 280"
-              fill="url(#flameGradient)"
-              opacity="0.8"
-            >
-              <animate
-                attributeName="d"
-                values="M125 280 Q130 295 135 280 Q130 290 125 280;M125 280 Q130 305 135 280 Q130 300 125 280;M125 280 Q130 295 135 280 Q130 290 125 280"
-                dur="0.28s"
-                repeatCount="indefinite"
-              />
-            </path>
-          </motion.g>
-
-          {/* Gradients */}
-          <defs>
-            <linearGradient id="bodyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#DC2626" />
-              <stop offset="100%" stopColor="#991B1B" />
-            </linearGradient>
-            <linearGradient id="noseGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#EF4444" />
-              <stop offset="100%" stopColor="#DC2626" />
-            </linearGradient>
-            <linearGradient id="engineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#991B1B" />
-              <stop offset="100%" stopColor="#7F1D1D" />
-            </linearGradient>
-            <linearGradient id="flameGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stopColor="#FCD34D" />
-              <stop offset="50%" stopColor="#F59E0B" />
-              <stop offset="100%" stopColor="#DC2626" />
-            </linearGradient>
-          </defs>
-        </svg>
-
-        {/* Smoke/Particles on Launch */}
+        {/* Construction Glow Effect */}
         <motion.div
-          style={{ opacity: flameOpacity }}
-          className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-40 h-40"
+          style={{ opacity: useTransform(scrollYProgress, [0, 0.9, 0.95], [0.5, 0.5, 0]) }}
+          className="absolute inset-0 blur-3xl"
         >
-          {[...Array(6)].map((_, i) => (
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-red-600/40 rounded-full" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-orange-500/30 rounded-full animate-pulse" />
+        </motion.div>
+
+        {/* BASE SECTION - Engines & Boosters */}
+        <motion.div
+          style={{
+            y: baseY,
+            rotateX: baseRotateX,
+            opacity: baseProgress
+          }}
+          className="relative preserve-3d"
+        >
+          {/* Main Engine Cluster */}
+          <div className="relative w-80 h-40">
+            {/* Center Main Engine */}
+            <motion.div 
+              className="absolute left-1/2 -translate-x-1/2 bottom-0 w-32 h-40 bg-gradient-to-b from-zinc-800 via-zinc-700 to-zinc-900 rounded-t-3xl shadow-2xl"
+              style={{
+                boxShadow: '0 0 60px rgba(220, 38, 38, 0.4), inset 0 -20px 40px rgba(0,0,0,0.8)',
+                transform: 'translateZ(40px)'
+              }}
+            >
+              {/* Engine Nozzle Interior */}
+              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-24 h-24 bg-gradient-to-b from-red-900 to-black rounded-full" 
+                style={{ boxShadow: 'inset 0 10px 30px rgba(0,0,0,0.9)' }}
+              />
+              {/* Engine Details */}
+              {[...Array(8)].map((_, i) => (
+                <div
+                  key={i}
+                  className="absolute bottom-8 left-1/2 w-1 h-16 bg-red-800/40"
+                  style={{
+                    transform: `translateX(-50%) rotate(${i * 45}deg)`,
+                    transformOrigin: 'bottom'
+                  }}
+                />
+              ))}
+            </motion.div>
+
+            {/* Side Boosters */}
+            {[-1, 1].map((side) => (
+              <motion.div
+                key={side}
+                className="absolute top-4 w-24 h-32 bg-gradient-to-b from-zinc-700 via-zinc-800 to-zinc-900 rounded-t-2xl shadow-2xl"
+                style={{
+                  [side > 0 ? 'right' : 'left']: '10px',
+                  boxShadow: '0 0 40px rgba(220, 38, 38, 0.3), inset 0 -10px 20px rgba(0,0,0,0.7)',
+                  transform: `translateZ(${side * 30}px) rotateY(${side * 15}deg)`
+                }}
+              >
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-16 h-16 bg-gradient-to-b from-red-950 to-black rounded-full"
+                  style={{ boxShadow: 'inset 0 5px 20px rgba(0,0,0,0.9)' }}
+                />
+              </motion.div>
+            ))}
+
+            {/* Structural Rings */}
+            <motion.div 
+              className="absolute bottom-32 left-1/2 -translate-x-1/2 w-40 h-8 bg-gradient-to-r from-red-900 via-red-600 to-red-900 rounded-full"
+              style={{
+                boxShadow: '0 0 30px rgba(220, 38, 38, 0.6), inset 0 2px 10px rgba(0,0,0,0.5)',
+                transform: 'translateZ(20px)'
+              }}
+            />
+          </div>
+        </motion.div>
+
+        {/* MAIN BODY - Fuel Tanks & Structure */}
+        <motion.div
+          style={{
+            y: bodyY,
+            scale: bodyScale,
+            opacity: bodyProgress
+          }}
+          className="relative -mt-4 preserve-3d"
+        >
+          <div className="relative w-44 h-96 mx-auto">
+            {/* Main Cylindrical Body */}
+            <div 
+              className="absolute inset-0 bg-gradient-to-br from-red-600 via-red-700 to-red-900 rounded-[3rem]"
+              style={{
+                boxShadow: `
+                  0 0 80px rgba(220, 38, 38, 0.5),
+                  inset -20px 0 60px rgba(0,0,0,0.6),
+                  inset 20px 0 60px rgba(239, 68, 68, 0.3)
+                `,
+                transform: 'translateZ(50px)'
+              }}
+            >
+              {/* Metallic Panels */}
+              {[...Array(6)].map((_, i) => (
+                <div
+                  key={i}
+                  className="absolute left-0 right-0 h-1 bg-gradient-to-r from-transparent via-red-950 to-transparent"
+                  style={{ top: `${15 + i * 14}%` }}
+                />
+              ))}
+              
+              {/* Rivets */}
+              <div className="absolute inset-4 flex flex-col justify-around">
+                {[...Array(8)].map((_, i) => (
+                  <div key={i} className="flex justify-between px-4">
+                    <div className="w-2 h-2 bg-red-950 rounded-full shadow-inner" />
+                    <div className="w-2 h-2 bg-red-950 rounded-full shadow-inner" />
+                  </div>
+                ))}
+              </div>
+
+              {/* Branding Stripe */}
+              <div className="absolute top-1/2 left-0 right-0 h-12 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-y-1/2"
+                style={{ boxShadow: '0 0 20px rgba(255,255,255,0.3)' }}
+              />
+            </div>
+
+            {/* Side Fins with 3D depth */}
+            {[-1, 1].map((side) => (
+              <motion.div
+                key={side}
+                className="absolute bottom-16 w-32 h-48 bg-gradient-to-br from-red-700 to-red-950"
+                style={{
+                  [side > 0 ? 'right' : 'left']: '-20px',
+                  clipPath: 'polygon(50% 0%, 100% 100%, 0% 100%)',
+                  boxShadow: '0 10px 40px rgba(0,0,0,0.8), inset -5px -5px 20px rgba(0,0,0,0.5)',
+                  transform: `translateZ(${side * 40}px) rotateY(${side * 25}deg)`
+                }}
+              >
+                {/* Fin Details */}
+                <div className="absolute inset-0 bg-gradient-to-t from-red-900/50 to-transparent" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-px h-24 bg-red-500/30" />
+              </motion.div>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* UPPER SECTION - Crew Module & Nose Cone */}
+        <motion.div
+          style={{
+            y: upperY,
+            rotateZ: upperRotateZ,
+            opacity: upperProgress
+          }}
+          className="relative -mt-8 preserve-3d"
+        >
+          <div className="relative w-44 mx-auto">
+            {/* Crew Module */}
+            <div 
+              className="relative w-full h-32 bg-gradient-to-b from-red-600 to-red-700 rounded-t-[4rem]"
+              style={{
+                boxShadow: '0 0 60px rgba(220, 38, 38, 0.4), inset 0 20px 40px rgba(239, 68, 68, 0.2)',
+                transform: 'translateZ(50px)'
+              }}
+            >
+              {/* Viewport Window */}
+              <motion.div
+                style={{ opacity: detailsProgress }}
+                className="absolute top-12 left-1/2 -translate-x-1/2 w-16 h-16 bg-gradient-to-br from-blue-400 via-cyan-300 to-blue-600 rounded-full"
+              >
+                <div className="absolute inset-2 bg-gradient-to-br from-sky-200 to-blue-800 rounded-full"
+                  style={{ boxShadow: 'inset 0 0 20px rgba(0,0,0,0.4)' }}
+                />
+                {/* Window Reflection */}
+                <div className="absolute top-2 left-2 w-4 h-4 bg-white/60 rounded-full blur-sm" />
+              </motion.div>
+            </div>
+
+            {/* Nose Cone */}
+            <div 
+              className="relative w-full h-40 bg-gradient-to-b from-red-500 via-red-600 to-red-700"
+              style={{
+                clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
+                boxShadow: '0 0 80px rgba(220, 38, 38, 0.5), inset -10px 10px 40px rgba(0,0,0,0.4)',
+                transform: 'translateZ(60px)'
+              }}
+            >
+              {/* Nose Cone Details */}
+              <div className="absolute inset-0 bg-gradient-to-br from-red-400/20 via-transparent to-red-950/40" />
+              
+              {/* Tip Light */}
+              <motion.div
+                style={{ opacity: detailsProgress }}
+                className="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-3 bg-red-400 rounded-full"
+                animate={{
+                  boxShadow: [
+                    '0 0 10px rgba(248, 113, 113, 0.8)',
+                    '0 0 30px rgba(248, 113, 113, 1)',
+                    '0 0 10px rgba(248, 113, 113, 0.8)'
+                  ]
+                }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+            </div>
+          </div>
+        </motion.div>
+
+        {/* LAUNCH EFFECTS */}
+        <motion.div
+          style={{ opacity: launchProgress }}
+          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full"
+        >
+          {/* Engine Flames */}
+          <div className="relative w-96 h-96 -mb-80">
+            {/* Main Flame */}
+            <motion.div
+              className="absolute bottom-0 left-1/2 -translate-x-1/2 w-40 h-96 bg-gradient-to-t from-yellow-300 via-orange-500 to-red-600 rounded-b-full opacity-90 blur-xl"
+              animate={{
+                scaleY: [1, 1.3, 1],
+                scaleX: [1, 0.9, 1],
+              }}
+              transition={{ duration: 0.15, repeat: Infinity }}
+            />
+            <motion.div
+              className="absolute bottom-0 left-1/2 -translate-x-1/2 w-32 h-80 bg-gradient-to-t from-white via-yellow-200 to-orange-400 rounded-b-full opacity-80 blur-md"
+              animate={{
+                scaleY: [1, 1.4, 1],
+                scaleX: [1, 0.8, 1],
+              }}
+              transition={{ duration: 0.1, repeat: Infinity }}
+            />
+
+            {/* Side Booster Flames */}
+            {[-1, 1].map((side) => (
+              <motion.div
+                key={side}
+                className="absolute bottom-20 w-24 h-64 bg-gradient-to-t from-yellow-400 via-orange-500 to-red-600 rounded-b-full opacity-80 blur-lg"
+                style={{
+                  [side > 0 ? 'right' : 'left']: '60px'
+                }}
+                animate={{
+                  scaleY: [1, 1.2, 1],
+                  scaleX: [1, 0.9, 1],
+                }}
+                transition={{ duration: 0.12, repeat: Infinity, delay: side * 0.05 }}
+              />
+            ))}
+          </div>
+
+          {/* Smoke & Particles */}
+          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-96">
+            {[...Array(20)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute bottom-0 left-1/2 w-12 h-12 bg-gray-400/30 rounded-full blur-2xl"
+                animate={{
+                  y: [0, -300 - Math.random() * 200],
+                  x: [0, (Math.random() - 0.5) * 200],
+                  opacity: [0.6, 0],
+                  scale: [1, 2.5]
+                }}
+                transition={{
+                  duration: 2 + Math.random(),
+                  repeat: Infinity,
+                  delay: i * 0.1,
+                  ease: 'easeOut'
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Shockwave Ring */}
+          <motion.div
+            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-80 h-4 bg-orange-400/40 rounded-full blur-xl"
+            animate={{
+              scaleX: [1, 2, 1],
+              opacity: [0.8, 0.3, 0.8]
+            }}
+            transition={{ duration: 0.5, repeat: Infinity }}
+          />
+        </motion.div>
+
+        {/* Construction Sparks & Welding Effects */}
+        <motion.div
+          style={{ opacity: useTransform(scrollYProgress, [0, 0.85, 0.9], [1, 1, 0]) }}
+          className="absolute inset-0"
+        >
+          {[...Array(15)].map((_, i) => (
             <motion.div
               key={i}
-              className="absolute w-8 h-8 bg-red-500/30 rounded-full blur-xl"
+              className="absolute w-1 h-1 bg-orange-400 rounded-full"
+              style={{
+                top: `${20 + Math.random() * 60}%`,
+                left: `${30 + Math.random() * 40}%`,
+              }}
               animate={{
-                y: [0, -60, -120],
-                x: [0, Math.random() * 40 - 20, Math.random() * 60 - 30],
-                opacity: [0.6, 0.3, 0],
-                scale: [1, 1.5, 2]
+                opacity: [0, 1, 0],
+                scale: [0, 1.5, 0],
+                y: [0, Math.random() * 20 - 10],
+                x: [0, Math.random() * 20 - 10]
               }}
               transition={{
-                duration: 1.5,
+                duration: 0.8,
                 repeat: Infinity,
                 delay: i * 0.2,
                 ease: 'easeOut'
