@@ -549,6 +549,10 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
               ease: [0.45, 0, 0.55, 1]
             }}
           />
+
+          {/* Ultra-Hot Core - Expands from nozzle */}
+          <motion.div
+            className="absolute -top-[90px] left-1/2 -translate-x-1/2 w-[70px] h-[500px]"
             style={{
               background: 'linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.95) 15%, rgba(254,249,195,0.9) 35%, rgba(253,224,71,0.7) 60%, rgba(251,146,60,0.4) 85%, transparent 100%)',
               filter: 'blur(3px)',
@@ -713,7 +717,7 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
           <motion.div
             className="absolute -top-[85px] left-1/2 -translate-x-1/2 w-[160px] h-[540px]"
             style={{
-              background: 'linear-gradient(180deg, transparent 0%, rgba(251,191,36,0.06) 40%, rgba(251,146,60,0.08) 70%, transparent 100%)'},
+              background: 'linear-gradient(180deg, transparent 0%, rgba(251,191,36,0.06) 40%, rgba(251,146,60,0.08) 70%, transparent 100%)',
               filter: 'blur(20px)',
               mixBlendMode: 'soft-light',
               willChange: 'transform',
