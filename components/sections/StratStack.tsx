@@ -65,7 +65,7 @@ export default function StratStack() {
       if (!card) return;
 
       // Calculate when this card should start moving
-      const cardStart = containerTop + (i * window.innerHeight * 0.5);
+      const cardStart = containerTop + (i * window.innerHeight * 0.3);
       const triggerStart = cardStart - stackPosition;
       
       // Pin range
@@ -75,7 +75,7 @@ export default function StratStack() {
       // Calculate scale based on how many cards are on top
       let scale = 1;
       for (let j = i + 1; j < cardsRef.current.length; j++) {
-        const nextCardStart = containerTop + (j * window.innerHeight * 0.5);
+        const nextCardStart = containerTop + (j * window.innerHeight * 0.3);
         const nextTriggerStart = nextCardStart - stackPosition;
         if (scrollTop >= nextTriggerStart) {
           scale -= itemScale;
@@ -140,7 +140,7 @@ export default function StratStack() {
 
       {/* Stacking Cards Container */}
       <div ref={containerRef} className="relative" style={{ minHeight: `${stackItems.length * 50}vh`, paddingBottom: '100vh' }}>
-        <div className="max-w-xl mx-auto px-4 sm:px-6 lg:px-8 pt-12">
+        <div className="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
           {stackItems.map((item, index) => (
             <StackingCard
               key={item.title}
