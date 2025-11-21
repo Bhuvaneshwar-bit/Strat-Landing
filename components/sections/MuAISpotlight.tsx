@@ -280,21 +280,7 @@ function AgentCard({
             {agent.description}
           </p>
 
-          {/* Features */}
-          <ul className="space-y-2">
-            {agent.features.map((feature, i) => (
-              <motion.li
-                key={i}
-                initial={{ opacity: 0, x: -10 }}
-                animate={isInView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.4, delay: 0.7 + index * 0.1 + i * 0.05 }}
-                className="flex items-center gap-3 text-sm text-gray-300"
-              >
-                <div className={`w-1.5 h-1.5 rounded-full bg-gradient-to-r ${agent.gradient}`} />
-                <span>{feature}</span>
-              </motion.li>
-            ))}
-          </ul>
+
         </div>
       </div>
     </motion.div>
