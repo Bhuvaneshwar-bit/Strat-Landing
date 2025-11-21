@@ -54,7 +54,7 @@ export default function StratStack() {
   });
 
   return (
-    <section ref={containerRef} className="relative bg-black py-32 overflow-hidden">
+    <section className="relative bg-black overflow-hidden">
       {/* Subtle Grid Background */}
       <div className="absolute inset-0 opacity-[0.08]">
         <div className="absolute inset-0" style={{
@@ -70,7 +70,7 @@ export default function StratStack() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-24"
+          className="text-center pt-32 pb-20"
         >
           <h2 className="text-5xl sm:text-6xl md:text-7xl font-bold mb-6">
             The <span className="gradient-text">StratSchool Stack</span>
@@ -79,56 +79,60 @@ export default function StratStack() {
             We provide founders with everything they need to turn ideas into ventures.
           </p>
         </motion.div>
+      </div>
 
-        {/* Stacking Cards Section */}
-        <div className="relative min-h-[2000px]">
-          {stackItems.map((item, index) => (
-            <StackingCard
-              key={item.title}
-              item={item}
-              index={index}
-              totalCards={stackItems.length}
-              scrollProgress={scrollYProgress}
-            />
-          ))}
+      {/* Stacking Cards Container */}
+      <div ref={containerRef} className="relative h-[300vh]">
+        <div className="sticky top-0 h-screen flex items-center overflow-hidden">
+          <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            {stackItems.map((item, index) => (
+              <StackingCard
+                key={item.title}
+                item={item}
+                index={index}
+                totalCards={stackItems.length}
+                scrollProgress={scrollYProgress}
+              />
+            ))}
+          </div>
         </div>
+      </div>
 
-        {/* Journey Flow Animation */}
-        <div className="mt-32 mb-16">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="relative"
-          >
-            {/* Continuous Scrolling Journey */}
-            <div className="relative overflow-hidden py-12">
-              <div className="flex items-center justify-center gap-6 animate-scroll-journey">
-                {[...journeySteps, ...journeySteps].map((step, i) => (
-                  <div key={i} className="flex items-center gap-6 shrink-0">
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.5, delay: (i % journeySteps.length) * 0.1 }}
-                      className={`text-2xl sm:text-3xl font-bold ${step.color} whitespace-nowrap`}
-                    >
-                      {step.label}
-                    </motion.div>
-                    {i < (journeySteps.length * 2 - 1) && (
-                      <ArrowRight className="w-6 h-6 text-gray-600 shrink-0" />
-                    )}
-                  </div>
-                ))}
-              </div>
+      {/* Journey Flow Animation */}
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="relative"
+        >
+          {/* Continuous Scrolling Journey */}
+          <div className="relative overflow-hidden py-12">
+            <div className="flex items-center justify-center gap-6 animate-scroll-journey">
+              {[...journeySteps, ...journeySteps].map((step, i) => (
+                <div key={i} className="flex items-center gap-6 shrink-0">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: (i % journeySteps.length) * 0.1 }}
+                    className={`text-2xl sm:text-3xl font-bold ${step.color} whitespace-nowrap`}
+                  >
+                    {step.label}
+                  </motion.div>
+                  {i < (journeySteps.length * 2 - 1) && (
+                    <ArrowRight className="w-6 h-6 text-gray-600 shrink-0" />
+                  )}
+                </div>
+              ))}
             </div>
+          </div>
 
-            {/* Gradient Fade Edges */}
-            <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black to-transparent pointer-events-none" />
-            <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-black to-transparent pointer-events-none" />
-          </motion.div>
-        </div>
+          {/* Gradient Fade Edges */}
+          <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-black to-transparent pointer-events-none" />
+          <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-black to-transparent pointer-events-none" />
+        </motion.div>
       </div>
 
       <style jsx>{`
@@ -166,46 +170,30 @@ function StackingCard({
 }) {
   const Icon = item.icon;
   
-  // Calculate scroll ranges for each card
+  // Each card gets equal portion of scroll
   const cardStart = index / totalCards;
   const cardEnd = (index + 1) / totalCards;
   
-  // Scale: starts at 0.8, reaches 1 when active, then stays
+  // Scale: cards scale down as they stack
   const scale = useTransform(
     scrollProgress,
-    [
-      Math.max(0, cardStart - 0.1),
-      cardStart,
-      cardStart + 0.05,
-      1
-    ],
-    [0.85, 0.95, 1, 1]
+    [cardStart, cardEnd],
+    [1, 0.9]
   );
 
-  // Opacity: fades in as it comes into view
+  // Opacity: cards fade slightly as they stack
   const opacity = useTransform(
     scrollProgress,
-    [
-      Math.max(0, cardStart - 0.1),
-      cardStart,
-      1
-    ],
-    [0, 1, 1]
+    [cardStart, cardEnd],
+    [1, 0.8]
   );
 
-  // Y position: cards stack on top of each other
+  // Y position: cards slide up and stack
   const y = useTransform(
     scrollProgress,
-    [
-      cardStart,
-      cardEnd,
-      1
-    ],
-    [100, 0, 0]
+    [cardStart, cardEnd],
+    [0, -30]
   );
-
-  // Calculate sticky position offset
-  const topOffset = 100 + (index * 80);
 
   return (
     <motion.div
@@ -213,54 +201,52 @@ function StackingCard({
         scale,
         opacity,
         y,
-        top: `${topOffset}px`,
+        zIndex: totalCards - index,
       }}
-      className="sticky w-full mb-8"
+      className="absolute inset-0 flex items-center justify-center"
     >
-      <div className="max-w-4xl mx-auto">
-        <motion.div
-          whileHover={{ scale: 1.02 }}
-          transition={{ duration: 0.3 }}
-          className="group relative"
-        >
-          {/* Glow Effect */}
-          <div className={`absolute -inset-1 bg-gradient-to-r ${item.gradient} rounded-3xl blur-2xl opacity-0 group-hover:opacity-30 transition-opacity duration-500`} />
+      <motion.div
+        whileHover={{ scale: 1.02 }}
+        transition={{ duration: 0.3 }}
+        className="group relative w-full"
+      >
+        {/* Glow Effect */}
+        <div className={`absolute -inset-1 bg-gradient-to-r ${item.gradient} rounded-3xl blur-2xl opacity-0 group-hover:opacity-30 transition-opacity duration-500`} />
 
-          {/* Card */}
-          <div className="relative bg-gradient-to-br from-white/[0.12] to-white/[0.04] backdrop-blur-xl rounded-3xl border border-white/20 p-8 sm:p-12 overflow-hidden">
-            {/* Shimmer Effect */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 -translate-x-full group-hover:translate-x-full" 
-              style={{ transition: 'transform 1.5s ease' }}
-            />
+        {/* Card */}
+        <div className="relative bg-gradient-to-br from-white/[0.12] to-white/[0.04] backdrop-blur-xl rounded-3xl border border-white/20 p-8 sm:p-12 overflow-hidden">
+          {/* Shimmer Effect */}
+          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 -translate-x-full group-hover:translate-x-full" 
+            style={{ transition: 'transform 1.5s ease' }}
+          />
 
-            {/* Content */}
-            <div className="relative flex items-start gap-6">
-              {/* Icon */}
-              <motion.div
-                whileHover={{ rotate: 5, scale: 1.1 }}
-                className={`flex-shrink-0 w-20 h-20 rounded-2xl bg-gradient-to-br ${item.gradient} flex items-center justify-center shadow-2xl`}
-              >
-                <Icon className="w-10 h-10 text-white" strokeWidth={1.5} />
-              </motion.div>
+          {/* Content */}
+          <div className="relative flex items-start gap-6">
+            {/* Icon */}
+            <motion.div
+              whileHover={{ rotate: 5, scale: 1.1 }}
+              className={`flex-shrink-0 w-20 h-20 rounded-2xl bg-gradient-to-br ${item.gradient} flex items-center justify-center shadow-2xl`}
+            >
+              <Icon className="w-10 h-10 text-white" strokeWidth={1.5} />
+            </motion.div>
 
-              {/* Text */}
-              <div className="flex-1">
-                <h3 className="text-3xl sm:text-4xl font-bold mb-3 text-white">
-                  {item.title}
-                </h3>
-                <p className="text-lg sm:text-xl text-gray-300 leading-relaxed">
-                  {item.description}
-                </p>
-              </div>
-            </div>
-
-            {/* Card Number Badge */}
-            <div className="absolute top-6 right-6 w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center">
-              <span className="text-xl font-bold text-white/80">{index + 1}</span>
+            {/* Text */}
+            <div className="flex-1">
+              <h3 className="text-3xl sm:text-4xl font-bold mb-3 text-white">
+                {item.title}
+              </h3>
+              <p className="text-lg sm:text-xl text-gray-300 leading-relaxed">
+                {item.description}
+              </p>
             </div>
           </div>
-        </motion.div>
-      </div>
+
+          {/* Card Number Badge */}
+          <div className="absolute top-6 right-6 w-12 h-12 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center">
+            <span className="text-xl font-bold text-white/80">{index + 1}</span>
+          </div>
+        </div>
+      </motion.div>
     </motion.div>
   );
 }
