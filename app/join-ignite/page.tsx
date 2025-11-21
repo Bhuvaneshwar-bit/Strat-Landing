@@ -222,7 +222,7 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
   const upperRotateZ = useTransform(upperProgress, [0, 0.5, 1], [-180, -90, 0]);
 
   return (
-    <div className="fixed top-1/2 right-[8%] -translate-y-1/2 z-[1] pointer-events-none" style={{ perspective: '3000px' }}>
+    <div className="fixed top-1/2 right-[5%] -translate-y-1/2 z-[1] pointer-events-none">
       <motion.div
         style={{ 
           y: rocketY,
@@ -230,7 +230,7 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
           scale: rocketScale,
           opacity: rocketOpacity
         }}
-        className="relative flex flex-col items-center"
+        className="relative"
       >
         {/* Atmospheric Lighting */}
         <motion.div
@@ -243,273 +243,241 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[600px] bg-gradient-radial from-orange-400/20 via-orange-500/10 to-transparent blur-[80px]" />
         </motion.div>
 
-        {/* ULTRA-REALISTIC BASE - Engines */}
+        {/* ULTRA-REALISTIC ENGINE BASE */}
         <motion.div
           style={{
             y: baseY,
             rotateX: baseRotateX,
             opacity: baseProgress
           }}
-          className="relative"
-          initial={{ y: 200, opacity: 0 }}
+          className="relative w-[160px] mx-auto"
         >
-          <div className="relative w-[280px] h-[140px]">
-            {/* Main Raptor Engine */}
-            <div className="absolute left-1/2 -translate-x-1/2 bottom-0 w-[110px] h-[130px]">
-              {/* Engine Bell Exterior */}
+          {/* Main Raptor Engine - Center */}
+          <div className="relative w-full h-[100px] flex justify-center">
+            <div className="relative w-[100px] h-full">
+              {/* Engine Bell Housing */}
               <div 
-                className="absolute inset-0 rounded-t-[40px] bg-gradient-to-b from-slate-300 via-slate-400 to-slate-600"
+                className="absolute inset-0 rounded-t-[50px] bg-gradient-to-b from-slate-200 via-slate-400 to-slate-600"
                 style={{
                   boxShadow: `
-                    0 0 40px rgba(0,0,0,0.8),
-                    inset -15px 0 30px rgba(0,0,0,0.5),
-                    inset 15px 0 30px rgba(255,255,255,0.3)
+                    0 10px 40px rgba(0,0,0,0.8),
+                    inset -12px 0 25px rgba(0,0,0,0.4),
+                    inset 12px 0 25px rgba(255,255,255,0.4)
                   `
                 }}
               >
-                {/* Metallic Shine */}
-                <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-transparent to-transparent rounded-t-[40px]" />
+                <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent rounded-t-[50px]" />
               </div>
               
-              {/* Engine Nozzle */}
-              <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[90px] h-[90px] rounded-full bg-gradient-to-b from-zinc-800 via-zinc-900 to-black"
-                style={{ boxShadow: 'inset 0 20px 40px rgba(0,0,0,0.9)' }}
+              {/* Engine Nozzle Opening */}
+              <div 
+                className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[80px] h-[80px] rounded-full bg-gradient-radial from-zinc-700 via-zinc-900 to-black"
+                style={{ 
+                  boxShadow: 'inset 0 15px 35px rgba(0,0,0,0.95), 0 5px 20px rgba(0,0,0,0.9)' 
+                }}
               >
-                {/* Nozzle Interior Details */}
-                <div className="absolute inset-3 rounded-full bg-gradient-to-b from-zinc-900 to-black"
-                  style={{ boxShadow: 'inset 0 10px 20px rgba(0,0,0,1)' }}
+                <div className="absolute inset-2 rounded-full bg-gradient-radial from-zinc-800 to-black"
+                  style={{ boxShadow: 'inset 0 8px 20px rgba(0,0,0,1)' }}
                 />
-                {/* Center Injector */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-red-950/40" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-gradient-radial from-red-900/60 to-black" />
               </div>
-
-              {/* Heat Shield Tiles */}
-              <div className="absolute -top-2 left-0 right-0 h-3 bg-zinc-800 rounded-t-lg"
-                style={{ boxShadow: '0 -2px 10px rgba(0,0,0,0.5)' }}
-              />
             </div>
-
-            {/* Side Grid Fins (Hypersonic Control) */}
-            {[-1, 1].map((side) => (
-              <div
-                key={side}
-                className="absolute top-8 w-[70px] h-[90px]"
-                style={{ [side > 0 ? 'right' : 'left']: '20px' }}
-              >
-                {/* Grid Fin Structure */}
-                <div 
-                  className="w-full h-full bg-gradient-to-b from-slate-400 via-slate-500 to-slate-700 rounded-lg"
-                  style={{
-                    boxShadow: '0 8px 30px rgba(0,0,0,0.7), inset -5px -5px 15px rgba(0,0,0,0.4)',
-                    clipPath: 'polygon(20% 0%, 100% 0%, 80% 100%, 0% 100%)'
-                  }}
-                >
-                  {/* Grid Pattern */}
-                  <div className="absolute inset-2 grid grid-cols-3 gap-1.5">
-                    {[...Array(12)].map((_, i) => (
-                      <div key={i} className="bg-black/30 rounded-sm" />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            ))}
           </div>
+
+          {/* Side Booster Nozzles */}
+          {[-1, 1].map((side) => (
+            <div
+              key={side}
+              className="absolute top-2 w-[50px] h-[70px]"
+              style={{ [side > 0 ? 'right' : 'left']: '5px' }}
+            >
+              <div 
+                className="relative w-full h-full rounded-t-[30px] bg-gradient-to-b from-slate-300 via-slate-500 to-slate-700"
+                style={{
+                  boxShadow: `0 8px 25px rgba(0,0,0,0.7), inset ${side * -8}px 0 20px rgba(0,0,0,0.3)`
+                }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-white/25 via-transparent to-transparent rounded-t-[30px]" />
+                <div 
+                  className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[40px] h-[40px] rounded-full bg-gradient-radial from-zinc-800 to-black"
+                  style={{ boxShadow: 'inset 0 8px 20px rgba(0,0,0,0.95)' }}
+                />
+              </div>
+            </div>
+          ))}
         </motion.div>
 
-        {/* SLEEK MAIN BODY - Stainless Steel Starship Style */}
+        {/* MAIN CYLINDRICAL BODY */}
         <motion.div
           style={{
             y: bodyY,
             scale: bodyScale,
             opacity: bodyProgress
           }}
-          className="relative -mt-3"
+          className="relative w-[160px] mx-auto -mt-2"
         >
-          <div className="relative w-[140px] h-[380px] mx-auto">
-            {/* Photorealistic Stainless Steel Body */}
+          <div className="relative w-full h-[350px]">
+            {/* Stainless Steel Cylinder */}
             <div 
-              className="absolute inset-0 rounded-[50px] overflow-hidden"
+              className="absolute inset-0 rounded-[40px] overflow-hidden"
               style={{
-                background: 'linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 25%, #94a3b8 50%, #cbd5e1 75%, #e2e8f0 100%)',
+                background: 'linear-gradient(90deg, #94a3b8 0%, #cbd5e1 20%, #e2e8f0 40%, #f1f5f9 50%, #e2e8f0 60%, #cbd5e1 80%, #94a3b8 100%)',
                 boxShadow: `
-                  0 30px 90px rgba(0,0,0,0.5),
-                  inset -40px 0 60px rgba(0,0,0,0.15),
-                  inset 40px 0 60px rgba(255,255,255,0.25),
-                  inset 0 -40px 50px rgba(0,0,0,0.1),
-                  inset 0 40px 50px rgba(255,255,255,0.15)
+                  0 25px 70px rgba(0,0,0,0.6),
+                  inset -30px 0 50px rgba(0,0,0,0.2),
+                  inset 30px 0 50px rgba(255,255,255,0.3)
                 `
               }}
             >
-              {/* Realistic Chrome Highlight */}
+              {/* Chrome Highlight Strip */}
               <div 
-                className="absolute inset-0 rounded-[50px]"
-                style={{
-                  background: 'linear-gradient(110deg, transparent 0%, rgba(255,255,255,0.6) 30%, rgba(255,255,255,0.8) 35%, transparent 45%, transparent 55%, rgba(255,255,255,0.3) 80%, transparent 100%)',
-                  mixBlendMode: 'overlay'
-                }}
+                className="absolute top-0 bottom-0 left-[35%] w-[30%] bg-gradient-to-r from-transparent via-white/70 to-transparent"
+                style={{ mixBlendMode: 'overlay' }}
               />
               
-              {/* Precision Welded Seams */}
-              {[25, 45, 65, 85].map((pos) => (
-                <div key={pos} className="absolute left-0 right-0 h-[3px]" style={{ top: `${pos}%` }}>
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-slate-600/80 to-transparent" />
-                  <div 
-                    className="absolute inset-0 bg-gradient-to-r from-transparent via-slate-400/40 to-transparent"
-                    style={{ transform: 'translateY(-1px)' }}
-                  />
+              {/* Welded Seam Rings */}
+              {[20, 40, 60, 80].map((pos) => (
+                <div key={pos} className="absolute left-0 right-0 h-[2px]" style={{ top: `${pos}%` }}>
+                  <div className="absolute inset-0 bg-slate-600/70" />
+                  <div className="absolute inset-0 bg-slate-400/30 translate-y-[-1px]" />
                 </div>
               ))}
 
-              {/* Heat Tiles (Black) */}
-              <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-zinc-900 via-zinc-800 to-transparent rounded-b-[50px]"
-                style={{ boxShadow: 'inset 0 -10px 20px rgba(0,0,0,0.8)' }}
-              >
-                {/* Tile Pattern */}
-                <div className="absolute inset-4 grid grid-cols-4 gap-1">
-                  {[...Array(16)].map((_, i) => (
-                    <div key={i} className="bg-black/40 rounded-sm" style={{ aspectRatio: '1' }} />
+              {/* Black Heat Shield Base */}
+              <div className="absolute bottom-0 left-0 right-0 h-[90px] bg-gradient-to-t from-zinc-900 via-zinc-800 to-transparent">
+                <div className="absolute inset-3 grid grid-cols-5 gap-1 opacity-40">
+                  {[...Array(20)].map((_, i) => (
+                    <div key={i} className="bg-black rounded-sm aspect-square" />
                   ))}
                 </div>
               </div>
 
-              {/* Red Racing Stripe */}
+              {/* Red Accent Band */}
               <div 
-                className="absolute top-[40%] left-0 right-0 h-16 bg-gradient-to-r from-transparent via-red-600 to-transparent"
+                className="absolute top-[45%] left-0 right-0 h-12 bg-gradient-to-r from-transparent via-red-600 to-transparent opacity-90"
                 style={{ 
-                  boxShadow: '0 0 30px rgba(220, 38, 38, 0.6)',
-                  clipPath: 'polygon(10% 0%, 90% 0%, 85% 100%, 15% 100%)'
+                  boxShadow: '0 0 25px rgba(220,38,38,0.5)',
+                  clipPath: 'polygon(8% 0%, 92% 0%, 88% 100%, 12% 100%)'
                 }}
               >
-                <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-b from-white/25 to-transparent" />
               </div>
 
-              {/* Attitude Control Thrusters */}
-              {[30, 50, 70].map((pos) => (
+              {/* RCS Thrusters */}
+              {[25, 45, 65].map((pos) => (
                 <div
                   key={pos}
-                  className="absolute right-3 w-3 h-3 bg-zinc-700 rounded-full"
+                  className="absolute right-4 w-2.5 h-2.5 bg-zinc-800 rounded-full"
                   style={{ 
                     top: `${pos}%`,
-                    boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.8)' 
+                    boxShadow: 'inset 0 1px 2px rgba(0,0,0,0.9)' 
                   }}
                 />
               ))}
             </div>
 
-            {/* Landing Legs / Fins */}
+            {/* Aerodynamic Fins */}
             {[-1, 1].map((side) => (
               <div
                 key={side}
-                className="absolute bottom-24 w-[85px] h-[140px] bg-gradient-to-br from-slate-300 via-slate-400 to-slate-600"
-                style={{
-                  [side > 0 ? 'right' : 'left']: '-25px',
-                  clipPath: 'polygon(60% 0%, 100% 100%, 30% 100%)',
-                  boxShadow: `
-                    0 10px 40px rgba(0,0,0,0.7),
-                    inset ${side * -5}px -5px 20px rgba(0,0,0,0.4)
-                  `,
-                  transform: `rotateY(${side * 8}deg)`
+                className="absolute bottom-20 w-[70px] h-[110px]"
+                style={{ 
+                  [side > 0 ? 'right' : 'left']: '-18px',
+                  clipPath: 'polygon(55% 0%, 100% 100%, 25% 100%)',
+                  background: 'linear-gradient(135deg, #cbd5e1 0%, #94a3b8 50%, #64748b 100%)',
+                  boxShadow: `0 10px 35px rgba(0,0,0,0.7), inset ${side * -6}px -6px 18px rgba(0,0,0,0.35)`,
+                  transform: `rotateY(${side * 5}deg)`
                 }}
               >
-                {/* Fin Edge Highlight */}
                 <div 
-                  className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent"
-                  style={{ clipPath: 'polygon(60% 0%, 100% 100%, 30% 100%)' }}
+                  className="absolute inset-0 bg-gradient-to-br from-white/35 via-transparent to-transparent"
+                  style={{ clipPath: 'polygon(55% 0%, 100% 100%, 25% 100%)' }}
                 />
-                {/* Hydraulic Lines */}
-                <div className="absolute top-4 left-1/2 w-1 h-20 bg-zinc-600/50" />
               </div>
             ))}
           </div>
         </motion.div>
 
-        {/* NOSE CONE - Sharp Aerodynamic Design */}
+        {/* NOSE CONE */}
         <motion.div
           style={{
             y: upperY,
             rotateZ: upperRotateZ,
             opacity: upperProgress
           }}
-          className="relative -mt-6"
+          className="relative w-[160px] mx-auto -mt-4"
         >
-          <div className="relative w-[140px] mx-auto">
-            {/* Fairing Section */}
-            <div 
-              className="relative w-full h-[100px] bg-gradient-to-b from-slate-300 via-slate-200 to-slate-300 rounded-t-[70px]"
-              style={{
-                boxShadow: `
-                  0 -10px 40px rgba(0,0,0,0.5),
-                  inset -20px 0 30px rgba(0,0,0,0.2),
-                  inset 20px 0 30px rgba(255,255,255,0.3)
-                `
-              }}
+          {/* Payload Fairing */}
+          <div 
+            className="relative w-full h-[90px] bg-gradient-to-b from-slate-200 via-slate-300 to-slate-400 rounded-t-[60px]"
+            style={{
+              boxShadow: `
+                0 -8px 35px rgba(0,0,0,0.5),
+                inset -18px 0 28px rgba(0,0,0,0.2),
+                inset 18px 0 28px rgba(255,255,255,0.35)
+              `
+            }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-white/45 via-transparent to-transparent rounded-t-[60px]" />
+            
+            {/* Crew Window */}
+            <motion.div
+              style={{ opacity: detailsProgress }}
+              className="absolute top-12 left-1/2 -translate-x-1/2 w-12 h-12 rounded-full"
             >
-              {/* Chrome Reflection */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/50 via-transparent to-transparent rounded-t-[70px]" />
-              
-              {/* Viewport Window */}
-              <motion.div
-                style={{ opacity: detailsProgress }}
-                className="absolute top-14 left-1/2 -translate-x-1/2 w-14 h-14 rounded-full"
+              <div className="absolute inset-0 bg-zinc-900 rounded-full"
+                style={{ boxShadow: '0 0 18px rgba(0,0,0,0.8), inset 0 0 15px rgba(0,0,0,0.9)' }}
+              />
+              <div 
+                className="absolute inset-1 bg-gradient-to-br from-sky-400 via-blue-500 to-blue-900 rounded-full"
+                style={{ boxShadow: 'inset 0 3px 10px rgba(0,0,0,0.5)' }}
               >
-                {/* Window Frame */}
-                <div className="absolute inset-0 bg-zinc-800 rounded-full"
-                  style={{ boxShadow: '0 0 20px rgba(0,0,0,0.8)' }}
-                />
-                {/* Glass */}
-                <div 
-                  className="absolute inset-1 bg-gradient-to-br from-sky-300 via-blue-400 to-blue-900 rounded-full"
-                  style={{ boxShadow: 'inset 0 2px 10px rgba(0,0,0,0.4)' }}
-                >
-                  {/* Sky Reflection */}
-                  <div className="absolute top-1 left-1 w-4 h-4 bg-white/70 rounded-full blur-[2px]" />
-                  <div className="absolute bottom-2 right-2 w-3 h-3 bg-cyan-200/50 rounded-full blur-sm" />
-                </div>
-              </motion.div>
-            </div>
+                <div className="absolute top-1 left-1 w-3 h-3 bg-white/80 rounded-full blur-sm" />
+              </div>
+            </motion.div>
+          </div>
 
-            {/* Sharp Nose Tip */}
-            <div 
-              className="relative w-full h-[120px] bg-gradient-to-b from-slate-300 via-slate-400 to-slate-500"
-              style={{
-                clipPath: 'polygon(50% 0%, 10% 100%, 90% 100%)',
-                boxShadow: `
-                  0 -5px 30px rgba(0,0,0,0.6),
-                  inset -15px 0 30px rgba(0,0,0,0.3),
-                  inset 15px 0 30px rgba(255,255,255,0.2)
-                `
+          {/* Sharp Tip */}
+          <div 
+            className="relative w-full h-[100px]"
+            style={{
+              clipPath: 'polygon(50% 0%, 12% 100%, 88% 100%)',
+              background: 'linear-gradient(180deg, #cbd5e1 0%, #94a3b8 50%, #64748b 100%)',
+              boxShadow: `
+                0 -8px 30px rgba(0,0,0,0.6),
+                inset -12px 0 25px rgba(0,0,0,0.3),
+                inset 12px 0 25px rgba(255,255,255,0.25)
+              `
+            }}
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-black/15"
+              style={{ clipPath: 'polygon(50% 0%, 12% 100%, 88% 100%)' }}
+            />
+            
+            {/* Nav Light */}
+            <motion.div
+              style={{ opacity: detailsProgress }}
+              className="absolute top-2 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-red-500 rounded-full"
+              animate={{
+                opacity: [1, 0.4, 1],
+                boxShadow: [
+                  '0 0 6px rgba(239,68,68,0.9)',
+                  '0 0 15px rgba(239,68,68,1)',
+                  '0 0 6px rgba(239,68,68,0.9)'
+                ]
               }}
-            >
-              {/* Metallic Highlight */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-black/20"
-                style={{ clipPath: 'polygon(50% 0%, 10% 100%, 90% 100%)' }}
-              />
-              
-              {/* Navigation Light */}
-              <motion.div
-                style={{ opacity: detailsProgress }}
-                className="absolute top-1 left-1/2 -translate-x-1/2 w-2 h-2 bg-red-500 rounded-full"
-                animate={{
-                  opacity: [1, 0.3, 1],
-                  boxShadow: [
-                    '0 0 8px rgba(239, 68, 68, 0.8)',
-                    '0 0 20px rgba(239, 68, 68, 1)',
-                    '0 0 8px rgba(239, 68, 68, 0.8)'
-                  ]
-                }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-              />
-            </div>
+              transition={{ duration: 1.5, repeat: Infinity }}
+            />
           </div>
         </motion.div>
 
-        {/* PHOTOREALISTIC ROCKET EXHAUST PLUME - SHOOTS DOWNWARD */}
+        {/* PHOTOREALISTIC EXHAUST PLUME */}
         <motion.div
           style={{ 
             opacity: launchTrigger,
             scale: useTransform(launchTrigger, [0, 1], [0.8, 1])
           }}
-          className="relative w-[280px] flex justify-center -ml-8"
+          className="relative w-[160px] flex justify-center"
         >
           {/* Engine Nozzle Glow - At rocket base */}
           <motion.div
