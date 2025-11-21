@@ -191,37 +191,34 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
   const rocketY = useTransform(
     scrollYProgress, 
     [0.78, 0.82, 0.88, 1], 
-    [0, -100, -500, -2000],
-    { ease: [0.16, 1, 0.3, 1] } // Smooth easing
+    [0, -100, -500, -2000]
   );
   
   // Subtle realistic tilt during ascent
   const rocketRotate = useTransform(
     scrollYProgress, 
     [0.78, 0.82, 0.9, 1], 
-    [0, -1, 1, -0.5],
-    { ease: [0.16, 1, 0.3, 1] }
+    [0, -1, 1, -0.5]
   );
   
   // Scale down as it flies away for depth
   const rocketScale = useTransform(
     scrollYProgress,
     [0.78, 0.88, 1],
-    [1, 0.85, 0.4],
-    { ease: [0.16, 1, 0.3, 1] }
+    [1, 0.85, 0.4]
   );
   
   // Fade out at distance
   const rocketOpacity = useTransform(scrollYProgress, [0.92, 1], [1, 0]);
   
   // 3D transformations with smooth easing
-  const baseY = useTransform(baseProgress, [0, 1], [400, 0], { ease: [0.16, 1, 0.3, 1] });
+  const baseY = useTransform(baseProgress, [0, 1], [400, 0]);
   const baseRotateX = useTransform(baseProgress, [0, 0.5, 1], [90, 45, 0]);
   
-  const bodyY = useTransform(bodyProgress, [0, 1], [300, 0], { ease: [0.16, 1, 0.3, 1] });
-  const bodyScale = useTransform(bodyProgress, [0, 0.5, 1], [0.5, 1.15, 1], { ease: [0.16, 1, 0.3, 1] });
+  const bodyY = useTransform(bodyProgress, [0, 1], [300, 0]);
+  const bodyScale = useTransform(bodyProgress, [0, 0.5, 1], [0.5, 1.15, 1]);
   
-  const upperY = useTransform(upperProgress, [0, 1], [200, 0], { ease: [0.16, 1, 0.3, 1] });
+  const upperY = useTransform(upperProgress, [0, 1], [200, 0]);
   const upperRotateZ = useTransform(upperProgress, [0, 0.5, 1], [-180, -90, 0]);
 
   return (
