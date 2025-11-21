@@ -28,25 +28,6 @@ const programs = [
     link: '/join-ignite'
   },
   {
-    id: 'liftoff',
-    icon: Rocket,
-    name: 'LIFTOFF',
-    duration: '6-month accelerator',
-    tagline: 'Scale Your Startup',
-    gradient: 'from-red-500 to-pink-500',
-    description: 'A 6-month accelerator program for startups with an existing MVP ready to scale and raise funds.',
-    features: [
-      'Growth strategy development',
-      'Fundraising preparation',
-      'Go-to-market execution',
-      'Team building workshops',
-      'Legal and compliance guidance',
-      'Direct investor introductions'
-    ],
-    cta: 'Apply to LIFTOFF',
-    link: '#contact'
-  },
-  {
     id: 'foundations',
     icon: GraduationCap,
     name: 'FOUNDATIONS',
@@ -156,7 +137,7 @@ function ProgramsSection({ programs }: { programs: Program[] }) {
   return (
     <section ref={ref} className="relative py-32 overflow-hidden">
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {programs.map((program: Program, index: number) => {
             const Icon = program.icon;
             return (
