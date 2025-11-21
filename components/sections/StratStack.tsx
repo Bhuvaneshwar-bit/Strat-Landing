@@ -81,9 +81,9 @@ export default function StratStack() {
         </motion.div>
       </div>
 
-      {/* Stacking Cards Container */}
-      <div ref={containerRef} className="relative" style={{ height: `${stackItems.length * 120}vh` }}>
-        <div className="sticky top-32 flex items-start justify-center">
+      {/* Stacking Cards Container - Fixed viewport while stacking happens */}
+      <div ref={containerRef} className="relative" style={{ height: `${(stackItems.length - 1) * 100}vh` }}>
+        <div className="sticky top-0 left-0 right-0 h-screen flex items-center justify-center">
           <div className="relative w-full max-w-xl mx-auto px-4 sm:px-6 lg:px-8" style={{ height: '400px' }}>
             {stackItems.map((item, index) => (
               <StackingCard
