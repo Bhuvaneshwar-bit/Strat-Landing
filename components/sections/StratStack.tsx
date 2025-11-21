@@ -56,32 +56,41 @@ export default function StratStack() {
     const scrollTop = window.scrollY;
     const container = containerRef.current;
     const containerTop = container.offsetTop;
-    const stackPosition = window.innerHeight * 0.2; // 20% from top
-    const itemStackDistance = 30;
-    const itemScale = 0.05;
-    const baseScale = 0.9;
+    const stackPosition = window.innerHeight * 0.25; // Stack position from top
+    const itemStackDistance = 20; // Distance between stacked cards
+    const itemScale = 0.03; // Scale decrease per card
+    const baseScale = 0.92; // Base scale for cards underneath
 
     cardsRef.current.forEach((card, i) => {
       if (!card) return;
 
-      const cardTop = containerTop + (i * 100); // Initial offset
-      const triggerStart = cardTop - stackPosition - itemStackDistance * i;
-      const triggerEnd = cardTop - window.innerHeight * 0.1;
-
-      // Calculate scale progress
-      const scaleProgress = Math.max(0, Math.min(1, (scrollTop - triggerStart) / (triggerEnd - triggerStart)));
-      const targetScale = baseScale + i * itemScale;
-      const scale = 1 - scaleProgress * (1 - targetScale);
-
-      // Calculate pin position
-      const pinStart = cardTop - stackPosition - itemStackDistance * i;
-      const pinEnd = containerTop + container.offsetHeight - window.innerHeight / 2;
+      // Calculate when this card should start moving
+      const cardStart = containerTop + (i * window.innerHeight * 0.5);
+      const triggerStart = cardStart - stackPosition;
       
+      // Pin range
+      const pinStart = triggerStart;
+      const pinEnd = containerTop + container.offsetHeight - window.innerHeight;
+
+      // Calculate scale based on how many cards are on top
+      let scale = 1;
+      for (let j = i + 1; j < cardsRef.current.length; j++) {
+        const nextCardStart = containerTop + (j * window.innerHeight * 0.5);
+        const nextTriggerStart = nextCardStart - stackPosition;
+        if (scrollTop >= nextTriggerStart) {
+          scale -= itemScale;
+        }
+      }
+      scale = Math.max(baseScale, scale);
+
+      // Calculate position
       let translateY = 0;
       if (scrollTop >= pinStart && scrollTop <= pinEnd) {
-        translateY = scrollTop - cardTop + stackPosition + itemStackDistance * i;
+        // Pin the card at stack position with offset
+        translateY = scrollTop - cardStart + stackPosition + (i * itemStackDistance);
       } else if (scrollTop > pinEnd) {
-        translateY = pinEnd - cardTop + stackPosition + itemStackDistance * i;
+        // Keep it pinned at the end
+        translateY = pinEnd - cardStart + stackPosition + (i * itemStackDistance);
       }
 
       card.style.transform = `translate3d(0, ${translateY}px, 0) scale(${scale})`;
@@ -130,8 +139,8 @@ export default function StratStack() {
       </div>
 
       {/* Stacking Cards Container */}
-      <div ref={containerRef} className="relative" style={{ minHeight: `${stackItems.length * 100}vh`, paddingBottom: '50vh' }}>
-        <div className="max-w-xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
+      <div ref={containerRef} className="relative" style={{ minHeight: `${stackItems.length * 50}vh`, paddingBottom: '100vh' }}>
+        <div className="max-w-xl mx-auto px-4 sm:px-6 lg:px-8 pt-12">
           {stackItems.map((item, index) => (
             <StackingCard
               key={item.title}
@@ -214,7 +223,7 @@ const StackingCard = React.forwardRef<HTMLDivElement, {
     <div
       ref={ref}
       style={{
-        marginBottom: index < stackItems.length - 1 ? '100px' : '0',
+        marginBottom: '0',
         transformOrigin: 'top center',
         willChange: 'transform',
         position: 'relative',
