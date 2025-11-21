@@ -230,7 +230,7 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
           scale: rocketScale,
           opacity: rocketOpacity
         }}
-        className="relative"
+        className="relative translate-x-6"
       >
         {/* Atmospheric Lighting */}
         <motion.div
