@@ -54,7 +54,8 @@ export default function StratStack() {
     if (!cardsRef.current.length || !containerRef.current) return;
 
     const scrollTop = window.scrollY;
-    const containerTop = containerRef.current.offsetTop;
+    const container = containerRef.current;
+    const containerTop = container.offsetTop;
     const stackPosition = window.innerHeight * 0.2; // 20% from top
     const itemStackDistance = 30;
     const itemScale = 0.05;
@@ -74,7 +75,7 @@ export default function StratStack() {
 
       // Calculate pin position
       const pinStart = cardTop - stackPosition - itemStackDistance * i;
-      const pinEnd = containerTop + containerRef.current.offsetHeight - window.innerHeight / 2;
+      const pinEnd = containerTop + container.offsetHeight - window.innerHeight / 2;
       
       let translateY = 0;
       if (scrollTop >= pinStart && scrollTop <= pinEnd) {
