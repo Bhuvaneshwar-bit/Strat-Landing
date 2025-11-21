@@ -82,9 +82,9 @@ export default function StratStack() {
       </div>
 
       {/* Stacking Cards Container */}
-      <div ref={containerRef} className="relative" style={{ height: `${stackItems.length * 100}vh` }}>
+      <div ref={containerRef} className="relative" style={{ height: `${stackItems.length * 120}vh` }}>
         <div className="sticky top-32 flex items-start justify-center">
-          <div className="relative w-full max-w-2xl mx-auto px-4 sm:px-6 lg:px-8" style={{ height: '500px' }}>
+          <div className="relative w-full max-w-xl mx-auto px-4 sm:px-6 lg:px-8" style={{ height: '400px' }}>
             {stackItems.map((item, index) => (
               <StackingCard
                 key={item.title}
@@ -178,7 +178,7 @@ function StackingCard({
   const y = useTransform(
     scrollProgress,
     [cardStart, cardEnd],
-    [500, 0]
+    [400, 0]
   );
 
   // Scale: cards underneath shrink slightly
@@ -209,13 +209,14 @@ function StackingCard({
       <motion.div
         whileHover={{ scale: 1.02 }}
         transition={{ duration: 0.3 }}
-        className="group relative w-full aspect-square"
+        className="group relative w-full"
+        style={{ height: '400px' }}
       >
         {/* Glow Effect */}
         <div className={`absolute -inset-1 bg-gradient-to-r ${item.gradient} rounded-3xl blur-2xl opacity-0 group-hover:opacity-30 transition-opacity duration-500`} />
 
-        {/* Card - Square Shape */}
-        <div className="relative w-full h-full bg-gradient-to-br from-white/[0.12] to-white/[0.04] backdrop-blur-xl rounded-3xl border border-white/20 p-8 sm:p-12 overflow-hidden flex flex-col justify-between">
+        {/* Card */}
+        <div className="relative w-full h-full bg-gradient-to-br from-white/[0.12] to-white/[0.04] backdrop-blur-xl rounded-3xl border border-white/20 p-6 sm:p-8 overflow-hidden flex flex-col justify-between">
           {/* Shimmer Effect */}
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 -translate-x-full group-hover:translate-x-full" 
             style={{ transition: 'transform 1.5s ease' }}
@@ -226,17 +227,17 @@ function StackingCard({
             {/* Icon */}
             <motion.div
               whileHover={{ rotate: 5, scale: 1.1 }}
-              className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${item.gradient} flex items-center justify-center shadow-2xl mb-6`}
+              className={`w-16 h-16 rounded-xl bg-gradient-to-br ${item.gradient} flex items-center justify-center shadow-2xl mb-4`}
             >
-              <Icon className="w-10 h-10 text-white" strokeWidth={1.5} />
+              <Icon className="w-8 h-8 text-white" strokeWidth={1.5} />
             </motion.div>
 
             {/* Text */}
             <div>
-              <h3 className="text-3xl sm:text-4xl font-bold mb-4 text-white">
+              <h3 className="text-2xl sm:text-3xl font-bold mb-3 text-white">
                 {item.title}
               </h3>
-              <p className="text-lg sm:text-xl text-gray-300 leading-relaxed">
+              <p className="text-base sm:text-lg text-gray-300 leading-relaxed">
                 {item.description}
               </p>
             </div>
