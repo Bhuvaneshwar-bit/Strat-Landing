@@ -509,11 +509,27 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
             opacity: launchTrigger,
             scale: useTransform(launchTrigger, [0, 1], [0.8, 1])
           }}
-          className="relative w-[500px] -mt-2 flex justify-center"
+          className="relative w-[280px] -mt-[140px] flex justify-center"
         >
-          {/* Ultra-Hot Core - Pure White Plasma */}
+          {/* Engine Nozzle Glow - Bright ignition point */}
           <motion.div
-            className="absolute top-0 left-1/2 -translate-x-1/2 w-[90px] h-[420px]"
+            className="absolute -top-[70px] left-1/2 -translate-x-1/2 w-[70px] h-[70px] rounded-full"
+            style={{
+              background: 'radial-gradient(circle, rgba(255,255,255,0.95) 0%, rgba(254,243,199,0.9) 30%, rgba(251,191,36,0.7) 60%, transparent 100%)',
+              filter: 'blur(8px)',
+              boxShadow: '0 0 40px rgba(254,243,199,1), 0 0 80px rgba(251,191,36,0.8)',
+              mixBlendMode: 'screen'
+            }}
+            animate={{
+              scale: [1, 1.15, 1],
+              opacity: [0.9, 1, 0.9]
+            }}
+            transition={{ duration: 0.25, repeat: Infinity }}
+          />
+
+          {/* Ultra-Hot Core - Pure White Plasma - Starts INSIDE engine bell */}
+          <motion.div
+            className="absolute -top-[40px] left-1/2 -translate-x-1/2 w-[90px] h-[460px]"
             style={{
               background: 'linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.95) 15%, rgba(254,249,195,0.9) 35%, rgba(253,224,71,0.7) 60%, rgba(251,146,60,0.4) 85%, transparent 100%)',
               filter: 'blur(3px)',
@@ -534,7 +550,7 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
 
           {/* Mach Diamond Shock Structures */}
           <motion.div
-            className="absolute top-[100px] left-1/2 -translate-x-1/2 w-[105px] h-[32px]"
+            className="absolute top-[60px] left-1/2 -translate-x-1/2 w-[105px] h-[32px]"
             style={{
               background: 'radial-gradient(ellipse at center, rgba(186,230,253,0.25), rgba(125,211,252,0.4) 40%, transparent 70%)',
               filter: 'blur(1.5px)',
@@ -549,7 +565,7 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
             transition={{ duration: 0.55, repeat: Infinity }}
           />
           <motion.div
-            className="absolute top-[180px] left-1/2 -translate-x-1/2 w-[110px] h-[35px]"
+            className="absolute top-[140px] left-1/2 -translate-x-1/2 w-[110px] h-[35px]"
             style={{
               background: 'radial-gradient(ellipse at center, rgba(186,230,253,0.2), rgba(125,211,252,0.3) 40%, transparent 70%)',
               filter: 'blur(1.5px)',
@@ -566,7 +582,7 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
 
           {/* Primary Flame Envelope */}
           <motion.div
-            className="absolute top-0 left-1/2 -translate-x-1/2 w-[160px] h-[480px]"
+            className="absolute -top-[40px] left-1/2 -translate-x-1/2 w-[160px] h-[520px]"
             style={{
               background: 'radial-gradient(ellipse 100% 100% at 50% 20%, transparent 25%, rgba(254,243,199,0.5) 35%, rgba(251,191,36,0.65) 50%, rgba(249,115,22,0.5) 70%, rgba(234,88,12,0.25) 88%, transparent 100%)',
               filter: 'blur(18px)',
@@ -586,7 +602,7 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
 
           {/* Outer Turbulent Boundary */}
           <motion.div
-            className="absolute top-0 left-1/2 -translate-x-1/2 w-[200px] h-[500px]"
+            className="absolute -top-[40px] left-1/2 -translate-x-1/2 w-[200px] h-[540px]"
             style={{
               background: 'radial-gradient(ellipse 100% 100% at 50% 15%, transparent 40%, rgba(220,38,38,0.35) 60%, rgba(185,28,28,0.25) 78%, rgba(127,29,29,0.12) 92%, transparent 100%)',
               filter: 'blur(28px)',
@@ -608,7 +624,7 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
           {[...Array(5)].map((_, i) => (
             <motion.div
               key={`exhaust-${i}`}
-              className="absolute top-0 left-1/2 -translate-x-1/2 rounded-full"
+              className="absolute -top-[30px] left-1/2 -translate-x-1/2 rounded-full"
               style={{
                 width: '4px',
                 height: '4px',
@@ -634,7 +650,7 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
 
           {/* Launch Pad Illumination */}
           <motion.div
-            className="absolute top-0 left-1/2 -translate-x-1/2 w-[380px] h-[160px]"
+            className="absolute -top-[50px] left-1/2 -translate-x-1/2 w-[300px] h-[140px]"
             style={{
               background: 'radial-gradient(ellipse 100% 100% at center, rgba(251,191,36,0.4) 0%, rgba(249,115,22,0.25) 40%, rgba(234,88,12,0.12) 70%, transparent 100%)',
               filter: 'blur(45px)',
@@ -651,7 +667,7 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
           {[...Array(4)].map((_, i) => (
             <motion.div
               key={`smoke-${i}`}
-              className="absolute top-0 left-1/2 -translate-x-1/2 rounded-full"
+              className="absolute -top-[20px] left-1/2 -translate-x-1/2 rounded-full"
               style={{
                 width: '70px',
                 height: '70px',
@@ -676,7 +692,7 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
 
           {/* Atmospheric Heat Distortion */}
           <motion.div
-            className="absolute top-0 left-1/2 -translate-x-1/2 w-[180px] h-[460px]"
+            className="absolute -top-[40px] left-1/2 -translate-x-1/2 w-[180px] h-[500px]"
             style={{
               background: 'linear-gradient(180deg, transparent 0%, rgba(251,191,36,0.06) 40%, rgba(251,146,60,0.08) 70%, transparent 100%)',
               filter: 'blur(20px)',
