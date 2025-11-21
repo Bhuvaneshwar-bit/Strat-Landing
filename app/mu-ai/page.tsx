@@ -98,7 +98,7 @@ function HeroSection() {
             transition={{ duration: 1, delay: 1.2 }}
             className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light text-gray-400"
           >
-            Your AI Co-Founder
+            Your AI Business Suite
           </motion.p>
 
           {/* Scroll indicator */}
