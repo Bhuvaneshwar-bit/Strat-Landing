@@ -57,40 +57,42 @@ export default function StratStack() {
     const container = containerRef.current;
     const containerTop = container.offsetTop;
     const vh = window.innerHeight;
-    const stackTop = vh * 0.2; // Cards stack at 20% from top of viewport
-    const cardGap = 20; // Gap between stacked cards
+    const stackTop = vh * 0.25; 
+    const cardGap = 20;
 
     cardsRef.current.forEach((card, i) => {
       if (!card) return;
 
-      // When each card should start animating
-      const scrollTrigger = containerTop + (i * vh * 0.8);
-      const scrollProgress = Math.max(0, Math.min(1, (scrollTop - scrollTrigger) / (vh * 0.5)));
+      // Scroll trigger for each card
+      const scrollTrigger = containerTop + (i * vh);
+      const scrollEnd = scrollTrigger + vh;
+      const scrollProgress = Math.max(0, Math.min(1, (scrollTop - scrollTrigger) / vh));
 
-      // Position: slide from bottom, then pin
-      let y = 0;
+      // Calculate final stacked position
+      const stackedY = stackTop + (i * cardGap);
+
+      // Position
+      let y = stackedY;
       if (scrollTop < scrollTrigger) {
-        // Before trigger: card is below viewport
-        y = vh;
-      } else if (scrollProgress < 1) {
-        // During animation: sliding up
-        y = vh - (scrollProgress * vh) + stackTop + (i * cardGap);
-      } else {
-        // After animation: pinned at stack position
-        y = stackTop + (i * cardGap);
+        // Card hasn't started yet - position below viewport
+        y = vh + stackedY;
+      } else if (scrollTop >= scrollTrigger && scrollTop < scrollEnd) {
+        // Card is animating up
+        const progress = (scrollTop - scrollTrigger) / vh;
+        y = vh + stackedY - (progress * vh);
       }
 
-      // Scale: cards underneath get smaller
+      // Scale down cards that are underneath
       let scale = 1;
       for (let j = i + 1; j < cardsRef.current.length; j++) {
-        const nextTrigger = containerTop + (j * vh * 0.8);
-        if (scrollTop >= nextTrigger) {
-          scale *= 0.97;
+        const nextTrigger = containerTop + (j * vh);
+        if (scrollTop >= nextTrigger + (vh * 0.3)) {
+          scale *= 0.96;
         }
       }
 
       card.style.transform = `translate3d(0, ${y}px, 0) scale(${scale})`;
-      card.style.opacity = scrollProgress > 0 ? '1' : '0';
+      card.style.opacity = scrollProgress > 0.1 ? '1' : '0';
     });
   }, []);
 
@@ -136,9 +138,9 @@ export default function StratStack() {
       </div>
 
       {/* Stacking Cards Container */}
-      <div ref={containerRef} className="relative" style={{ height: `${stackItems.length * 80 + 100}vh` }}>
-        <div className="sticky top-0 left-0 right-0 h-screen pointer-events-none">
-          <div className="max-w-xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+      <div ref={containerRef} className="relative" style={{ height: `${(stackItems.length + 1) * 100}vh` }}>
+        <div className="sticky top-0 left-0 right-0 h-screen overflow-hidden pointer-events-none">
+          <div className="max-w-xl mx-auto px-4 sm:px-6 lg:px-8 h-full relative">
             {stackItems.map((item, index) => (
               <StackingCard
                 key={item.title}
