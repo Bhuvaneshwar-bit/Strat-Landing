@@ -149,24 +149,44 @@ function ModulesSection() {
       name: 'Mu Ledger',
       role: 'AI CFO',
       desc: 'Tracks expenses, forecasts revenue, analyzes unit economics, and helps founders understand their financial runway and investor metrics.',
+      features: [
+        'Expense tracking',
+        'Revenue forecasting',
+        'Unit economics analysis'
+      ]
     },
     {
       icon: Users,
       name: 'Mu Hire',
       role: 'AI HR',
       desc: 'Helps define roles, craft job descriptions, structure teams, and design hiring or onboarding workflows.',
+      features: [
+        'Job descriptions',
+        'Recruiting assistance',
+        'Team building'
+      ]
     },
     {
       icon: Megaphone,
       name: 'Mu Reach',
       role: 'AI CMO',
       desc: 'Generates campaign strategies, social media posts, content ideas, and marketing funnels — tailored for your startup stage.',
+      features: [
+        'Campaign strategies',
+        'Social media content',
+        'Marketing funnels'
+      ]
     },
     {
       icon: Brain,
       name: 'Ignis',
       role: 'AI Co-Founder',
       desc: 'Your thinking partner that helps you validate problems, structure your business model, and plan your go-to-market roadmap.',
+      features: [
+        'Strategic planning',
+        'Business model validation',
+        'Market analysis'
+      ]
     },
   ];
 
@@ -229,6 +249,16 @@ function ModuleCard({ module, index }: { module: any; index: number }) {
       <p className="text-lg text-gray-400 font-light leading-relaxed mb-8">
         {module.desc}
       </p>
+
+      {/* Bullet Points */}
+      <ul className="space-y-3 mb-8">
+        {module.features.map((feature: string, i: number) => (
+          <li key={i} className="flex items-start gap-3 text-gray-300">
+            <span className="text-red-400 mt-1.5">•</span>
+            <span className="text-base">{feature}</span>
+          </li>
+        ))}
+      </ul>
 
       {/* Arrow indicator */}
       <motion.div
