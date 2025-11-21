@@ -1,6 +1,6 @@
 'use client';
 
-import { motion, useInView, AnimatePresence } from 'framer-motion';
+import { motion, useInView, AnimatePresence, useScroll, useTransform } from 'framer-motion';
 import { useRef, useState } from 'react';
 import { ArrowRight, CheckCircle2, Users, Clock, Target, Sparkles, Calendar, MapPin, Award, Rocket, BookOpen, Briefcase, ChevronDown } from 'lucide-react';
 import Link from 'next/link';
@@ -170,6 +170,229 @@ const faqs = [
     answer: 'IGNITE works for any startup idea—SaaS, D2C, social impact, hardware, or service-based. The frameworks we teach apply to all types of ventures. Whether you\'re building an app, a product, or a service, you\'ll find your path here.'
   },
 ];
+
+// Rocket Animation Component
+function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLElement | null> }) {
+  const { scrollYProgress } = useScroll({
+    target: containerRef as React.RefObject<HTMLElement>,
+    offset: ['start end', 'end start']
+  });
+
+  // Map scroll progress to rocket assembly stages (0 to 1)
+  const baseOpacity = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
+  const bodyOpacity = useTransform(scrollYProgress, [0.3, 0.5], [0, 1]);
+  const noseOpacity = useTransform(scrollYProgress, [0.6, 0.8], [0, 1]);
+  const windowOpacity = useTransform(scrollYProgress, [0.7, 0.9], [0, 1]);
+  
+  // Rocket position - stays fixed until launch
+  const rocketY = useTransform(scrollYProgress, [0, 0.9, 1], [0, 0, -1000]);
+  const rocketScale = useTransform(scrollYProgress, [0.9, 1], [1, 1.5]);
+  
+  // Flame effects for launch
+  const flameOpacity = useTransform(scrollYProgress, [0.9, 0.95], [0, 1]);
+  const flameScale = useTransform(scrollYProgress, [0.9, 1], [0.5, 2]);
+
+  return (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden">
+      <motion.div
+        style={{ y: rocketY, scale: rocketScale }}
+        className="fixed top-1/2 right-10 md:right-20 lg:right-32 -translate-y-1/2 z-0"
+      >
+        <svg
+          width="200"
+          height="300"
+          viewBox="0 0 200 300"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          className="drop-shadow-2xl"
+        >
+          {/* Rocket Base/Engines (Week 1-3) */}
+          <motion.g style={{ opacity: baseOpacity }}>
+            {/* Left Engine */}
+            <path
+              d="M60 280 L70 250 L80 280 Z"
+              fill="url(#engineGradient)"
+              stroke="#DC2626"
+              strokeWidth="2"
+            />
+            {/* Right Engine */}
+            <path
+              d="M120 280 L130 250 L140 280 Z"
+              fill="url(#engineGradient)"
+              stroke="#DC2626"
+              strokeWidth="2"
+            />
+            {/* Center Engine */}
+            <path
+              d="M90 290 L100 250 L110 290 Z"
+              fill="url(#engineGradient)"
+              stroke="#DC2626"
+              strokeWidth="2"
+            />
+            {/* Base Platform */}
+            <rect
+              x="65"
+              y="240"
+              width="70"
+              height="15"
+              fill="#B91C1C"
+              stroke="#DC2626"
+              strokeWidth="2"
+              rx="3"
+            />
+          </motion.g>
+
+          {/* Rocket Body (Week 4-8) */}
+          <motion.g style={{ opacity: bodyOpacity }}>
+            {/* Main Body */}
+            <rect
+              x="75"
+              y="120"
+              width="50"
+              height="130"
+              fill="url(#bodyGradient)"
+              stroke="#DC2626"
+              strokeWidth="2"
+              rx="5"
+            />
+            {/* Body Details */}
+            <line x1="75" y1="160" x2="125" y2="160" stroke="#DC2626" strokeWidth="1" opacity="0.5" />
+            <line x1="75" y1="200" x2="125" y2="200" stroke="#DC2626" strokeWidth="1" opacity="0.5" />
+            
+            {/* Left Fin */}
+            <path
+              d="M75 220 L50 240 L75 240 Z"
+              fill="#B91C1C"
+              stroke="#DC2626"
+              strokeWidth="2"
+            />
+            {/* Right Fin */}
+            <path
+              d="M125 220 L150 240 L125 240 Z"
+              fill="#B91C1C"
+              stroke="#DC2626"
+              strokeWidth="2"
+            />
+          </motion.g>
+
+          {/* Nose Cone (Week 9-11) */}
+          <motion.g style={{ opacity: noseOpacity }}>
+            <path
+              d="M75 120 L100 60 L125 120 Z"
+              fill="url(#noseGradient)"
+              stroke="#DC2626"
+              strokeWidth="2"
+            />
+            <circle cx="100" cy="100" r="3" fill="#EF4444" />
+          </motion.g>
+
+          {/* Window (Week 11-12) */}
+          <motion.g style={{ opacity: windowOpacity }}>
+            <circle
+              cx="100"
+              cy="150"
+              r="15"
+              fill="#1F2937"
+              stroke="#DC2626"
+              strokeWidth="2"
+            />
+            <circle cx="100" cy="150" r="12" fill="#374151" opacity="0.6" />
+            <circle cx="105" cy="145" r="3" fill="#60A5FA" opacity="0.8" />
+          </motion.g>
+
+          {/* Launch Flames (Week 12) */}
+          <motion.g style={{ opacity: flameOpacity, scale: flameScale, originX: 0.5, originY: 1 }}>
+            {/* Center Flame */}
+            <path
+              d="M95 290 Q100 310 105 290 Q100 305 95 290"
+              fill="url(#flameGradient)"
+              opacity="0.9"
+            >
+              <animate
+                attributeName="d"
+                values="M95 290 Q100 310 105 290 Q100 305 95 290;M95 290 Q100 320 105 290 Q100 315 95 290;M95 290 Q100 310 105 290 Q100 305 95 290"
+                dur="0.3s"
+                repeatCount="indefinite"
+              />
+            </path>
+            {/* Left Flame */}
+            <path
+              d="M65 280 Q70 295 75 280 Q70 290 65 280"
+              fill="url(#flameGradient)"
+              opacity="0.8"
+            >
+              <animate
+                attributeName="d"
+                values="M65 280 Q70 295 75 280 Q70 290 65 280;M65 280 Q70 305 75 280 Q70 300 65 280;M65 280 Q70 295 75 280 Q70 290 65 280"
+                dur="0.25s"
+                repeatCount="indefinite"
+              />
+            </path>
+            {/* Right Flame */}
+            <path
+              d="M125 280 Q130 295 135 280 Q130 290 125 280"
+              fill="url(#flameGradient)"
+              opacity="0.8"
+            >
+              <animate
+                attributeName="d"
+                values="M125 280 Q130 295 135 280 Q130 290 125 280;M125 280 Q130 305 135 280 Q130 300 125 280;M125 280 Q130 295 135 280 Q130 290 125 280"
+                dur="0.28s"
+                repeatCount="indefinite"
+              />
+            </path>
+          </motion.g>
+
+          {/* Gradients */}
+          <defs>
+            <linearGradient id="bodyGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#DC2626" />
+              <stop offset="100%" stopColor="#991B1B" />
+            </linearGradient>
+            <linearGradient id="noseGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#EF4444" />
+              <stop offset="100%" stopColor="#DC2626" />
+            </linearGradient>
+            <linearGradient id="engineGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#991B1B" />
+              <stop offset="100%" stopColor="#7F1D1D" />
+            </linearGradient>
+            <linearGradient id="flameGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stopColor="#FCD34D" />
+              <stop offset="50%" stopColor="#F59E0B" />
+              <stop offset="100%" stopColor="#DC2626" />
+            </linearGradient>
+          </defs>
+        </svg>
+
+        {/* Smoke/Particles on Launch */}
+        <motion.div
+          style={{ opacity: flameOpacity }}
+          className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-40 h-40"
+        >
+          {[...Array(6)].map((_, i) => (
+            <motion.div
+              key={i}
+              className="absolute w-8 h-8 bg-red-500/30 rounded-full blur-xl"
+              animate={{
+                y: [0, -60, -120],
+                x: [0, Math.random() * 40 - 20, Math.random() * 60 - 30],
+                opacity: [0.6, 0.3, 0],
+                scale: [1, 1.5, 2]
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                delay: i * 0.2,
+                ease: 'easeOut'
+              }}
+            />
+          ))}
+        </motion.div>
+      </motion.div>
+    </div>
+  );
+}
 
 export default function JoinIgnitePage() {
   const heroRef = useRef(null);
@@ -377,6 +600,9 @@ function TimelineSection({ timeline }: { timeline: typeof weeklyTimeline }) {
 
   return (
     <section ref={ref} className="relative py-32 overflow-hidden">
+      {/* Rocket Animation Background */}
+      <RocketAnimation containerRef={ref} />
+
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
