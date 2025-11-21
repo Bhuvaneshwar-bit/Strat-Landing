@@ -477,7 +477,7 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
             opacity: launchTrigger,
             scale: useTransform(launchTrigger, [0, 1], [0.8, 1])
           }}
-          className="relative w-[160px] -mt-2 flex justify-center"
+          className="relative w-[160px] mx-auto -mt-2"
         >
           {/* Engine Nozzle Glow - At rocket base */}
           <motion.div
