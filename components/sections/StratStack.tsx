@@ -82,9 +82,9 @@ export default function StratStack() {
       </div>
 
       {/* Stacking Cards Container */}
-      <div ref={containerRef} className="relative h-[300vh]">
-        <div className="sticky top-0 h-screen flex items-center overflow-hidden">
-          <div className="w-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div ref={containerRef} className="relative" style={{ height: `${100 + stackItems.length * 100}vh` }}>
+        <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden py-20">
+          <div className="relative w-full max-w-2xl mx-auto px-4 sm:px-6 lg:px-8" style={{ height: '600px' }}>
             {stackItems.map((item, index) => (
               <StackingCard
                 key={item.title}
@@ -170,69 +170,62 @@ function StackingCard({
 }) {
   const Icon = item.icon;
   
-  // Each card gets equal portion of scroll
-  const cardStart = index / totalCards;
-  const cardEnd = (index + 1) / totalCards;
+  // Each card animation starts when previous card is halfway through
+  const cardStart = index * (1 / totalCards);
+  const cardEnd = (index + 1) * (1 / totalCards);
   
-  // Scale: cards scale down as they stack
-  const scale = useTransform(
-    scrollProgress,
-    [cardStart, cardEnd],
-    [1, 0.9]
-  );
-
-  // Opacity: cards fade slightly as they stack
-  const opacity = useTransform(
-    scrollProgress,
-    [cardStart, cardEnd],
-    [1, 0.8]
-  );
-
-  // Y position: cards slide up and stack
+  // Y position: cards come from below (100vh) and stick at top
   const y = useTransform(
     scrollProgress,
     [cardStart, cardEnd],
-    [0, -30]
+    [window.innerHeight, 0]
+  );
+
+  // Scale: previous cards shrink slightly when new card comes
+  const scale = useTransform(
+    scrollProgress,
+    [cardEnd - 0.2, cardEnd],
+    [1, 0.95]
   );
 
   return (
     <motion.div
       style={{
-        scale,
-        opacity,
         y,
-        zIndex: totalCards - index,
+        scale,
+        top: `${index * 20}px`,
+        zIndex: index,
       }}
-      className="absolute inset-0 flex items-center justify-center"
+      className="absolute left-0 right-0 mx-auto"
     >
       <motion.div
         whileHover={{ scale: 1.02 }}
         transition={{ duration: 0.3 }}
-        className="group relative w-full"
+        className="group relative w-full aspect-square"
       >
         {/* Glow Effect */}
         <div className={`absolute -inset-1 bg-gradient-to-r ${item.gradient} rounded-3xl blur-2xl opacity-0 group-hover:opacity-30 transition-opacity duration-500`} />
 
-        {/* Card */}
-        <div className="relative bg-gradient-to-br from-white/[0.12] to-white/[0.04] backdrop-blur-xl rounded-3xl border border-white/20 p-8 sm:p-12 overflow-hidden">
+        {/* Card - Square Shape */}
+        <div className="relative w-full h-full bg-gradient-to-br from-white/[0.12] to-white/[0.04] backdrop-blur-xl rounded-3xl border border-white/20 p-8 sm:p-12 overflow-hidden flex flex-col justify-between">
           {/* Shimmer Effect */}
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 -translate-x-full group-hover:translate-x-full" 
             style={{ transition: 'transform 1.5s ease' }}
           />
 
-          {/* Content */}
-          <div className="relative flex items-start gap-6">
+          {/* Top Content */}
+          <div className="relative">
             {/* Icon */}
             <motion.div
               whileHover={{ rotate: 5, scale: 1.1 }}
-              className={`flex-shrink-0 w-20 h-20 rounded-2xl bg-gradient-to-br ${item.gradient} flex items-center justify-center shadow-2xl`}
+              className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${item.gradient} flex items-center justify-center shadow-2xl mb-6`}
             >
               <Icon className="w-10 h-10 text-white" strokeWidth={1.5} />
             </motion.div>
 
             {/* Text */}
-            <div className="flex-1">
-              <h3 className="text-3xl sm:text-4xl font-bold mb-3 text-white">
+            <div>
+              <h3 className="text-3xl sm:text-4xl font-bold mb-4 text-white">
                 {item.title}
               </h3>
               <p className="text-lg sm:text-xl text-gray-300 leading-relaxed">
