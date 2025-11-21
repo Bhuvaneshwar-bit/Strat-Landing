@@ -184,19 +184,44 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
   const upperProgress = useTransform(scrollYProgress, [0.4, 0.65], [0, 1]);
   const detailsProgress = useTransform(scrollYProgress, [0.65, 0.8], [0, 1]);
   
-  // Launch triggers at week 11 (around 80% through the timeline)
+  // Launch triggers at week 11 with smooth acceleration physics
   const launchTrigger = useTransform(scrollYProgress, [0.78, 0.82], [0, 1]);
-  const rocketY = useTransform(scrollYProgress, [0.78, 1], [0, -1500]);
-  const rocketRotate = useTransform(scrollYProgress, [0.78, 0.85, 1], [0, 2, -3]);
   
-  // 3D transformations
-  const baseY = useTransform(baseProgress, [0, 1], [400, 0]);
+  // Realistic flight physics - exponential acceleration curve
+  const rocketY = useTransform(
+    scrollYProgress, 
+    [0.78, 0.82, 0.88, 1], 
+    [0, -100, -500, -2000],
+    { ease: [0.16, 1, 0.3, 1] } // Smooth easing
+  );
+  
+  // Subtle realistic tilt during ascent
+  const rocketRotate = useTransform(
+    scrollYProgress, 
+    [0.78, 0.82, 0.9, 1], 
+    [0, -1, 1, -0.5],
+    { ease: [0.16, 1, 0.3, 1] }
+  );
+  
+  // Scale down as it flies away for depth
+  const rocketScale = useTransform(
+    scrollYProgress,
+    [0.78, 0.88, 1],
+    [1, 0.85, 0.4],
+    { ease: [0.16, 1, 0.3, 1] }
+  );
+  
+  // Fade out at distance
+  const rocketOpacity = useTransform(scrollYProgress, [0.92, 1], [1, 0]);
+  
+  // 3D transformations with smooth easing
+  const baseY = useTransform(baseProgress, [0, 1], [400, 0], { ease: [0.16, 1, 0.3, 1] });
   const baseRotateX = useTransform(baseProgress, [0, 0.5, 1], [90, 45, 0]);
   
-  const bodyY = useTransform(bodyProgress, [0, 1], [300, 0]);
-  const bodyScale = useTransform(bodyProgress, [0, 0.5, 1], [0.5, 1.2, 1]);
+  const bodyY = useTransform(bodyProgress, [0, 1], [300, 0], { ease: [0.16, 1, 0.3, 1] });
+  const bodyScale = useTransform(bodyProgress, [0, 0.5, 1], [0.5, 1.15, 1], { ease: [0.16, 1, 0.3, 1] });
   
-  const upperY = useTransform(upperProgress, [0, 1], [200, 0]);
+  const upperY = useTransform(upperProgress, [0, 1], [200, 0], { ease: [0.16, 1, 0.3, 1] });
   const upperRotateZ = useTransform(upperProgress, [0, 0.5, 1], [-180, -90, 0]);
 
   return (
@@ -205,16 +230,20 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
         style={{ 
           y: rocketY,
           rotateZ: rocketRotate,
-          scale: useTransform(scrollYProgress, [0.85, 0.95], [1, 0.7])
+          scale: rocketScale,
+          opacity: rocketOpacity
         }}
         className="relative"
       >
-        {/* Premium Ambient Glow */}
+        {/* Atmospheric Lighting */}
         <motion.div
-          style={{ opacity: useTransform(scrollYProgress, [0, 0.85], [0.3, 0.6]) }}
-          className="absolute inset-0 blur-[100px]"
+          style={{ 
+            opacity: useTransform(scrollYProgress, [0, 0.8, 0.95], [0.2, 0.4, 0]),
+            scale: useTransform(launchTrigger, [0, 1], [1, 1.8])
+          }}
+          className="absolute inset-0"
         >
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-gradient-radial from-red-500/30 via-orange-600/20 to-transparent rounded-full" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[600px] bg-gradient-radial from-orange-400/20 via-orange-500/10 to-transparent blur-[80px]" />
         </motion.div>
 
         {/* ULTRA-REALISTIC BASE - Engines */}
@@ -300,28 +329,38 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
           className="relative -mt-3"
         >
           <div className="relative w-[140px] h-[380px] mx-auto">
-            {/* Polished Steel Body */}
+            {/* Photorealistic Stainless Steel Body */}
             <div 
-              className="absolute inset-0 bg-gradient-to-br from-slate-200 via-slate-300 to-slate-400 rounded-[50px]"
+              className="absolute inset-0 rounded-[50px] overflow-hidden"
               style={{
+                background: 'linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 25%, #94a3b8 50%, #cbd5e1 75%, #e2e8f0 100%)',
                 boxShadow: `
-                  0 20px 80px rgba(0,0,0,0.6),
-                  inset -30px 0 50px rgba(0,0,0,0.3),
-                  inset 30px 0 50px rgba(255,255,255,0.4),
-                  inset 0 -30px 40px rgba(0,0,0,0.2)
+                  0 30px 90px rgba(0,0,0,0.5),
+                  inset -40px 0 60px rgba(0,0,0,0.15),
+                  inset 40px 0 60px rgba(255,255,255,0.25),
+                  inset 0 -40px 50px rgba(0,0,0,0.1),
+                  inset 0 40px 50px rgba(255,255,255,0.15)
                 `
               }}
             >
-              {/* Chrome Reflection */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/40 via-transparent to-transparent rounded-[50px]" />
+              {/* Realistic Chrome Highlight */}
+              <div 
+                className="absolute inset-0 rounded-[50px]"
+                style={{
+                  background: 'linear-gradient(110deg, transparent 0%, rgba(255,255,255,0.6) 30%, rgba(255,255,255,0.8) 35%, transparent 45%, transparent 55%, rgba(255,255,255,0.3) 80%, transparent 100%)',
+                  mixBlendMode: 'overlay'
+                }}
+              />
               
-              {/* Welded Seams */}
+              {/* Precision Welded Seams */}
               {[25, 45, 65, 85].map((pos) => (
-                <div
-                  key={pos}
-                  className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-slate-500/60 to-transparent"
-                  style={{ top: `${pos}%`, boxShadow: '0 1px 3px rgba(0,0,0,0.3)' }}
-                />
+                <div key={pos} className="absolute left-0 right-0 h-[3px]" style={{ top: `${pos}%` }}>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-slate-600/80 to-transparent" />
+                  <div 
+                    className="absolute inset-0 bg-gradient-to-r from-transparent via-slate-400/40 to-transparent"
+                    style={{ transform: 'translateY(-1px)' }}
+                  />
+                </div>
               ))}
 
               {/* Heat Tiles (Black) */}
@@ -467,154 +506,192 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
           </div>
         </motion.div>
 
-        {/* OPTIMIZED PREMIUM RAPTOR PLUME - Silky Smooth */}
+        {/* PHOTOREALISTIC ROCKET EXHAUST PLUME */}
         <motion.div
-          style={{ opacity: launchTrigger }}
-          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] h-[600px] -mb-[400px]"
+          style={{ 
+            opacity: launchTrigger,
+            scale: useTransform(launchTrigger, [0, 1], [0.8, 1])
+          }}
+          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] h-[650px] -mb-[400px]"
         >
-          {/* Core Flame - White Hot Center - Single animated layer */}
+          {/* Ultra-Hot Core - Pure White Plasma */}
           <motion.div
-            className="absolute bottom-[100px] left-1/2 -translate-x-1/2 w-[100px] h-[450px]"
+            className="absolute bottom-[100px] left-1/2 -translate-x-1/2 w-[90px] h-[420px]"
             style={{
-              background: 'linear-gradient(to top, #ffffff 0%, #fef3c7 20%, #fde047 40%, #fb923c 70%, #dc2626 90%, transparent 100%)',
-              filter: 'blur(4px)',
+              background: 'linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.95) 15%, rgba(254,249,195,0.9) 35%, rgba(253,224,71,0.7) 60%, rgba(251,146,60,0.4) 85%, transparent 100%)',
+              filter: 'blur(3px)',
               mixBlendMode: 'screen',
-              willChange: 'transform'
+              willChange: 'transform',
+              borderRadius: '45% 45% 50% 50% / 20% 20% 80% 80%'
             }}
             animate={{
-              scaleY: [1, 1.12, 1],
-              scaleX: [1, 0.9, 1],
+              scaleY: [1, 1.08, 1.02, 1],
+              scaleX: [1, 0.94, 0.98, 1],
             }}
             transition={{ 
-              duration: 0.3, 
-              repeat: Infinity, 
-              ease: [0.4, 0, 0.6, 1]
+              duration: 0.35, 
+              repeat: Infinity,
+              ease: [0.45, 0, 0.55, 1]
             }}
           />
 
-          {/* Mach Diamond Pattern - Static with subtle pulse */}
+          {/* Mach Diamond Shock Structures */}
           <motion.div
-            className="absolute bottom-[180px] left-1/2 -translate-x-1/2 w-[110px] h-[35px] rounded-full border-2 border-cyan-300/50"
+            className="absolute bottom-[200px] left-1/2 -translate-x-1/2 w-[105px] h-[32px]"
             style={{
-              filter: 'blur(2px)',
-              boxShadow: '0 0 15px rgba(165, 243, 252, 0.3)'
+              background: 'radial-gradient(ellipse at center, rgba(186,230,253,0.25), rgba(125,211,252,0.4) 40%, transparent 70%)',
+              filter: 'blur(1.5px)',
+              borderRadius: '50%',
+              border: '1.5px solid rgba(165, 243, 252, 0.35)',
+              boxShadow: '0 0 12px rgba(165, 243, 252, 0.2), inset 0 0 8px rgba(186,230,253,0.3)'
             }}
             animate={{
-              opacity: [0.5, 0.7, 0.5]
+              opacity: [0.6, 0.8, 0.6],
+              scaleX: [1, 1.05, 1]
             }}
-            transition={{ duration: 0.6, repeat: Infinity }}
+            transition={{ duration: 0.55, repeat: Infinity }}
           />
           <motion.div
-            className="absolute bottom-[260px] left-1/2 -translate-x-1/2 w-[115px] h-[38px] rounded-full border-2 border-cyan-300/40"
+            className="absolute bottom-[280px] left-1/2 -translate-x-1/2 w-[110px] h-[35px]"
             style={{
-              filter: 'blur(2px)',
-              boxShadow: '0 0 15px rgba(165, 243, 252, 0.2)'
+              background: 'radial-gradient(ellipse at center, rgba(186,230,253,0.2), rgba(125,211,252,0.3) 40%, transparent 70%)',
+              filter: 'blur(1.5px)',
+              borderRadius: '50%',
+              border: '1.5px solid rgba(165, 243, 252, 0.25)',
+              boxShadow: '0 0 10px rgba(165, 243, 252, 0.15)'
             }}
             animate={{
-              opacity: [0.4, 0.6, 0.4]
+              opacity: [0.5, 0.7, 0.5],
+              scaleX: [1, 1.06, 1]
             }}
-            transition={{ duration: 0.6, repeat: Infinity, delay: 0.2 }}
+            transition={{ duration: 0.55, repeat: Infinity, delay: 0.15 }}
           />
 
-          {/* Outer Flame Glow - Optimized single layer */}
+          {/* Primary Flame Envelope */}
           <motion.div
-            className="absolute bottom-[100px] left-1/2 -translate-x-1/2 w-[180px] h-[500px]"
+            className="absolute bottom-[100px] left-1/2 -translate-x-1/2 w-[160px] h-[480px]"
             style={{
-              background: 'radial-gradient(ellipse 100% 100% at center, transparent 30%, rgba(251, 146, 60, 0.7) 45%, rgba(249, 115, 22, 0.5) 65%, rgba(234, 88, 12, 0.2) 85%, transparent)',
-              filter: 'blur(20px)',
-              willChange: 'transform'
+              background: 'radial-gradient(ellipse 100% 100% at 50% 20%, transparent 25%, rgba(254,243,199,0.5) 35%, rgba(251,191,36,0.65) 50%, rgba(249,115,22,0.5) 70%, rgba(234,88,12,0.25) 88%, transparent 100%)',
+              filter: 'blur(18px)',
+              willChange: 'transform',
+              borderRadius: '45% 45% 50% 50% / 15% 15% 85% 85%'
             }}
             animate={{
-              scaleY: [1, 1.15, 1],
-              scaleX: [1, 0.88, 1]
+              scaleY: [1, 1.12, 1.04, 1],
+              scaleX: [1, 0.91, 0.96, 1]
             }}
             transition={{ 
-              duration: 0.4, 
-              repeat: Infinity, 
-              ease: [0.4, 0, 0.6, 1]
+              duration: 0.42, 
+              repeat: Infinity,
+              ease: [0.45, 0, 0.55, 1]
             }}
           />
 
-          {/* Simplified Exhaust Particles - Only 8 for performance */}
-          {[...Array(8)].map((_, i) => (
+          {/* Outer Turbulent Boundary */}
+          <motion.div
+            className="absolute bottom-[100px] left-1/2 -translate-x-1/2 w-[200px] h-[500px]"
+            style={{
+              background: 'radial-gradient(ellipse 100% 100% at 50% 15%, transparent 40%, rgba(220,38,38,0.35) 60%, rgba(185,28,28,0.25) 78%, rgba(127,29,29,0.12) 92%, transparent 100%)',
+              filter: 'blur(28px)',
+              willChange: 'transform',
+              borderRadius: '45% 45% 50% 50% / 12% 12% 88% 88%'
+            }}
+            animate={{
+              scaleY: [1, 1.15, 1.06, 1],
+              scaleX: [1, 0.88, 0.94, 1]
+            }}
+            transition={{ 
+              duration: 0.48, 
+              repeat: Infinity,
+              ease: [0.45, 0, 0.55, 1]
+            }}
+          />
+
+          {/* Exhaust Particles - Minimal for performance */}
+          {[...Array(5)].map((_, i) => (
             <motion.div
-              key={`particle-${i}`}
-              className="absolute bottom-[100px] left-1/2 -translate-x-1/2 w-3 h-3 rounded-full"
+              key={`exhaust-${i}`}
+              className="absolute bottom-[100px] left-1/2 -translate-x-1/2 rounded-full"
               style={{
-                background: 'radial-gradient(circle, rgba(254, 243, 199, 0.9), transparent)',
-                filter: 'blur(2px)',
-                willChange: 'transform'
+                width: '4px',
+                height: '4px',
+                background: 'radial-gradient(circle, rgba(254,249,195,0.9) 0%, rgba(254,249,195,0.5) 50%, transparent 100%)',
+                filter: 'blur(1.5px)',
+                willChange: 'transform',
+                boxShadow: '0 0 6px rgba(254,249,195,0.6)'
               }}
               animate={{
-                y: [0, -400],
-                x: [(Math.random() - 0.5) * 50, (Math.random() - 0.5) * 100],
-                opacity: [0.9, 0],
-                scale: [1, 0.3]
+                y: [0, -450],
+                x: [(Math.random() - 0.5) * 40, (Math.random() - 0.5) * 90],
+                opacity: [0.95, 0.7, 0],
+                scale: [1, 0.5, 0.2]
               }}
               transition={{
-                duration: 0.8,
+                duration: 0.9,
                 repeat: Infinity,
-                delay: i * 0.1,
-                ease: 'easeOut'
+                delay: i * 0.15,
+                ease: [0.16, 1, 0.3, 1]
               }}
             />
           ))}
 
-          {/* Ground Illumination - Static gradient */}
+          {/* Launch Pad Illumination */}
           <motion.div
-            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[400px] h-[180px]"
+            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[380px] h-[160px]"
             style={{
-              background: 'radial-gradient(ellipse at center, rgba(251, 146, 60, 0.4), rgba(249, 115, 22, 0.2), transparent)',
-              filter: 'blur(50px)',
+              background: 'radial-gradient(ellipse 100% 100% at center, rgba(251,191,36,0.4) 0%, rgba(249,115,22,0.25) 40%, rgba(234,88,12,0.12) 70%, transparent 100%)',
+              filter: 'blur(45px)',
               willChange: 'opacity'
             }}
             animate={{
-              opacity: [0.6, 0.85, 0.6]
+              opacity: [0.65, 0.9, 0.7, 0.85, 0.65],
+              scale: [1, 1.08, 1.02, 1.06, 1]
             }}
-            transition={{ duration: 0.5, repeat: Infinity }}
+            transition={{ duration: 0.6, repeat: Infinity }}
           />
 
-          {/* Optimized Smoke - Only 6 particles */}
-          {[...Array(6)].map((_, i) => (
+          {/* Exhaust Smoke Trail */}
+          {[...Array(4)].map((_, i) => (
             <motion.div
               key={`smoke-${i}`}
-              className="absolute bottom-[80px] left-1/2 -translate-x-1/2 rounded-full"
+              className="absolute bottom-[90px] left-1/2 -translate-x-1/2 rounded-full"
               style={{
-                width: '60px',
-                height: '60px',
-                background: 'radial-gradient(circle, rgba(120, 113, 108, 0.35), transparent)',
-                filter: 'blur(25px)',
+                width: '70px',
+                height: '70px',
+                background: 'radial-gradient(circle, rgba(156,163,175,0.3) 0%, rgba(107,114,128,0.2) 40%, transparent 70%)',
+                filter: 'blur(30px)',
                 willChange: 'transform'
               }}
               animate={{
-                y: [0, -280],
-                x: [(Math.random() - 0.5) * 80, (Math.random() - 0.5) * 150],
-                opacity: [0.6, 0],
-                scale: [1, 2.5]
+                y: [0, -320],
+                x: [(Math.random() - 0.5) * 60, (Math.random() - 0.5) * 140],
+                opacity: [0.5, 0.3, 0],
+                scale: [1, 2.2, 2.8]
               }}
               transition={{
-                duration: 2,
+                duration: 2.2,
                 repeat: Infinity,
-                delay: i * 0.3,
-                ease: 'easeOut'
+                delay: i * 0.4,
+                ease: [0.16, 1, 0.3, 1]
               }}
             />
           ))}
 
-          {/* Subtle Heat Shimmer */}
+          {/* Atmospheric Heat Distortion */}
           <motion.div
-            className="absolute bottom-[100px] left-1/2 -translate-x-1/2 w-[200px] h-[450px]"
+            className="absolute bottom-[100px] left-1/2 -translate-x-1/2 w-[180px] h-[460px]"
             style={{
-              background: 'linear-gradient(to top, rgba(251, 146, 60, 0.08), transparent)',
-              filter: 'blur(15px)',
-              mixBlendMode: 'overlay',
-              willChange: 'transform'
+              background: 'linear-gradient(180deg, transparent 0%, rgba(251,191,36,0.06) 40%, rgba(251,146,60,0.08) 70%, transparent 100%)',
+              filter: 'blur(20px)',
+              mixBlendMode: 'soft-light',
+              willChange: 'transform',
+              borderRadius: '40% 40% 50% 50%'
             }}
             animate={{
-              scaleX: [1, 1.08, 1],
-              opacity: [0.5, 0.7, 0.5]
+              scaleX: [1, 1.12, 1.05, 1],
+              skewX: [0, 1.5, -1, 0]
             }}
-            transition={{ duration: 0.6, repeat: Infinity }}
+            transition={{ duration: 0.65, repeat: Infinity }}
           />
         </motion.div>
 
