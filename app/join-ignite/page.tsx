@@ -179,15 +179,15 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
   });
 
   // Map scroll progress to rocket assembly stages (week by week)
-  const baseProgress = useTransform(scrollYProgress, [0, 0.2], [0, 1]);
-  const bodyProgress = useTransform(scrollYProgress, [0.2, 0.45], [0, 1]);
-  const upperProgress = useTransform(scrollYProgress, [0.45, 0.7], [0, 1]);
-  const detailsProgress = useTransform(scrollYProgress, [0.7, 0.85], [0, 1]);
+  const baseProgress = useTransform(scrollYProgress, [0, 0.18], [0, 1]);
+  const bodyProgress = useTransform(scrollYProgress, [0.18, 0.4], [0, 1]);
+  const upperProgress = useTransform(scrollYProgress, [0.4, 0.65], [0, 1]);
+  const detailsProgress = useTransform(scrollYProgress, [0.65, 0.8], [0, 1]);
   
-  // Launch starts AT week 12, not after scrolling past it
-  const launchTrigger = useTransform(scrollYProgress, [0.85, 0.88], [0, 1]);
-  const rocketY = useTransform(scrollYProgress, [0.85, 1], [0, -1500]);
-  const rocketRotate = useTransform(scrollYProgress, [0.85, 0.9, 1], [0, 2, -3]);
+  // Launch triggers at week 11 (around 80% through the timeline)
+  const launchTrigger = useTransform(scrollYProgress, [0.78, 0.82], [0, 1]);
+  const rocketY = useTransform(scrollYProgress, [0.78, 1], [0, -1500]);
+  const rocketRotate = useTransform(scrollYProgress, [0.78, 0.85, 1], [0, 2, -3]);
   
   // 3D transformations
   const baseY = useTransform(baseProgress, [0, 1], [400, 0]);
@@ -467,168 +467,154 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
           </div>
         </motion.div>
 
-        {/* ULTRA-REALISTIC RAPTOR ENGINE PLUME */}
+        {/* OPTIMIZED PREMIUM RAPTOR PLUME - Silky Smooth */}
         <motion.div
           style={{ opacity: launchTrigger }}
           className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] h-[600px] -mb-[400px]"
         >
-          {/* Core Supersonic Flame - Ultra Bright Center */}
+          {/* Core Flame - White Hot Center - Single animated layer */}
           <motion.div
             className="absolute bottom-[100px] left-1/2 -translate-x-1/2 w-[100px] h-[450px]"
             style={{
-              background: 'linear-gradient(to top, #ffffff, #fef3c7, #fde047, #fb923c, #dc2626, transparent)',
-              filter: 'blur(3px)',
-              mixBlendMode: 'screen'
+              background: 'linear-gradient(to top, #ffffff 0%, #fef3c7 20%, #fde047 40%, #fb923c 70%, #dc2626 90%, transparent 100%)',
+              filter: 'blur(4px)',
+              mixBlendMode: 'screen',
+              willChange: 'transform'
             }}
             animate={{
-              scaleY: [1, 1.15, 0.95, 1.08, 1],
-              scaleX: [1, 0.92, 1.05, 0.88, 1],
-              y: [0, -8, 3, -5, 0]
+              scaleY: [1, 1.12, 1],
+              scaleX: [1, 0.9, 1],
             }}
-            transition={{ duration: 0.08, repeat: Infinity, ease: 'linear' }}
+            transition={{ 
+              duration: 0.3, 
+              repeat: Infinity, 
+              ease: [0.4, 0, 0.6, 1]
+            }}
           />
 
-          {/* Mach Diamond Shock Patterns */}
-          {[0, 1, 2, 3].map((i) => (
-            <motion.div
-              key={`diamond-${i}`}
-              className="absolute left-1/2 -translate-x-1/2 w-[120px] h-[40px] border-4 border-cyan-300/60"
-              style={{
-                bottom: `${200 + i * 80}px`,
-                borderRadius: '50%',
-                filter: 'blur(1px)',
-                boxShadow: '0 0 20px rgba(165, 243, 252, 0.4)'
-              }}
-              animate={{
-                scaleX: [1, 1.1, 0.95, 1],
-                opacity: [0.6, 0.8, 0.5, 0.6]
-              }}
-              transition={{ duration: 0.1, repeat: Infinity, delay: i * 0.025 }}
-            />
-          ))}
+          {/* Mach Diamond Pattern - Static with subtle pulse */}
+          <motion.div
+            className="absolute bottom-[180px] left-1/2 -translate-x-1/2 w-[110px] h-[35px] rounded-full border-2 border-cyan-300/50"
+            style={{
+              filter: 'blur(2px)',
+              boxShadow: '0 0 15px rgba(165, 243, 252, 0.3)'
+            }}
+            animate={{
+              opacity: [0.5, 0.7, 0.5]
+            }}
+            transition={{ duration: 0.6, repeat: Infinity }}
+          />
+          <motion.div
+            className="absolute bottom-[260px] left-1/2 -translate-x-1/2 w-[115px] h-[38px] rounded-full border-2 border-cyan-300/40"
+            style={{
+              filter: 'blur(2px)',
+              boxShadow: '0 0 15px rgba(165, 243, 252, 0.2)'
+            }}
+            animate={{
+              opacity: [0.4, 0.6, 0.4]
+            }}
+            transition={{ duration: 0.6, repeat: Infinity, delay: 0.2 }}
+          />
 
-          {/* Outer Flame Envelope - Orange/Yellow */}
+          {/* Outer Flame Glow - Optimized single layer */}
           <motion.div
             className="absolute bottom-[100px] left-1/2 -translate-x-1/2 w-[180px] h-[500px]"
             style={{
-              background: 'radial-gradient(ellipse at center, transparent 30%, rgba(251, 146, 60, 0.8) 40%, rgba(249, 115, 22, 0.6) 60%, rgba(234, 88, 12, 0.3) 80%, transparent)',
-              filter: 'blur(15px)'
+              background: 'radial-gradient(ellipse 100% 100% at center, transparent 30%, rgba(251, 146, 60, 0.7) 45%, rgba(249, 115, 22, 0.5) 65%, rgba(234, 88, 12, 0.2) 85%, transparent)',
+              filter: 'blur(20px)',
+              willChange: 'transform'
             }}
             animate={{
-              scaleY: [1, 1.2, 0.9, 1.1, 1],
-              scaleX: [1, 0.85, 1.1, 0.9, 1]
+              scaleY: [1, 1.15, 1],
+              scaleX: [1, 0.88, 1]
             }}
-            transition={{ duration: 0.12, repeat: Infinity, ease: 'linear' }}
+            transition={{ 
+              duration: 0.4, 
+              repeat: Infinity, 
+              ease: [0.4, 0, 0.6, 1]
+            }}
           />
 
-          {/* Turbulent Edge Glow */}
-          <motion.div
-            className="absolute bottom-[100px] left-1/2 -translate-x-1/2 w-[220px] h-[520px]"
-            style={{
-              background: 'radial-gradient(ellipse at center, transparent 40%, rgba(220, 38, 38, 0.4) 60%, rgba(185, 28, 28, 0.2) 80%, transparent)',
-              filter: 'blur(25px)'
-            }}
-            animate={{
-              scaleY: [1, 1.15, 0.95, 1.1, 1],
-              scaleX: [1, 0.9, 1.15, 0.85, 1]
-            }}
-            transition={{ duration: 0.15, repeat: Infinity, ease: 'easeInOut' }}
-          />
-
-          {/* Supersonic Exhaust Particles */}
-          {[...Array(30)].map((_, i) => (
+          {/* Simplified Exhaust Particles - Only 8 for performance */}
+          {[...Array(8)].map((_, i) => (
             <motion.div
               key={`particle-${i}`}
-              className="absolute bottom-[100px] left-1/2 -translate-x-1/2 w-2 h-2 bg-yellow-200 rounded-full"
+              className="absolute bottom-[100px] left-1/2 -translate-x-1/2 w-3 h-3 rounded-full"
               style={{
-                boxShadow: '0 0 8px rgba(254, 240, 138, 0.8)',
-                filter: 'blur(1px)'
+                background: 'radial-gradient(circle, rgba(254, 243, 199, 0.9), transparent)',
+                filter: 'blur(2px)',
+                willChange: 'transform'
               }}
               animate={{
-                y: [0, -350 - Math.random() * 200],
-                x: [(Math.random() - 0.5) * 40, (Math.random() - 0.5) * 120],
-                opacity: [1, 0.8, 0],
-                scale: [1, 0.5, 0]
+                y: [0, -400],
+                x: [(Math.random() - 0.5) * 50, (Math.random() - 0.5) * 100],
+                opacity: [0.9, 0],
+                scale: [1, 0.3]
               }}
               transition={{
-                duration: 0.4 + Math.random() * 0.3,
+                duration: 0.8,
                 repeat: Infinity,
-                delay: i * 0.015,
+                delay: i * 0.1,
                 ease: 'easeOut'
               }}
             />
           ))}
 
-          {/* Ground Illumination */}
+          {/* Ground Illumination - Static gradient */}
           <motion.div
-            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[400px] h-[200px] bg-orange-500/30 rounded-full"
-            style={{ filter: 'blur(60px)' }}
-            animate={{
-              opacity: [0.5, 0.8, 0.6, 0.9, 0.5],
-              scale: [1, 1.2, 0.9, 1.15, 1]
+            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[400px] h-[180px]"
+            style={{
+              background: 'radial-gradient(ellipse at center, rgba(251, 146, 60, 0.4), rgba(249, 115, 22, 0.2), transparent)',
+              filter: 'blur(50px)',
+              willChange: 'opacity'
             }}
-            transition={{ duration: 0.2, repeat: Infinity }}
+            animate={{
+              opacity: [0.6, 0.85, 0.6]
+            }}
+            transition={{ duration: 0.5, repeat: Infinity }}
           />
 
-          {/* Supersonic Shockwave Cone */}
+          {/* Optimized Smoke - Only 6 particles */}
+          {[...Array(6)].map((_, i) => (
+            <motion.div
+              key={`smoke-${i}`}
+              className="absolute bottom-[80px] left-1/2 -translate-x-1/2 rounded-full"
+              style={{
+                width: '60px',
+                height: '60px',
+                background: 'radial-gradient(circle, rgba(120, 113, 108, 0.35), transparent)',
+                filter: 'blur(25px)',
+                willChange: 'transform'
+              }}
+              animate={{
+                y: [0, -280],
+                x: [(Math.random() - 0.5) * 80, (Math.random() - 0.5) * 150],
+                opacity: [0.6, 0],
+                scale: [1, 2.5]
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                delay: i * 0.3,
+                ease: 'easeOut'
+              }}
+            />
+          ))}
+
+          {/* Subtle Heat Shimmer */}
           <motion.div
-            className="absolute bottom-[100px] left-1/2 -translate-x-1/2"
+            className="absolute bottom-[100px] left-1/2 -translate-x-1/2 w-[200px] h-[450px]"
             style={{
-              width: 0,
-              height: 0,
-              borderLeft: '120px solid transparent',
-              borderRight: '120px solid transparent',
-              borderBottom: '400px solid rgba(251, 191, 36, 0.15)',
-              filter: 'blur(8px)'
+              background: 'linear-gradient(to top, rgba(251, 146, 60, 0.08), transparent)',
+              filter: 'blur(15px)',
+              mixBlendMode: 'overlay',
+              willChange: 'transform'
             }}
             animate={{
-              opacity: [0.3, 0.6, 0.4, 0.7, 0.3],
-              scale: [1, 1.05, 0.98, 1.03, 1]
+              scaleX: [1, 1.08, 1],
+              opacity: [0.5, 0.7, 0.5]
             }}
-            transition={{ duration: 0.1, repeat: Infinity }}
-          />
-
-          {/* Smoke Plume */}
-          <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-full h-full">
-            {[...Array(25)].map((_, i) => (
-              <motion.div
-                key={`smoke-${i}`}
-                className="absolute bottom-[80px] left-1/2 -translate-x-1/2 rounded-full"
-                style={{
-                  width: `${40 + Math.random() * 60}px`,
-                  height: `${40 + Math.random() * 60}px`,
-                  background: `radial-gradient(circle, rgba(120, 113, 108, ${0.3 + Math.random() * 0.2}), transparent)`,
-                  filter: 'blur(20px)'
-                }}
-                animate={{
-                  y: [0, -200 - Math.random() * 250],
-                  x: [(Math.random() - 0.5) * 80, (Math.random() - 0.5) * 180],
-                  opacity: [0.7, 0.4, 0],
-                  scale: [1, 2 + Math.random()]
-                }}
-                transition={{
-                  duration: 1.5 + Math.random() * 1,
-                  repeat: Infinity,
-                  delay: i * 0.06,
-                  ease: 'easeOut'
-                }}
-              />
-            ))}
-          </div>
-
-          {/* Heat Distortion Effect */}
-          <motion.div
-            className="absolute bottom-[100px] left-1/2 -translate-x-1/2 w-[250px] h-[450px]"
-            style={{
-              background: 'linear-gradient(to top, rgba(251, 146, 60, 0.1), transparent)',
-              backdropFilter: 'blur(2px)',
-              mixBlendMode: 'overlay'
-            }}
-            animate={{
-              scaleX: [1, 1.05, 0.98, 1.03, 1],
-              skewX: [0, 1, -1, 0.5, 0]
-            }}
-            transition={{ duration: 0.15, repeat: Infinity }}
+            transition={{ duration: 0.6, repeat: Infinity }}
           />
         </motion.div>
 
