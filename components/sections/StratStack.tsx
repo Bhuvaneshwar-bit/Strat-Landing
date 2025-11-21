@@ -174,11 +174,11 @@ function StackingCard({
   const cardStart = index * (1 / totalCards);
   const cardEnd = (index + 1) * (1 / totalCards);
   
-  // Y position: cards come from below (100vh) and stick at top
+  // Y position: cards come from below (600px = container height) and stick at top
   const y = useTransform(
     scrollProgress,
     [cardStart, cardEnd],
-    [window.innerHeight, 0]
+    [600, 0]
   );
 
   // Scale: previous cards shrink slightly when new card comes
