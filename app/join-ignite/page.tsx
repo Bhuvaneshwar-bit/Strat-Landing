@@ -503,62 +503,39 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
           </div>
         </motion.div>
 
-        {/* PHOTOREALISTIC ROCKET EXHAUST PLUME */}
+        {/* PHOTOREALISTIC ROCKET EXHAUST PLUME - SHOOTS DOWNWARD */}
         <motion.div
           style={{ 
             opacity: launchTrigger,
             scale: useTransform(launchTrigger, [0, 1], [0.8, 1])
           }}
-          className="relative w-[280px] -mt-[180px] flex justify-center"
+          className="relative w-[280px] flex justify-center"
         >
-          {/* Deep Engine Ignition - Inside nozzle */}
+          {/* Engine Nozzle Glow - At rocket base */}
           <motion.div
-            className="absolute -top-[100px] left-1/2 -translate-x-1/2 w-[50px] h-[120px]"
+            className="absolute top-0 left-1/2 -translate-x-1/2 w-[90px] h-[90px] rounded-full"
             style={{
-              background: 'radial-gradient(ellipse at center, rgba(255,255,255,1) 0%, rgba(255,255,255,0.95) 20%, rgba(254,249,195,0.9) 50%, rgba(253,224,71,0.6) 80%, transparent 100%)',
-              filter: 'blur(5px)',
+              background: 'radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(254,249,195,0.95) 30%, rgba(251,191,36,0.8) 60%, transparent 100%)',
+              filter: 'blur(8px)',
               boxShadow: '0 0 60px rgba(255,255,255,1), 0 0 100px rgba(254,243,199,0.9)',
-              mixBlendMode: 'screen',
-              borderRadius: '50% 50% 45% 45% / 30% 30% 70% 70%'
+              mixBlendMode: 'screen'
             }}
             animate={{
-              scaleY: [1, 1.2, 1],
-              scaleX: [1, 0.9, 1],
-              opacity: [0.95, 1, 0.95]
+              scale: [1, 1.2, 1],
+              opacity: [0.9, 1, 0.9]
             }}
-            transition={{ duration: 0.2, repeat: Infinity }}
+            transition={{ duration: 0.25, repeat: Infinity }}
           />
 
-          {/* Ultra-Hot Core - Expands from nozzle */}
+          {/* Ultra-Hot Core - White-hot plasma shooting down */}
           <motion.div
-            className="absolute -top-[90px] left-1/2 -translate-x-1/2 w-[70px] h-[500px]"
+            className="absolute top-[20px] left-1/2 -translate-x-1/2 w-[80px] h-[450px]"
             style={{
-              background: 'linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(254,249,195,0.95) 8%, rgba(253,224,71,0.85) 20%, rgba(251,191,36,0.7) 40%, rgba(251,146,60,0.5) 70%, rgba(234,88,12,0.2) 90%, transparent 100%)',
-              filter: 'blur(2px)',
-              mixBlendMode: 'screen',
-              willChange: 'transform',
-              borderRadius: '48% 48% 50% 50% / 15% 15% 85% 85%'
-            }}
-            animate={{
-              scaleY: [1, 1.06, 1.02, 1],
-              scaleX: [1, 0.96, 0.98, 1],
-            }}
-            transition={{ 
-              duration: 0.3, 
-              repeat: Infinity,
-              ease: [0.45, 0, 0.55, 1]
-            }}
-          />
-
-          {/* Ultra-Hot Core - Expands from nozzle */}
-          <motion.div
-            className="absolute -top-[90px] left-1/2 -translate-x-1/2 w-[70px] h-[500px]"
-            style={{
-              background: 'linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.95) 15%, rgba(254,249,195,0.9) 35%, rgba(253,224,71,0.7) 60%, rgba(251,146,60,0.4) 85%, transparent 100%)',
+              background: 'linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.98) 5%, rgba(254,249,195,0.95) 15%, rgba(253,224,71,0.85) 30%, rgba(251,191,36,0.7) 50%, rgba(251,146,60,0.5) 75%, rgba(234,88,12,0.2) 92%, transparent 100%)',
               filter: 'blur(3px)',
               mixBlendMode: 'screen',
               willChange: 'transform',
-              borderRadius: '45% 45% 50% 50% / 20% 20% 80% 80%'
+              borderRadius: '45% 45% 50% 50% / 10% 10% 90% 90%'
             }}
             animate={{
               scaleY: [1, 1.08, 1.02, 1],
@@ -571,30 +548,30 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
             }}
           />
 
-          {/* Mach Diamond Shock Structures */}
+          {/* Mach Diamond Shock Structures - Moving down plume */}
           <motion.div
-            className="absolute top-[5px] left-1/2 -translate-x-1/2 w-[105px] h-[32px]"
+            className="absolute top-[80px] left-1/2 -translate-x-1/2 w-[110px] h-[35px]"
             style={{
-              background: 'radial-gradient(ellipse at center, rgba(186,230,253,0.25), rgba(125,211,252,0.4) 40%, transparent 70%)',
+              background: 'radial-gradient(ellipse at center, rgba(186,230,253,0.3), rgba(125,211,252,0.5) 40%, transparent 70%)',
               filter: 'blur(1.5px)',
               borderRadius: '50%',
-              border: '1.5px solid rgba(165, 243, 252, 0.35)',
-              boxShadow: '0 0 12px rgba(165, 243, 252, 0.2), inset 0 0 8px rgba(186,230,253,0.3)'
+              border: '1.5px solid rgba(165, 243, 252, 0.4)',
+              boxShadow: '0 0 12px rgba(165, 243, 252, 0.25), inset 0 0 8px rgba(186,230,253,0.35)'
             }}
             animate={{
-              opacity: [0.6, 0.8, 0.6],
+              opacity: [0.6, 0.85, 0.6],
               scaleX: [1, 1.05, 1]
             }}
             transition={{ duration: 0.55, repeat: Infinity }}
           />
           <motion.div
-            className="absolute top-[75px] left-1/2 -translate-x-1/2 w-[110px] h-[35px]"
+            className="absolute top-[170px] left-1/2 -translate-x-1/2 w-[115px] h-[38px]"
             style={{
-              background: 'radial-gradient(ellipse at center, rgba(186,230,253,0.2), rgba(125,211,252,0.3) 40%, transparent 70%)',
+              background: 'radial-gradient(ellipse at center, rgba(186,230,253,0.25), rgba(125,211,252,0.4) 40%, transparent 70%)',
               filter: 'blur(1.5px)',
               borderRadius: '50%',
-              border: '1.5px solid rgba(165, 243, 252, 0.25)',
-              boxShadow: '0 0 10px rgba(165, 243, 252, 0.15)'
+              border: '1.5px solid rgba(165, 243, 252, 0.3)',
+              boxShadow: '0 0 10px rgba(165, 243, 252, 0.2)'
             }}
             animate={{
               opacity: [0.5, 0.7, 0.5],
@@ -603,14 +580,14 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
             transition={{ duration: 0.55, repeat: Infinity, delay: 0.15 }}
           />
 
-          {/* Primary Flame Envelope */}
+          {/* Primary Flame Envelope - Yellow-orange glow expanding downward */}
           <motion.div
-            className="absolute -top-[85px] left-1/2 -translate-x-1/2 w-[140px] h-[560px]"
+            className="absolute top-[15px] left-1/2 -translate-x-1/2 w-[150px] h-[520px]"
             style={{
-              background: 'radial-gradient(ellipse 100% 100% at 50% 20%, transparent 25%, rgba(254,243,199,0.5) 35%, rgba(251,191,36,0.65) 50%, rgba(249,115,22,0.5) 70%, rgba(234,88,12,0.25) 88%, transparent 100%)',
+              background: 'radial-gradient(ellipse 100% 100% at 50% 8%, transparent 20%, rgba(254,243,199,0.55) 28%, rgba(251,191,36,0.7) 45%, rgba(249,115,22,0.55) 68%, rgba(234,88,12,0.28) 88%, transparent 100%)',
               filter: 'blur(18px)',
               willChange: 'transform',
-              borderRadius: '45% 45% 50% 50% / 15% 15% 85% 85%'
+              borderRadius: '45% 45% 50% 50% / 8% 8% 92% 92%'
             }}
             animate={{
               scaleY: [1, 1.12, 1.04, 1],
@@ -623,14 +600,14 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
             }}
           />
 
-          {/* Outer Turbulent Boundary */}
+          {/* Outer Turbulent Boundary - Red glow at edges */}
           <motion.div
-            className="absolute -top-[85px] left-1/2 -translate-x-1/2 w-[180px] h-[580px]"
+            className="absolute top-[10px] left-1/2 -translate-x-1/2 w-[190px] h-[540px]"
             style={{
-              background: 'radial-gradient(ellipse 100% 100% at 50% 15%, transparent 40%, rgba(220,38,38,0.35) 60%, rgba(185,28,28,0.25) 78%, rgba(127,29,29,0.12) 92%, transparent 100%)',
+              background: 'radial-gradient(ellipse 100% 100% at 50% 5%, transparent 35%, rgba(220,38,38,0.4) 55%, rgba(185,28,28,0.3) 75%, rgba(127,29,29,0.15) 92%, transparent 100%)',
               filter: 'blur(28px)',
               willChange: 'transform',
-              borderRadius: '45% 45% 50% 50% / 12% 12% 88% 88%'
+              borderRadius: '45% 45% 50% 50% / 5% 5% 95% 95%'
             }}
             animate={{
               scaleY: [1, 1.15, 1.06, 1],
@@ -643,24 +620,24 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
             }}
           />
 
-          {/* Exhaust Particles - Minimal for performance */}
+          {/* Exhaust Particles - Shooting downward */}
           {[...Array(5)].map((_, i) => (
             <motion.div
               key={`exhaust-${i}`}
-              className="absolute -top-[75px] left-1/2 -translate-x-1/2 rounded-full"
+              className="absolute top-[25px] left-1/2 -translate-x-1/2 rounded-full"
               style={{
-                width: '4px',
-                height: '4px',
-                background: 'radial-gradient(circle, rgba(254,249,195,0.9) 0%, rgba(254,249,195,0.5) 50%, transparent 100%)',
+                width: '5px',
+                height: '5px',
+                background: 'radial-gradient(circle, rgba(254,249,195,0.95) 0%, rgba(254,249,195,0.6) 50%, transparent 100%)',
                 filter: 'blur(1.5px)',
                 willChange: 'transform',
-                boxShadow: '0 0 6px rgba(254,249,195,0.6)'
+                boxShadow: '0 0 8px rgba(254,249,195,0.7)'
               }}
               animate={{
-                y: [0, -450],
-                x: [(Math.random() - 0.5) * 40, (Math.random() - 0.5) * 90],
+                y: [0, 450],
+                x: [(Math.random() - 0.5) * 30, (Math.random() - 0.5) * 80],
                 opacity: [0.95, 0.7, 0],
-                scale: [1, 0.5, 0.2]
+                scale: [1, 0.6, 0.3]
               }}
               transition={{
                 duration: 0.9,
@@ -671,38 +648,38 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
             />
           ))}
 
-          {/* Launch Pad Illumination */}
+          {/* Launch Pad Illumination - Orange glow below rocket */}
           <motion.div
-            className="absolute -top-[95px] left-1/2 -translate-x-1/2 w-[300px] h-[140px]"
+            className="absolute top-[0px] left-1/2 -translate-x-1/2 w-[320px] h-[180px]"
             style={{
-              background: 'radial-gradient(ellipse 100% 100% at center, rgba(251,191,36,0.4) 0%, rgba(249,115,22,0.25) 40%, rgba(234,88,12,0.12) 70%, transparent 100%)',
+              background: 'radial-gradient(ellipse 100% 60% at center top, rgba(251,191,36,0.45) 0%, rgba(249,115,22,0.3) 35%, rgba(234,88,12,0.15) 65%, transparent 100%)',
               filter: 'blur(45px)',
               willChange: 'opacity'
             }}
             animate={{
-              opacity: [0.65, 0.9, 0.7, 0.85, 0.65],
-              scale: [1, 1.08, 1.02, 1.06, 1]
+              opacity: [0.7, 0.95, 0.75, 0.9, 0.7],
+              scale: [1, 1.1, 1.03, 1.08, 1]
             }}
             transition={{ duration: 0.6, repeat: Infinity }}
           />
 
-          {/* Exhaust Smoke Trail */}
+          {/* Exhaust Smoke Trail - Expanding downward */}
           {[...Array(4)].map((_, i) => (
             <motion.div
               key={`smoke-${i}`}
-              className="absolute -top-[65px] left-1/2 -translate-x-1/2 rounded-full"
+              className="absolute top-[40px] left-1/2 -translate-x-1/2 rounded-full"
               style={{
                 width: '70px',
                 height: '70px',
-                background: 'radial-gradient(circle, rgba(156,163,175,0.3) 0%, rgba(107,114,128,0.2) 40%, transparent 70%)',
+                background: 'radial-gradient(circle, rgba(156,163,175,0.35) 0%, rgba(107,114,128,0.25) 40%, transparent 70%)',
                 filter: 'blur(30px)',
                 willChange: 'transform'
               }}
               animate={{
-                y: [0, -320],
-                x: [(Math.random() - 0.5) * 60, (Math.random() - 0.5) * 140],
-                opacity: [0.5, 0.3, 0],
-                scale: [1, 2.2, 2.8]
+                y: [0, 320],
+                x: [(Math.random() - 0.5) * 50, (Math.random() - 0.5) * 130],
+                opacity: [0.5, 0.35, 0],
+                scale: [1, 2.4, 3.0]
               }}
               transition={{
                 duration: 2.2,
@@ -713,11 +690,11 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
             />
           ))}
 
-          {/* Atmospheric Heat Distortion */}
+          {/* Atmospheric Heat Distortion - Downward shimmer */}
           <motion.div
-            className="absolute -top-[85px] left-1/2 -translate-x-1/2 w-[160px] h-[540px]"
+            className="absolute top-[15px] left-1/2 -translate-x-1/2 w-[170px] h-[500px]"
             style={{
-              background: 'linear-gradient(180deg, transparent 0%, rgba(251,191,36,0.06) 40%, rgba(251,146,60,0.08) 70%, transparent 100%)',
+              background: 'linear-gradient(180deg, rgba(251,191,36,0.08) 0%, rgba(251,146,60,0.12) 35%, rgba(251,191,36,0.08) 70%, transparent 100%)',
               filter: 'blur(20px)',
               mixBlendMode: 'soft-light',
               willChange: 'transform',
