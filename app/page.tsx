@@ -2,6 +2,7 @@ import Navbar from '@/components/ui/Navbar';
 import Hero from '@/components/sections/Hero';
 import CorePillars from '@/components/sections/CorePillars';
 import MuAISpotlight from '@/components/sections/MuAISpotlight';
+import StratStack from '@/components/sections/StratStack';
 import Partners from '@/components/sections/Partners';
 import CampusExperience from '@/components/sections/CampusExperience';
 import Footer from '@/components/sections/Footer';
@@ -13,6 +14,7 @@ export default function Home() {
       <Hero />
       <CorePillars />
       <MuAISpotlight />
+      <StratStack />
       <Partners />
       <CampusExperience />
       <Footer />
