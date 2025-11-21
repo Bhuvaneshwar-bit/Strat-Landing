@@ -56,44 +56,41 @@ export default function StratStack() {
     const scrollTop = window.scrollY;
     const container = containerRef.current;
     const containerTop = container.offsetTop;
-    const stackPosition = window.innerHeight * 0.25; // Stack position from top
-    const itemStackDistance = 20; // Distance between stacked cards
-    const itemScale = 0.03; // Scale decrease per card
-    const baseScale = 0.92; // Base scale for cards underneath
+    const vh = window.innerHeight;
+    const stackTop = vh * 0.2; // Cards stack at 20% from top of viewport
+    const cardGap = 20; // Gap between stacked cards
 
     cardsRef.current.forEach((card, i) => {
       if (!card) return;
 
-      // Calculate when this card should start moving
-      const cardStart = containerTop + (i * window.innerHeight * 0.3);
-      const triggerStart = cardStart - stackPosition;
-      
-      // Pin range
-      const pinStart = triggerStart;
-      const pinEnd = containerTop + container.offsetHeight - window.innerHeight;
+      // When each card should start animating
+      const scrollTrigger = containerTop + (i * vh * 0.8);
+      const scrollProgress = Math.max(0, Math.min(1, (scrollTop - scrollTrigger) / (vh * 0.5)));
 
-      // Calculate scale based on how many cards are on top
+      // Position: slide from bottom, then pin
+      let y = 0;
+      if (scrollTop < scrollTrigger) {
+        // Before trigger: card is below viewport
+        y = vh;
+      } else if (scrollProgress < 1) {
+        // During animation: sliding up
+        y = vh - (scrollProgress * vh) + stackTop + (i * cardGap);
+      } else {
+        // After animation: pinned at stack position
+        y = stackTop + (i * cardGap);
+      }
+
+      // Scale: cards underneath get smaller
       let scale = 1;
       for (let j = i + 1; j < cardsRef.current.length; j++) {
-        const nextCardStart = containerTop + (j * window.innerHeight * 0.3);
-        const nextTriggerStart = nextCardStart - stackPosition;
-        if (scrollTop >= nextTriggerStart) {
-          scale -= itemScale;
+        const nextTrigger = containerTop + (j * vh * 0.8);
+        if (scrollTop >= nextTrigger) {
+          scale *= 0.97;
         }
       }
-      scale = Math.max(baseScale, scale);
 
-      // Calculate position
-      let translateY = 0;
-      if (scrollTop >= pinStart && scrollTop <= pinEnd) {
-        // Pin the card at stack position with offset
-        translateY = scrollTop - cardStart + stackPosition + (i * itemStackDistance);
-      } else if (scrollTop > pinEnd) {
-        // Keep it pinned at the end
-        translateY = pinEnd - cardStart + stackPosition + (i * itemStackDistance);
-      }
-
-      card.style.transform = `translate3d(0, ${translateY}px, 0) scale(${scale})`;
+      card.style.transform = `translate3d(0, ${y}px, 0) scale(${scale})`;
+      card.style.opacity = scrollProgress > 0 ? '1' : '0';
     });
   }, []);
 
@@ -139,18 +136,20 @@ export default function StratStack() {
       </div>
 
       {/* Stacking Cards Container */}
-      <div ref={containerRef} className="relative" style={{ minHeight: `${stackItems.length * 50}vh`, paddingBottom: '100vh' }}>
-        <div className="max-w-xl mx-auto px-4 sm:px-6 lg:px-8">
-          {stackItems.map((item, index) => (
-            <StackingCard
-              key={item.title}
-              item={item}
-              index={index}
-              ref={(el) => {
-                if (el) cardsRef.current[index] = el;
-              }}
-            />
-          ))}
+      <div ref={containerRef} className="relative" style={{ height: `${stackItems.length * 80 + 100}vh` }}>
+        <div className="sticky top-0 left-0 right-0 h-screen pointer-events-none">
+          <div className="max-w-xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+            {stackItems.map((item, index) => (
+              <StackingCard
+                key={item.title}
+                item={item}
+                index={index}
+                ref={(el) => {
+                  if (el) cardsRef.current[index] = el;
+                }}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
@@ -223,11 +222,14 @@ const StackingCard = React.forwardRef<HTMLDivElement, {
     <div
       ref={ref}
       style={{
-        marginBottom: '0',
         transformOrigin: 'top center',
-        willChange: 'transform',
-        position: 'relative',
+        willChange: 'transform, opacity',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
         zIndex: index,
+        pointerEvents: 'auto',
       }}
       className="w-full"
     >
