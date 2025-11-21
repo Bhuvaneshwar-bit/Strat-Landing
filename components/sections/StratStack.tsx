@@ -82,9 +82,9 @@ export default function StratStack() {
       </div>
 
       {/* Stacking Cards Container */}
-      <div ref={containerRef} className="relative" style={{ height: `${100 + stackItems.length * 100}vh` }}>
-        <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden py-20">
-          <div className="relative w-full max-w-2xl mx-auto px-4 sm:px-6 lg:px-8" style={{ height: '600px' }}>
+      <div ref={containerRef} className="relative" style={{ height: `${stackItems.length * 100}vh` }}>
+        <div className="sticky top-32 flex items-start justify-center">
+          <div className="relative w-full max-w-2xl mx-auto px-4 sm:px-6 lg:px-8" style={{ height: '500px' }}>
             {stackItems.map((item, index) => (
               <StackingCard
                 key={item.title}
@@ -170,30 +170,38 @@ function StackingCard({
 }) {
   const Icon = item.icon;
   
-  // Each card animation starts when previous card is halfway through
-  const cardStart = index * (1 / totalCards);
-  const cardEnd = (index + 1) * (1 / totalCards);
+  // Each card's scroll range
+  const cardStart = index / totalCards;
+  const cardEnd = (index + 1) / totalCards;
   
-  // Y position: cards come from below (600px = container height) and stick at top
+  // Y position: cards slide up from bottom (except first card which stays static)
   const y = useTransform(
     scrollProgress,
     [cardStart, cardEnd],
-    [600, 0]
+    [500, 0]
   );
 
-  // Scale: previous cards shrink slightly when new card comes
+  // Scale: cards underneath shrink slightly
   const scale = useTransform(
     scrollProgress,
-    [cardEnd - 0.2, cardEnd],
+    [cardEnd, Math.min(cardEnd + 0.1, 1)],
     [1, 0.95]
+  );
+
+  // Opacity: fade in as card approaches
+  const opacity = useTransform(
+    scrollProgress,
+    [Math.max(cardStart - 0.05, 0), cardStart],
+    [0, 1]
   );
 
   return (
     <motion.div
       style={{
-        y,
+        y: index === 0 ? 0 : y,
         scale,
-        top: `${index * 20}px`,
+        opacity: index === 0 ? 1 : opacity,
+        top: `${index * 15}px`,
         zIndex: index,
       }}
       className="absolute left-0 right-0 mx-auto"
