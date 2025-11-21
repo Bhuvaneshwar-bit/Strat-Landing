@@ -190,8 +190,8 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
   // Realistic flight physics - exponential acceleration curve
   const rocketY = useTransform(
     scrollYProgress, 
-    [0.78, 0.82, 0.88, 1], 
-    [0, -100, -500, -2000]
+    [0.78, 0.82, 0.88, 0.95, 1], 
+    [0, -150, -600, -1200, -2500]
   );
   
   // Subtle realistic tilt during ascent
@@ -222,7 +222,7 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
   const upperRotateZ = useTransform(upperProgress, [0, 0.5, 1], [-180, -90, 0]);
 
   return (
-    <div className="fixed top-[45%] right-[8%] -translate-y-1/2 z-0 pointer-events-none" style={{ perspective: '3000px' }}>
+    <div className="fixed top-[40%] right-[5%] -translate-y-1/2 z-[1] pointer-events-none overflow-visible" style={{ perspective: '3000px' }}>
       <motion.div
         style={{ 
           y: rocketY,
@@ -230,7 +230,7 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
           scale: rocketScale,
           opacity: rocketOpacity
         }}
-        className="relative"
+        className="relative w-[300px] h-[700px]"
       >
         {/* Atmospheric Lighting */}
         <motion.div
@@ -509,11 +509,11 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
             opacity: launchTrigger,
             scale: useTransform(launchTrigger, [0, 1], [0.8, 1])
           }}
-          className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[500px] h-[650px] -mb-[400px]"
+          className="absolute bottom-[10px] left-1/2 -translate-x-1/2 w-[500px] h-[500px]"
         >
           {/* Ultra-Hot Core - Pure White Plasma */}
           <motion.div
-            className="absolute bottom-[100px] left-1/2 -translate-x-1/2 w-[90px] h-[420px]"
+            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[90px] h-[420px]"
             style={{
               background: 'linear-gradient(180deg, rgba(255,255,255,1) 0%, rgba(255,255,255,0.95) 15%, rgba(254,249,195,0.9) 35%, rgba(253,224,71,0.7) 60%, rgba(251,146,60,0.4) 85%, transparent 100%)',
               filter: 'blur(3px)',
@@ -534,7 +534,7 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
 
           {/* Mach Diamond Shock Structures */}
           <motion.div
-            className="absolute bottom-[200px] left-1/2 -translate-x-1/2 w-[105px] h-[32px]"
+            className="absolute bottom-[100px] left-1/2 -translate-x-1/2 w-[105px] h-[32px]"
             style={{
               background: 'radial-gradient(ellipse at center, rgba(186,230,253,0.25), rgba(125,211,252,0.4) 40%, transparent 70%)',
               filter: 'blur(1.5px)',
@@ -549,7 +549,7 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
             transition={{ duration: 0.55, repeat: Infinity }}
           />
           <motion.div
-            className="absolute bottom-[280px] left-1/2 -translate-x-1/2 w-[110px] h-[35px]"
+            className="absolute bottom-[180px] left-1/2 -translate-x-1/2 w-[110px] h-[35px]"
             style={{
               background: 'radial-gradient(ellipse at center, rgba(186,230,253,0.2), rgba(125,211,252,0.3) 40%, transparent 70%)',
               filter: 'blur(1.5px)',
@@ -566,7 +566,7 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
 
           {/* Primary Flame Envelope */}
           <motion.div
-            className="absolute bottom-[100px] left-1/2 -translate-x-1/2 w-[160px] h-[480px]"
+            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[160px] h-[480px]"
             style={{
               background: 'radial-gradient(ellipse 100% 100% at 50% 20%, transparent 25%, rgba(254,243,199,0.5) 35%, rgba(251,191,36,0.65) 50%, rgba(249,115,22,0.5) 70%, rgba(234,88,12,0.25) 88%, transparent 100%)',
               filter: 'blur(18px)',
@@ -586,7 +586,7 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
 
           {/* Outer Turbulent Boundary */}
           <motion.div
-            className="absolute bottom-[100px] left-1/2 -translate-x-1/2 w-[200px] h-[500px]"
+            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[200px] h-[500px]"
             style={{
               background: 'radial-gradient(ellipse 100% 100% at 50% 15%, transparent 40%, rgba(220,38,38,0.35) 60%, rgba(185,28,28,0.25) 78%, rgba(127,29,29,0.12) 92%, transparent 100%)',
               filter: 'blur(28px)',
@@ -608,7 +608,7 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
           {[...Array(5)].map((_, i) => (
             <motion.div
               key={`exhaust-${i}`}
-              className="absolute bottom-[100px] left-1/2 -translate-x-1/2 rounded-full"
+              className="absolute bottom-0 left-1/2 -translate-x-1/2 rounded-full"
               style={{
                 width: '4px',
                 height: '4px',
@@ -651,7 +651,7 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
           {[...Array(4)].map((_, i) => (
             <motion.div
               key={`smoke-${i}`}
-              className="absolute bottom-[90px] left-1/2 -translate-x-1/2 rounded-full"
+              className="absolute bottom-0 left-1/2 -translate-x-1/2 rounded-full"
               style={{
                 width: '70px',
                 height: '70px',
@@ -676,7 +676,7 @@ function RocketAnimation({ containerRef }: { containerRef: React.RefObject<HTMLE
 
           {/* Atmospheric Heat Distortion */}
           <motion.div
-            className="absolute bottom-[100px] left-1/2 -translate-x-1/2 w-[180px] h-[460px]"
+            className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[180px] h-[460px]"
             style={{
               background: 'linear-gradient(180deg, transparent 0%, rgba(251,191,36,0.06) 40%, rgba(251,146,60,0.08) 70%, transparent 100%)',
               filter: 'blur(20px)',
@@ -934,7 +934,7 @@ function TimelineSection({ timeline }: { timeline: typeof weeklyTimeline }) {
   const isInView = useInView(ref, { once: true, margin: '-100px' });
 
   return (
-    <section ref={ref} className="relative py-32 overflow-hidden">
+    <section ref={ref} className="relative py-32 overflow-visible">
       {/* Rocket Animation Background */}
       <RocketAnimation containerRef={ref} />
 
