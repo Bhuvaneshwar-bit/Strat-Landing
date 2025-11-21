@@ -1,8 +1,8 @@
 'use client';
 
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { useRef } from 'react';
+import React, { useRef, useEffect, useCallback } from 'react';
 import { GraduationCap, DollarSign, Users, Network, Zap, ArrowRight } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const stackItems = [
   {
@@ -48,10 +48,57 @@ const journeySteps = [
 
 export default function StratStack() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end end']
-  });
+  const cardsRef = useRef<HTMLDivElement[]>([]);
+
+  const updateCardTransforms = useCallback(() => {
+    if (!cardsRef.current.length || !containerRef.current) return;
+
+    const scrollTop = window.scrollY;
+    const containerTop = containerRef.current.offsetTop;
+    const stackPosition = window.innerHeight * 0.2; // 20% from top
+    const itemStackDistance = 30;
+    const itemScale = 0.05;
+    const baseScale = 0.9;
+
+    cardsRef.current.forEach((card, i) => {
+      if (!card) return;
+
+      const cardTop = containerTop + (i * 100); // Initial offset
+      const triggerStart = cardTop - stackPosition - itemStackDistance * i;
+      const triggerEnd = cardTop - window.innerHeight * 0.1;
+
+      // Calculate scale progress
+      const scaleProgress = Math.max(0, Math.min(1, (scrollTop - triggerStart) / (triggerEnd - triggerStart)));
+      const targetScale = baseScale + i * itemScale;
+      const scale = 1 - scaleProgress * (1 - targetScale);
+
+      // Calculate pin position
+      const pinStart = cardTop - stackPosition - itemStackDistance * i;
+      const pinEnd = containerTop + containerRef.current.offsetHeight - window.innerHeight / 2;
+      
+      let translateY = 0;
+      if (scrollTop >= pinStart && scrollTop <= pinEnd) {
+        translateY = scrollTop - cardTop + stackPosition + itemStackDistance * i;
+      } else if (scrollTop > pinEnd) {
+        translateY = pinEnd - cardTop + stackPosition + itemStackDistance * i;
+      }
+
+      card.style.transform = `translate3d(0, ${translateY}px, 0) scale(${scale})`;
+    });
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      requestAnimationFrame(updateCardTransforms);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    updateCardTransforms();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [updateCardTransforms]);
 
   return (
     <section className="relative bg-black overflow-hidden">
@@ -70,7 +117,7 @@ export default function StratStack() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="text-center pt-32 pb-20"
+          className="text-center pt-32 pb-12"
         >
           <h2 className="text-5xl sm:text-6xl md:text-7xl font-bold mb-6">
             The <span className="gradient-text">StratSchool Stack</span>
@@ -81,20 +128,19 @@ export default function StratStack() {
         </motion.div>
       </div>
 
-      {/* Stacking Cards Container - Fixed viewport while stacking happens */}
-      <div ref={containerRef} className="relative" style={{ height: `${(stackItems.length - 1) * 100}vh` }}>
-        <div className="sticky top-0 left-0 right-0 h-screen flex items-center justify-center">
-          <div className="relative w-full max-w-xl mx-auto px-4 sm:px-6 lg:px-8" style={{ height: '400px' }}>
-            {stackItems.map((item, index) => (
-              <StackingCard
-                key={item.title}
-                item={item}
-                index={index}
-                totalCards={stackItems.length}
-                scrollProgress={scrollYProgress}
-              />
-            ))}
-          </div>
+      {/* Stacking Cards Container */}
+      <div ref={containerRef} className="relative" style={{ minHeight: `${stackItems.length * 100}vh`, paddingBottom: '50vh' }}>
+        <div className="max-w-xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
+          {stackItems.map((item, index) => (
+            <StackingCard
+              key={item.title}
+              item={item}
+              index={index}
+              ref={(el) => {
+                if (el) cardsRef.current[index] = el;
+              }}
+            />
+          ))}
         </div>
       </div>
 
@@ -157,66 +203,30 @@ export default function StratStack() {
   );
 }
 
-function StackingCard({ 
-  item, 
-  index, 
-  totalCards, 
-  scrollProgress 
-}: { 
+const StackingCard = React.forwardRef<HTMLDivElement, { 
   item: typeof stackItems[0]; 
-  index: number; 
-  totalCards: number;
-  scrollProgress: any;
-}) {
+  index: number;
+}>(({ item, index }, ref) => {
   const Icon = item.icon;
-  
-  // Each card's scroll range
-  const cardStart = index / totalCards;
-  const cardEnd = (index + 1) / totalCards;
-  
-  // Y position: ALL cards slide up from way below viewport
-  const y = useTransform(
-    scrollProgress,
-    [Math.max(cardStart - 0.05, 0), cardEnd],
-    [600, 0]
-  );
-
-  // Scale: cards underneath shrink slightly
-  const scale = useTransform(
-    scrollProgress,
-    [cardEnd, Math.min(cardEnd + 0.1, 1)],
-    [1, 0.95]
-  );
-
-  // Opacity: completely hidden until it's time to animate
-  const opacity = useTransform(
-    scrollProgress,
-    [Math.max(cardStart - 0.05, 0), cardStart, cardEnd],
-    [0, 1, 1]
-  );
 
   return (
-    <motion.div
+    <div
+      ref={ref}
       style={{
-        y,
-        scale,
-        opacity,
-        top: `${index * 15}px`,
+        marginBottom: index < stackItems.length - 1 ? '100px' : '0',
+        transformOrigin: 'top center',
+        willChange: 'transform',
+        position: 'relative',
         zIndex: index,
       }}
-      className="absolute left-0 right-0 mx-auto"
+      className="w-full"
     >
-      <motion.div
-        whileHover={{ scale: 1.02 }}
-        transition={{ duration: 0.3 }}
-        className="group relative w-full"
-        style={{ height: '400px' }}
-      >
+      <div className="group relative w-full h-[400px]">
         {/* Glow Effect */}
         <div className={`absolute -inset-1 bg-gradient-to-r ${item.gradient} rounded-3xl blur-2xl opacity-0 group-hover:opacity-30 transition-opacity duration-500`} />
 
         {/* Card */}
-        <div className="relative w-full h-full bg-gradient-to-br from-white/[0.12] to-white/[0.04] backdrop-blur-xl rounded-3xl border border-white/20 p-6 sm:p-8 overflow-hidden flex flex-col justify-between">
+        <div className="relative w-full h-full bg-gradient-to-br from-white/[0.12] to-white/[0.04] backdrop-blur-xl rounded-3xl border border-white/20 p-6 sm:p-8 overflow-hidden flex flex-col justify-between shadow-2xl">
           {/* Shimmer Effect */}
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 -translate-x-full group-hover:translate-x-full" 
             style={{ transition: 'transform 1.5s ease' }}
@@ -225,12 +235,9 @@ function StackingCard({
           {/* Top Content */}
           <div className="relative">
             {/* Icon */}
-            <motion.div
-              whileHover={{ rotate: 5, scale: 1.1 }}
-              className={`w-16 h-16 rounded-xl bg-gradient-to-br ${item.gradient} flex items-center justify-center shadow-2xl mb-4`}
-            >
+            <div className={`w-16 h-16 rounded-xl bg-gradient-to-br ${item.gradient} flex items-center justify-center shadow-2xl mb-4`}>
               <Icon className="w-8 h-8 text-white" strokeWidth={1.5} />
-            </motion.div>
+            </div>
 
             {/* Text */}
             <div>
@@ -248,7 +255,9 @@ function StackingCard({
             <span className="text-xl font-bold text-white/80">{index + 1}</span>
           </div>
         </div>
-      </motion.div>
-    </motion.div>
+      </div>
+    </div>
   );
-}
+});
+
+StackingCard.displayName = 'StackingCard';
