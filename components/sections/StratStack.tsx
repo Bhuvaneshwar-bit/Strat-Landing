@@ -151,20 +151,40 @@ function Card({
 }) {
   const Icon = item.icon;
   
-  const start = index / totalCards;
-  const end = (index + 1) / totalCards;
+  const cardProgress = useTransform(
+    scrollYProgress,
+    [index / totalCards, (index + 1) / totalCards],
+    [0, 1]
+  );
 
-  const targetScale = SCALES[index];
-  const scale = useTransform(scrollYProgress, [start, end], [1, targetScale]);
+  const scale = useTransform(
+    cardProgress,
+    [0, 0.5, 1],
+    [1, 0.98, SCALES[index]]
+  );
+
+  const y = useTransform(
+    cardProgress,
+    [0, 1],
+    [0, -50]
+  );
+
+  const opacity = useTransform(
+    cardProgress,
+    [0, 0.7, 1],
+    [1, 1, 0.6]
+  );
 
   return (
     <motion.div
       style={{
         scale,
+        y,
+        opacity,
         top: '20vh',
         zIndex: totalCards - index,
       }}
-      className="sticky w-full mb-8"
+      className="sticky w-full"
     >
       <div className="group relative w-full">
         <div className={`absolute -inset-1 bg-gradient-to-r ${item.gradient} rounded-3xl blur-2xl opacity-0 group-hover:opacity-30 transition-opacity duration-500`} />
