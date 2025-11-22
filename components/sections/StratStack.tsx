@@ -1,33 +1,37 @@
 'use client';
 
-import { useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { GraduationCap, DollarSign, Users, Network, ArrowRight } from 'lucide-react';
+import ImageTrail from '../animations/ImageTrail';
 
 const stackItems = [
   {
     icon: GraduationCap,
     title: 'Education Programs',
     description: 'Structured bootcamps and workshops to build your startup foundation',
-    gradient: 'from-blue-600 to-blue-800'
+    gradient: 'from-blue-600 to-blue-800',
+    image: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=300&h=300&fit=crop'
   },
   {
     icon: DollarSign,
     title: 'Capital Access',
     description: 'Connect with investors and funding opportunities at every stage',
-    gradient: 'from-emerald-600 to-emerald-800'
+    gradient: 'from-emerald-600 to-emerald-800',
+    image: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=300&h=300&fit=crop'
   },
   {
     icon: Users,
     title: 'Mentorship',
     description: 'Learn from experienced founders and industry experts',
-    gradient: 'from-purple-600 to-purple-800'
+    gradient: 'from-purple-600 to-purple-800',
+    image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=300&h=300&fit=crop'
   },
   {
     icon: Network,
     title: 'Network and Partnerships',
     description: 'Access our ecosystem of partners, collaborators, and fellow founders',
-    gradient: 'from-orange-600 to-orange-800'
+    gradient: 'from-orange-600 to-orange-800',
+    image: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=300&h=300&fit=crop'
   }
 ];
 
@@ -40,17 +44,11 @@ const journeySteps = [
   { label: 'Repeat', color: 'text-pink-400' }
 ];
 
-const SCALES = [1, 0.96, 0.92, 0.88];
-
 export default function StratStack() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start start', 'end end']
-  });
+  const cardImages = stackItems.flatMap(item => [item.image, item.image, item.image]);
 
   return (
-    <section id="stratstack" className="relative bg-black">
+    <section id="stratstack" className="relative bg-black py-32">
       <div className="absolute inset-0 opacity-[0.08]">
         <div className="absolute inset-0" style={{
           backgroundImage: 'linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)',
@@ -64,7 +62,7 @@ export default function StratStack() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="text-center pt-32 pb-20"
+          className="text-center mb-20"
         >
           <h2 className="text-5xl sm:text-6xl md:text-7xl font-bold mb-6">
             The <span className="gradient-text">StratSchool Stack</span>
@@ -73,19 +71,13 @@ export default function StratStack() {
             We provide founders with everything they need to turn ideas into ventures.
           </p>
         </motion.div>
-      </div>
 
-      <div ref={containerRef} className="relative" style={{ height: '400vh' }}>
-        <div className="sticky top-0 h-screen flex items-center justify-center overflow-hidden">
-          <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 w-full h-[400px] relative">
+        <div className="relative" style={{ height: '600px', overflow: 'hidden' }}>
+          <ImageTrail items={cardImages} variant={1} />
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto relative z-10 pointer-events-none">
             {stackItems.map((item, index) => (
-              <Card
-                key={item.title}
-                item={item}
-                index={index}
-                scrollYProgress={scrollYProgress}
-                totalCards={stackItems.length}
-              />
+              <Card key={item.title} item={item} index={index} />
             ))}
           </div>
         </div>
@@ -142,69 +134,39 @@ export default function StratStack() {
 
 function Card({ 
   item, 
-  index, 
-  scrollYProgress, 
-  totalCards 
+  index
 }: { 
   item: typeof stackItems[0]; 
   index: number;
-  scrollYProgress: any;
-  totalCards: number;
 }) {
   const Icon = item.icon;
-  
-  const targetScale = 1 - ((totalCards - 1 - index) * 0.05);
-  
-  const cardProgress = useTransform(
-    scrollYProgress,
-    [index / totalCards, (index + 1) / totalCards],
-    [0, 1]
-  );
-
-  const scale = useTransform(cardProgress, [0, 1], [1, targetScale]);
-  
-  const y = useTransform(
-    scrollYProgress,
-    [index / totalCards, (index + 1) / totalCards],
-    [600, 0]
-  );
-  
-  const opacity = useTransform(
-    scrollYProgress,
-    [index / totalCards, (index + 0.5) / totalCards],
-    [0, 1]
-  );
 
   return (
     <motion.div
-      style={{
-        scale,
-        y,
-        opacity,
-        zIndex: index,
-      }}
-      className="absolute inset-0 flex items-center justify-center"
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5, delay: index * 0.1 }}
+      className="group relative"
     >
-      <div className="group relative w-full">
-        <div className={`absolute -inset-1 bg-gradient-to-r ${item.gradient} rounded-3xl blur-2xl opacity-0 group-hover:opacity-30 transition-opacity duration-500`} />
-        <div className="relative w-full min-h-[400px] bg-gradient-to-br from-white/[0.12] to-white/[0.04] backdrop-blur-xl rounded-3xl border border-white/20 p-8 sm:p-10 overflow-hidden shadow-2xl">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 -translate-x-full group-hover:translate-x-full" 
-            style={{ transition: 'transform 1.5s ease' }}
-          />
-          <div className="relative">
-            <div className={`w-20 h-20 rounded-2xl bg-gradient-to-br ${item.gradient} flex items-center justify-center shadow-2xl mb-6`}>
-              <Icon className="w-10 h-10 text-white" strokeWidth={1.5} />
-            </div>
-            <h3 className="text-3xl sm:text-4xl font-bold mb-4 text-white">
-              {item.title}
-            </h3>
-            <p className="text-lg sm:text-xl text-gray-300 leading-relaxed">
-              {item.description}
-            </p>
+      <div className={`absolute -inset-1 bg-gradient-to-r ${item.gradient} rounded-3xl blur-2xl opacity-0 group-hover:opacity-30 transition-opacity duration-500`} />
+      <div className="relative h-full bg-gradient-to-br from-white/[0.12] to-white/[0.04] backdrop-blur-xl rounded-3xl border border-white/20 p-8 overflow-hidden shadow-2xl">
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700 -translate-x-full group-hover:translate-x-full" 
+          style={{ transition: 'transform 1.5s ease' }}
+        />
+        <div className="relative">
+          <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${item.gradient} flex items-center justify-center shadow-2xl mb-4`}>
+            <Icon className="w-8 h-8 text-white" strokeWidth={1.5} />
           </div>
-          <div className="absolute top-8 right-8 w-14 h-14 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center">
-            <span className="text-2xl font-bold text-white/80">{index + 1}</span>
-          </div>
+          <h3 className="text-2xl font-bold mb-3 text-white">
+            {item.title}
+          </h3>
+          <p className="text-base text-gray-300 leading-relaxed">
+            {item.description}
+          </p>
+        </div>
+        <div className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center">
+          <span className="text-lg font-bold text-white/80">{index + 1}</span>
         </div>
       </div>
     </motion.div>
