@@ -46,7 +46,7 @@ const journeySteps = [
 
 export default function StratStack() {
   return (
-    <section id="stratstack" className="relative bg-black py-32">
+    <section id="stratstack" className="relative bg-black py-20">
       <div className="absolute inset-0 opacity-[0.08]">
         <div className="absolute inset-0" style={{
           backgroundImage: 'linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)',
@@ -60,7 +60,7 @@ export default function StratStack() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="text-center mb-20"
+          className="text-center mb-16"
         >
           <h2 className="text-5xl sm:text-6xl md:text-7xl font-bold mb-6">
             The <span className="gradient-text">StratSchool Stack</span>
@@ -73,7 +73,7 @@ export default function StratStack() {
         <CardRevealGrid items={stackItems} />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-12">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
