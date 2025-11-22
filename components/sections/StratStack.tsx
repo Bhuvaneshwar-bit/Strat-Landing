@@ -184,7 +184,7 @@ function Card({
         top: '20vh',
         zIndex: totalCards - index,
       }}
-      className="sticky w-full"
+      className="sticky w-full h-[400px]"
     >
       <div className="group relative w-full">
         <div className={`absolute -inset-1 bg-gradient-to-r ${item.gradient} rounded-3xl blur-2xl opacity-0 group-hover:opacity-30 transition-opacity duration-500`} />
