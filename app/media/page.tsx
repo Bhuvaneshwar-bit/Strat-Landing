@@ -11,39 +11,12 @@ type TabType = 'dialogues' | 'bytes' | 'newsletter';
 const dialoguesEpisodes = [
   {
     id: 1,
-    title: 'From College to Company',
-    guest: 'Arjun Mehta',
-    description: 'Discover how Arjun transformed his college project into a thriving startup, navigating challenges and scaling his vision.',
-    youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-    thumbnail: 'https://images.unsplash.com/photo-1515378791036-0648a3ef77b2?w=600&h=400&fit=crop',
+    title: 'StratSchool Dialogues',
+    guest: 'Featured Episode',
+    description: 'Watch our latest conversation with entrepreneurs, investors, and innovators shaping India\'s startup ecosystem.',
+    youtubeUrl: 'https://youtu.be/8OcQt2t-t4M',
+    thumbnail: 'https://img.youtube.com/vi/8OcQt2t-t4M/maxresdefault.jpg',
     duration: '45:23'
-  },
-  {
-    id: 2,
-    title: 'Building AI Startups in India',
-    guest: 'Priya Suresh',
-    description: 'Priya shares insights on leveraging AI technology to solve real problems in the Indian market and attract global investors.',
-    youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-    thumbnail: 'https://images.unsplash.com/photo-1551434678-e076c223a692?w=600&h=400&fit=crop',
-    duration: '52:15'
-  },
-  {
-    id: 3,
-    title: 'Fundraising in 2025',
-    guest: 'Rahul Sharma',
-    description: 'Navigate the evolving landscape of startup funding with insights from a seasoned venture capitalist.',
-    youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-    thumbnail: 'https://images.unsplash.com/photo-1553877522-43269d4ea984?w=600&h=400&fit=crop',
-    duration: '38:45'
-  },
-  {
-    id: 4,
-    title: 'Product-Market Fit Masterclass',
-    guest: 'Anjali Kumar',
-    description: 'Learn the frameworks and strategies that helped Anjali achieve product-market fit in under 12 months.',
-    youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-    thumbnail: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&h=400&fit=crop',
-    duration: '41:30'
   }
 ];
 
@@ -229,7 +202,7 @@ export default function MediaPage() {
 
 function DialoguesGrid({ episodes }: { episodes: typeof dialoguesEpisodes }) {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <div className="max-w-4xl mx-auto">
       {episodes.map((episode, index) => (
         <motion.div
           key={episode.id}
