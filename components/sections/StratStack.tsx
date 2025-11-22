@@ -76,7 +76,7 @@ export default function StratStack() {
       </div>
 
       <div ref={containerRef} className="relative" style={{ height: '400vh' }}>
-        <div className="sticky top-0 h-screen flex items-center justify-center">
+        <div className="sticky top-20 h-[500px] flex items-center justify-center">
           <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 w-full h-[400px] relative">
             {stackItems.map((item, index) => (
               <Card
@@ -153,7 +153,7 @@ function Card({
 }) {
   const Icon = item.icon;
   
-  const targetScale = 1 - (totalCards - index) * 0.05;
+  const targetScale = 1 - ((totalCards - 1 - index) * 0.05);
   
   const cardProgress = useTransform(
     scrollYProgress,
@@ -163,11 +163,16 @@ function Card({
 
   const scale = useTransform(cardProgress, [0, 1], [1, targetScale]);
   
-  // Cards start below screen and slide up to center
   const y = useTransform(
-    cardProgress,
-    [0, 1],
-    [index === 0 ? 0 : 500, 0]
+    scrollYProgress,
+    [index / totalCards, (index + 1) / totalCards],
+    [600, 0]
+  );
+  
+  const opacity = useTransform(
+    scrollYProgress,
+    [index / totalCards, (index + 0.5) / totalCards],
+    [0, 1]
   );
 
   return (
@@ -175,6 +180,7 @@ function Card({
       style={{
         scale,
         y,
+        opacity,
         zIndex: index,
       }}
       className="absolute inset-0 flex items-center justify-center"
