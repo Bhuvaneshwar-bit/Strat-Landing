@@ -76,16 +76,18 @@ export default function StratStack() {
       </div>
 
       <div ref={containerRef} className="relative" style={{ height: '400vh' }}>
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-          {stackItems.map((item, index) => (
-            <Card
-              key={item.title}
-              item={item}
-              index={index}
-              scrollYProgress={scrollYProgress}
-              totalCards={stackItems.length}
-            />
-          ))}
+        <div className="sticky top-0 h-screen flex items-center justify-center">
+          <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 w-full h-[400px] relative">
+            {stackItems.map((item, index) => (
+              <Card
+                key={item.title}
+                item={item}
+                index={index}
+                scrollYProgress={scrollYProgress}
+                totalCards={stackItems.length}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
@@ -160,17 +162,22 @@ function Card({
   );
 
   const scale = useTransform(cardProgress, [0, 1], [1, targetScale]);
-  const y = useTransform(cardProgress, [0, 1], [0, -100]);
+  
+  // Cards start below screen and slide up to center
+  const y = useTransform(
+    cardProgress,
+    [0, 1],
+    [index === 0 ? 0 : 500, 0]
+  );
 
   return (
     <motion.div
       style={{
         scale,
         y,
-        top: `calc(-5vh + ${index * 25}px)`,
-        zIndex: totalCards - index,
+        zIndex: index,
       }}
-      className="sticky h-[400px] w-full mb-8"
+      className="absolute inset-0 flex items-center justify-center"
     >
       <div className="group relative w-full">
         <div className={`absolute -inset-1 bg-gradient-to-r ${item.gradient} rounded-3xl blur-2xl opacity-0 group-hover:opacity-30 transition-opacity duration-500`} />
