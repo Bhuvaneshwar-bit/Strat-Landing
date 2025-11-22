@@ -20,6 +20,7 @@ export default function Navbar() {
   const navLinks = [
     { name: 'Programs', href: '/programs' },
     { name: 'Mu AI', href: '/mu-ai' },
+    { name: 'Media', href: '/media' },
     { name: 'About Us', href: '#about' },
     { name: 'EDII-TN', href: '/edii-tn' },
     { name: 'Contact', href: '#contact' },
