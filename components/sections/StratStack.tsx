@@ -76,16 +76,18 @@ export default function StratStack() {
       </div>
 
       <div ref={containerRef} className="relative" style={{ height: '400vh' }}>
-        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
-          {stackItems.map((item, index) => (
-            <Card
-              key={item.title}
-              item={item}
-              index={index}
-              scrollYProgress={scrollYProgress}
-              totalCards={stackItems.length}
-            />
-          ))}
+        <div className="sticky top-0 h-screen flex items-center justify-center">
+          <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+            {stackItems.map((item, index) => (
+              <Card
+                key={item.title}
+                item={item}
+                index={index}
+                scrollYProgress={scrollYProgress}
+                totalCards={stackItems.length}
+              />
+            ))}
+          </div>
         </div>
       </div>
 
@@ -181,10 +183,9 @@ function Card({
         scale,
         y,
         opacity,
-        top: '20vh',
         zIndex: totalCards - index,
       }}
-      className="sticky w-full h-[400px]"
+      className="absolute inset-0 flex items-center justify-center"
     >
       <div className="group relative w-full">
         <div className={`absolute -inset-1 bg-gradient-to-r ${item.gradient} rounded-3xl blur-2xl opacity-0 group-hover:opacity-30 transition-opacity duration-500`} />
