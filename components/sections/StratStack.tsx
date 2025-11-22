@@ -76,18 +76,16 @@ export default function StratStack() {
       </div>
 
       <div ref={containerRef} className="relative" style={{ height: '400vh' }}>
-        <div className="sticky top-0 h-screen flex items-center justify-center">
-          <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-            {stackItems.map((item, index) => (
-              <Card
-                key={item.title}
-                item={item}
-                index={index}
-                scrollYProgress={scrollYProgress}
-                totalCards={stackItems.length}
-              />
-            ))}
-          </div>
+        <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+          {stackItems.map((item, index) => (
+            <Card
+              key={item.title}
+              item={item}
+              index={index}
+              scrollYProgress={scrollYProgress}
+              totalCards={stackItems.length}
+            />
+          ))}
         </div>
       </div>
 
@@ -153,39 +151,26 @@ function Card({
 }) {
   const Icon = item.icon;
   
+  const targetScale = 1 - (totalCards - index) * 0.05;
+  
   const cardProgress = useTransform(
     scrollYProgress,
     [index / totalCards, (index + 1) / totalCards],
     [0, 1]
   );
 
-  const scale = useTransform(
-    cardProgress,
-    [0, 0.5, 1],
-    [1, 0.98, SCALES[index]]
-  );
-
-  const y = useTransform(
-    cardProgress,
-    [0, 1],
-    [0, -50]
-  );
-
-  const opacity = useTransform(
-    cardProgress,
-    [0, 0.7, 1],
-    [1, 1, 0.6]
-  );
+  const scale = useTransform(cardProgress, [0, 1], [1, targetScale]);
+  const y = useTransform(cardProgress, [0, 1], [0, -100]);
 
   return (
     <motion.div
       style={{
         scale,
         y,
-        opacity,
+        top: `calc(-5vh + ${index * 25}px)`,
         zIndex: totalCards - index,
       }}
-      className="absolute inset-0 flex items-center justify-center"
+      className="sticky h-[400px] w-full mb-8"
     >
       <div className="group relative w-full">
         <div className={`absolute -inset-1 bg-gradient-to-r ${item.gradient} rounded-3xl blur-2xl opacity-0 group-hover:opacity-30 transition-opacity duration-500`} />
