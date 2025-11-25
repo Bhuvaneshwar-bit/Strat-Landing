@@ -15,7 +15,7 @@ const dialoguesEpisodes = [
     guest: 'Featured Episode',
     description: 'Watch our latest conversation with entrepreneurs, investors, and innovators shaping India\'s startup ecosystem.',
     youtubeUrl: 'https://youtu.be/8OcQt2t-t4M',
-    thumbnail: 'https://img.youtube.com/vi/8OcQt2t-t4M/maxresdefault.jpg',
+    thumbnail: 'https://img.youtube.com/vi/8OcQt2t-t4M/hqdefault.jpg',
     duration: '45:23'
   }
 ];
@@ -23,34 +23,29 @@ const dialoguesEpisodes = [
 const bytesContent = [
   {
     id: 1,
-    title: '3 Pitching Mistakes to Avoid',
-    description: 'Quick tips on what NOT to do when pitching to investors.',
-    youtubeUrl: 'https://www.youtube.com/shorts/abc123',
-    thumbnail: 'https://images.unsplash.com/photo-1556761175-b413da4baf72?w=400&h=600&fit=crop',
-    duration: '0:58'
+    title: 'Latest from StratSchool',
+    description: 'Check out our recent updates and insights.',
+    instagramUrl: 'https://www.instagram.com/stratschool/',
+    thumbnail: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=400&h=600&fit=crop'
   },
   {
     id: 2,
-    title: 'MVP in 48 Hours',
-    description: 'How to validate your idea with a minimum viable product in just 2 days.',
-    youtubeUrl: 'https://www.youtube.com/shorts/def456',
-    thumbnail: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=400&h=600&fit=crop',
-    duration: '1:24'
+    title: 'StratSchool Community',
+    description: 'Join our growing community of founders and innovators.',
+    instagramUrl: 'https://www.instagram.com/stratschool/',
+    thumbnail: 'https://images.unsplash.com/photo-1611926653670-1f4e476b6c7c?w=400&h=600&fit=crop'
   },
   {
     id: 3,
-    title: 'Hiring Your First Employee',
-    description: 'What to look for when building your founding team.',
-    youtubeUrl: 'https://www.youtube.com/shorts/ghi789',
-    thumbnail: 'https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=400&h=600&fit=crop',
-    duration: '1:15'
+    title: 'Behind the Scenes',
+    description: 'Get an inside look at what we are building.',
+    instagramUrl: 'https://www.instagram.com/stratschool/',
+    thumbnail: 'https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=400&h=600&fit=crop'
   }
 ];
 
 const platforms = [
-  { name: 'YouTube', icon: Youtube, url: 'https://youtube.com/@stratschool', color: 'text-red-500' },
-  { name: 'Spotify', icon: Music, url: 'https://spotify.com', color: 'text-green-500' },
-  { name: 'Apple Podcasts', icon: Podcast, url: 'https://podcasts.apple.com', color: 'text-purple-500' }
+  { name: 'YouTube', icon: Youtube, url: 'https://youtube.com/@stratschool', color: 'text-red-500' }
 ];
 
 export default function MediaPage() {
@@ -215,11 +210,11 @@ function DialoguesGrid({ episodes }: { episodes: typeof dialoguesEpisodes }) {
           
           <div className="relative bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-xl rounded-3xl border border-white/10 overflow-hidden">
             {/* Thumbnail */}
-            <div className="relative h-64 overflow-hidden">
+            <div className="relative aspect-video overflow-hidden">
               <img 
                 src={episode.thumbnail} 
                 alt={episode.title}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                className="w-full h-full object-contain bg-black transition-transform duration-500 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
               
@@ -270,7 +265,7 @@ function BytesGrid({ content }: { content: typeof bytesContent }) {
       {content.map((item, index) => (
         <motion.a
           key={item.id}
-          href={item.youtubeUrl}
+          href={item.instagramUrl}
           target="_blank"
           rel="noopener noreferrer"
           initial={{ opacity: 0, y: 20 }}
@@ -290,18 +285,6 @@ function BytesGrid({ content }: { content: typeof bytesContent }) {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
               
-              {/* Play overlay */}
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="w-14 h-14 rounded-full bg-red-600 flex items-center justify-center">
-                  <Play className="w-7 h-7 text-white fill-white" />
-                </div>
-              </div>
-
-              {/* Duration */}
-              <div className="absolute top-3 right-3 px-2 py-1 bg-black/80 backdrop-blur-sm rounded-full text-xs text-white font-medium">
-                {item.duration}
-              </div>
-
               {/* Content overlay */}
               <div className="absolute bottom-0 left-0 right-0 p-4">
                 <h4 className="text-lg font-bold text-white mb-1">
