@@ -23,24 +23,18 @@ const dialoguesEpisodes = [
 const bytesContent = [
   {
     id: 1,
-    title: 'Latest from StratSchool',
-    description: 'Check out our recent updates and insights.',
-    instagramUrl: 'https://www.instagram.com/stratschool/',
-    thumbnail: 'https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=400&h=600&fit=crop'
+    instagramUrl: 'https://www.instagram.com/p/DCdCTu_TsCU/',
+    embedUrl: 'https://www.instagram.com/p/DCdCTu_TsCU/embed'
   },
   {
     id: 2,
-    title: 'StratSchool Community',
-    description: 'Join our growing community of founders and innovators.',
-    instagramUrl: 'https://www.instagram.com/stratschool/',
-    thumbnail: 'https://images.unsplash.com/photo-1611926653670-1f4e476b6c7c?w=400&h=600&fit=crop'
+    instagramUrl: 'https://www.instagram.com/p/DCXiN_Mz2P3/',
+    embedUrl: 'https://www.instagram.com/p/DCXiN_Mz2P3/embed'
   },
   {
     id: 3,
-    title: 'Behind the Scenes',
-    description: 'Get an inside look at what we are building.',
-    instagramUrl: 'https://www.instagram.com/stratschool/',
-    thumbnail: 'https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?w=400&h=600&fit=crop'
+    instagramUrl: 'https://www.instagram.com/p/DCSGMvITnvt/',
+    embedUrl: 'https://www.instagram.com/p/DCSGMvITnvt/embed'
   }
 ];
 
@@ -263,40 +257,26 @@ function BytesGrid({ content }: { content: typeof bytesContent }) {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {content.map((item, index) => (
-        <motion.a
+        <motion.div
           key={item.id}
-          href={item.instagramUrl}
-          target="_blank"
-          rel="noopener noreferrer"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: index * 0.1 }}
-          className="group relative block"
+          className="group relative"
         >
-          <div className="absolute -inset-1 bg-gradient-to-r from-red-600 to-orange-600 rounded-3xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500" />
+          <div className="absolute -inset-1 bg-gradient-to-r from-pink-600 to-purple-600 rounded-3xl blur-xl opacity-0 group-hover:opacity-30 transition-opacity duration-500" />
           
           <div className="relative bg-gradient-to-br from-white/[0.08] to-white/[0.02] backdrop-blur-xl rounded-3xl border border-white/10 overflow-hidden">
-            {/* Vertical thumbnail for Shorts format */}
-            <div className="relative aspect-[9/16] overflow-hidden">
-              <img 
-                src={item.thumbnail} 
-                alt={item.title}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
-              
-              {/* Content overlay */}
-              <div className="absolute bottom-0 left-0 right-0 p-4">
-                <h4 className="text-lg font-bold text-white mb-1">
-                  {item.title}
-                </h4>
-                <p className="text-sm text-gray-300 line-clamp-2">
-                  {item.description}
-                </p>
-              </div>
-            </div>
+            <iframe
+              src={item.embedUrl}
+              className="w-full h-[600px]"
+              frameBorder="0"
+              scrolling="no"
+              allowTransparency={true}
+              allow="encrypted-media"
+            />
           </div>
-        </motion.a>
+        </motion.div>
       ))}
     </div>
   );
