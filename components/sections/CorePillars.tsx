@@ -122,7 +122,7 @@ export default function CorePillars() {
           className="text-center pb-32"
         >
           <a
-            href="#programs"
+            href="/programs"
             className="inline-flex items-center gap-2 text-red-400 hover:text-red-300 transition-colors font-semibold group"
           >
             Explore our programs
