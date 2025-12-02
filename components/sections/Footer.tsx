@@ -63,21 +63,62 @@ export default function Footer() {
           <p className="text-xl text-gray-400 max-w-3xl mx-auto mb-8">
             Join StratSchool and turn your innovative ideas into reality. Connect with us to start your journey.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link
-              href="/reach-us"
-              className="px-8 py-4 bg-gradient-to-r from-red-600 to-red-500 rounded-full text-white font-semibold text-lg hover:shadow-2xl hover:shadow-red-500/50 transition-all duration-300 hover:scale-105 flex items-center gap-2"
-            >
-              Get in Touch
-              <ExternalLink className="w-5 h-5" />
-            </Link>
-            <a
-              href="mailto:reach@stratschool.org"
-              className="px-8 py-4 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full text-white font-semibold text-lg hover:bg-white/10 transition-all duration-300 hover:scale-105 flex items-center gap-2"
-            >
-              <Mail className="w-5 h-5" />
-              reach@stratschool.org
-            </a>
+          
+          {/* Contact Form */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-3xl mx-auto">
+            {/* Who Am I Dropdown */}
+            <div className="relative w-full sm:w-auto">
+              <label className="block text-left text-gray-400 text-sm mb-1">Who Am I?</label>
+              <select
+                className="w-full sm:w-48 px-4 py-3 bg-white text-gray-800 rounded-lg border-0 focus:ring-2 focus:ring-red-500 appearance-none cursor-pointer"
+                defaultValue=""
+              >
+                <option value="" disabled>Select...</option>
+                <option value="student">Student</option>
+                <option value="entrepreneur">Entrepreneur</option>
+                <option value="investor">Investor</option>
+                <option value="mentor">Mentor</option>
+                <option value="corporate">Corporate</option>
+                <option value="institution">Institution</option>
+              </select>
+              <div className="absolute right-3 bottom-3 pointer-events-none">
+                <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+
+            {/* I'm looking for Dropdown */}
+            <div className="relative w-full sm:w-auto">
+              <label className="block text-left text-gray-400 text-sm mb-1">I'm looking for</label>
+              <select
+                className="w-full sm:w-64 px-4 py-3 bg-white text-gray-800 rounded-lg border-0 focus:ring-2 focus:ring-red-500 appearance-none cursor-pointer"
+                defaultValue=""
+              >
+                <option value="" disabled>Select...</option>
+                <option value="programs">Startup Programs</option>
+                <option value="funding">Funding Opportunities</option>
+                <option value="mentorship">Mentorship</option>
+                <option value="workshops">Workshops & Events</option>
+                <option value="partnership">Partnership</option>
+                <option value="other">Other</option>
+              </select>
+              <div className="absolute right-3 bottom-3 pointer-events-none">
+                <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+            </div>
+
+            {/* Contact Us Button */}
+            <div className="w-full sm:w-auto sm:self-end">
+              <Link
+                href="/reach-us"
+                className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-red-600 to-red-500 rounded-lg text-white font-semibold text-lg hover:shadow-2xl hover:shadow-red-500/50 transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2"
+              >
+                Contact us
+              </Link>
+            </div>
           </div>
         </motion.div>
 

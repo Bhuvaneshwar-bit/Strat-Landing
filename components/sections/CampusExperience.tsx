@@ -192,21 +192,6 @@ export default function CampusExperience() {
             </div>
           </motion.div>
         </div>
-
-        {/* CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8, delay: 0.6 }}
-          className="text-center"
-        >
-          <Link
-            href="/bootcamps-and-workshops"
-            className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-red-600 to-red-500 rounded-full text-white font-semibold hover:shadow-2xl hover:shadow-red-500/50 transition-all duration-300 hover:scale-105"
-          >
-            Book a Free Workshop
-          </Link>
-        </motion.div>
       </div>
     </section>
   );
