@@ -60,65 +60,67 @@ export default function Footer() {
             Ready to Launch{' '}
             <span className="gradient-text">Your Dream?</span>
           </h2>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto mb-8">
+          <p className="text-xl text-gray-400 max-w-3xl mx-auto mb-10">
             Join StratSchool and turn your innovative ideas into reality. Connect with us to start your journey.
           </p>
           
-          {/* Contact Form */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 max-w-3xl mx-auto">
+          {/* Contact Form - Glass Morphism Style */}
+          <div className="flex flex-col sm:flex-row items-end justify-center gap-4 max-w-4xl mx-auto p-6 bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl">
             {/* Who Am I Dropdown */}
             <div className="relative w-full sm:w-auto">
-              <label className="block text-left text-gray-400 text-sm mb-1">Who Am I?</label>
-              <select
-                className="w-full sm:w-48 px-4 py-3 bg-white text-gray-800 rounded-lg border-0 focus:ring-2 focus:ring-red-500 appearance-none cursor-pointer"
-                defaultValue=""
-              >
-                <option value="" disabled>Select...</option>
-                <option value="student">Student</option>
-                <option value="entrepreneur">Entrepreneur</option>
-                <option value="investor">Investor</option>
-                <option value="mentor">Mentor</option>
-                <option value="corporate">Corporate</option>
-                <option value="institution">Institution</option>
-              </select>
-              <div className="absolute right-3 bottom-3 pointer-events-none">
-                <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
+              <label className="block text-left text-gray-400 text-sm mb-2 font-medium">Who Am I?</label>
+              <div className="relative">
+                <select
+                  className="w-full sm:w-52 px-4 py-3.5 bg-white/5 backdrop-blur-sm text-white rounded-xl border border-white/10 focus:border-red-500/50 focus:ring-2 focus:ring-red-500/20 appearance-none cursor-pointer transition-all duration-300 hover:bg-white/10"
+                  defaultValue=""
+                >
+                  <option value="" disabled className="bg-zinc-900 text-gray-400">Select...</option>
+                  <option value="student" className="bg-zinc-900">Student</option>
+                  <option value="entrepreneur" className="bg-zinc-900">Entrepreneur</option>
+                  <option value="investor" className="bg-zinc-900">Investor</option>
+                  <option value="mentor" className="bg-zinc-900">Mentor</option>
+                  <option value="corporate" className="bg-zinc-900">Corporate</option>
+                  <option value="institution" className="bg-zinc-900">Institution</option>
+                </select>
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
               </div>
             </div>
 
             {/* I'm looking for Dropdown */}
             <div className="relative w-full sm:w-auto">
-              <label className="block text-left text-gray-400 text-sm mb-1">I'm looking for</label>
-              <select
-                className="w-full sm:w-64 px-4 py-3 bg-white text-gray-800 rounded-lg border-0 focus:ring-2 focus:ring-red-500 appearance-none cursor-pointer"
-                defaultValue=""
-              >
-                <option value="" disabled>Select...</option>
-                <option value="programs">Startup Programs</option>
-                <option value="funding">Funding Opportunities</option>
-                <option value="mentorship">Mentorship</option>
-                <option value="workshops">Workshops & Events</option>
-                <option value="partnership">Partnership</option>
-                <option value="other">Other</option>
-              </select>
-              <div className="absolute right-3 bottom-3 pointer-events-none">
-                <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
+              <label className="block text-left text-gray-400 text-sm mb-2 font-medium">I'm looking for</label>
+              <div className="relative">
+                <select
+                  className="w-full sm:w-64 px-4 py-3.5 bg-white/5 backdrop-blur-sm text-white rounded-xl border border-white/10 focus:border-red-500/50 focus:ring-2 focus:ring-red-500/20 appearance-none cursor-pointer transition-all duration-300 hover:bg-white/10"
+                  defaultValue=""
+                >
+                  <option value="" disabled className="bg-zinc-900 text-gray-400">Select...</option>
+                  <option value="programs" className="bg-zinc-900">Startup Programs</option>
+                  <option value="funding" className="bg-zinc-900">Funding Opportunities</option>
+                  <option value="mentorship" className="bg-zinc-900">Mentorship</option>
+                  <option value="workshops" className="bg-zinc-900">Workshops & Events</option>
+                  <option value="partnership" className="bg-zinc-900">Partnership</option>
+                  <option value="other" className="bg-zinc-900">Other</option>
+                </select>
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
+                  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
               </div>
             </div>
 
             {/* Contact Us Button */}
-            <div className="w-full sm:w-auto sm:self-end">
-              <Link
-                href="/reach-us"
-                className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-red-600 to-red-500 rounded-lg text-white font-semibold text-lg hover:shadow-2xl hover:shadow-red-500/50 transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2"
-              >
-                Contact us
-              </Link>
-            </div>
+            <Link
+              href="/reach-us"
+              className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-red-600 to-red-500 rounded-xl text-white font-semibold text-lg hover:shadow-2xl hover:shadow-red-500/50 transition-all duration-300 hover:scale-105 flex items-center justify-center gap-2"
+            >
+              Contact us
+            </Link>
           </div>
         </motion.div>
 
